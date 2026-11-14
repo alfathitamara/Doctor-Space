@@ -98,6 +98,10 @@ table.t td,table.t th{text-align:left;padding:9px 8px;border-top:1px solid var(-
 .warnbox{border-radius:14px;padding:12px 14px;background:var(--warn-bg);color:#5C3A00;font-size:15px;margin-top:12px}
 .infobox{border-radius:14px;padding:12px 14px;background:#E3ECF7;color:#18405F;font-size:15px;margin-top:12px}
 .foot{max-width:980px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:14px}
+input[type=text],input[type=date],select{width:100%;min-height:48px;border:1px solid #6B7C8E;border-radius:10px;padding:0 12px;font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+.bk{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line)}.bk .ph{width:76px;height:76px;border-radius:12px;background:#E3ECF7;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:11px;color:#556273;text-align:center}
+.bk>div{min-width:0;overflow-wrap:anywhere}.bk .pill{white-space:normal;height:auto;padding-top:4px;padding-bottom:4px;text-align:left}
+.sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.sum div{background:var(--tile);border-radius:14px;padding:12px;text-align:center}.sum b{display:block;font-size:24px}
 input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-radius:10px;padding:0 12px;font-size:17px;font-family:inherit;background:#fff;color:var(--ink)}
 .fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:12px 0}
 .fg label{font-size:14px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
@@ -164,7 +168,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="tiles">
 <button class="tile" onclick="go('scan','heart')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-8-4.8-8-10.4A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 8 2.5c0 5.6-8 10.4-8 10.4z"/><path d="M5 11h3l1.5-2.5 2.5 5 1.8-3.5H19"/></svg><b>Cardiac Scan</b><span>Heart assessment</span></button>
 <button class="tile" onclick="go('scan','abdomen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M6.5 14.5l3-4 3 3 2.2-3 2.8 4"/></svg><b>Abdominal Scan</b><span>Organ assessment</span></button>
-<button class="tile" onclick="go('repro')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9"/><path d="M8.5 6.5h7M8.5 17.5h7M9.5 12h5"/></svg><b>Pre-flight Fertility</b><span>Banking plan</span></button>
+<button class="tile" onclick="go('repro')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9"/><path d="M8.5 6.5h7M8.5 17.5h7M9.5 12h5"/></svg><b>Fertility Bank</b><span>Sperm, eggs, embryos</span></button>
 <button class="tile" onclick="go('well')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-2 2.8 3 3 0 0 0 1.2 2.4A3 3 0 0 0 6 17a3 3 0 0 0 6 .5V6a1.5 1.5 0 0 0-3-1.5zM15 4.5a3 3 0 0 1 3 3 3 3 0 0 1 2 2.8 3 3 0 0 1-1.2 2.4A3 3 0 0 1 18 17a3 3 0 0 1-6 .5V6a1.5 1.5 0 0 1 3-1.5z"/></svg><b>Neuro &amp; Wellness</b><span>Behavioral health</span></button>
 <button class="tile" onclick="go('bone')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5a2.2 2.2 0 0 1 3.6 2.4l6.5 6.5a2.2 2.2 0 1 1-2.4 3.6 2.2 2.2 0 0 1-3.6-2.4L4.6 8.1A2.2 2.2 0 0 1 7 4.5z"/></svg><b>Bone Watch</b><span>Magnetic heel pad</span></button>
 <button class="tile" onclick="go('pads')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg><b>Pad Guide</b><span>Where the probe goes</span></button>
@@ -283,7 +287,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <!-- REPRODUCTIVE -->
 <section class="pg" id="p-repro">
 <div class="card">
-<div class="head"><h2>Pre-flight Fertility Planner</h2><span class="pill p-blue">Before launch</span></div>
+<div class="head"><h2>Fertility Bank and Planner</h2><span class="pill p-blue">Before launch</span></div>
 <p class="sub">Radiation is one of the five hazards. Banking sperm or embryos on Earth before launch keeps the option open. This is a proposal: it is not a current NASA program. Sample data.</p>
 <div class="rng"><label for="day"><span>Stimulation day</span><b id="dayV"></b></label><input id="day" type="range" min="1" max="12" value="6"></div>
 <svg id="fchart" viewBox="0 0 520 250" style="width:100%" role="img" aria-label="Growth of the three leading follicles"></svg>
@@ -299,6 +303,19 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <button class="btn pri" style="width:100%;margin-top:12px" onclick="sendPlan()">Send plan to registry (simulated)</button>
 <div class="warnbox">Detailed follicle counts usually need a transvaginal probe, which a pad cannot hold. Pads on the lower abdomen suit screening.</div>
 </div>
+</div>
+<div class="card" id="bankCard">
+<div class="head"><h2>Gamete and embryo bank</h2><span class="pill p-blue">Register</span></div>
+<p class="sub">Log each frozen lot, add its photo, and watch storage. Records stay in this browser only. Sample lots are shown until you add your own.</p>
+<div class="sum" id="bkSum"></div>
+<div class="row" id="bkTabs" role="group" aria-label="Lot type"></div>
+<div class="fg" id="bkForm"></div>
+<div class="row" style="align-items:center"><label class="btn" style="cursor:pointer;display:inline-flex;align-items:center">Add photo<input type="file" id="bkFile" accept="image/*" style="display:none" onchange="bkPhoto(this)"></label><span class="sub" id="bkPh">No photo</span></div>
+<div class="row" style="margin-top:12px"><button class="btn pri" onclick="bkAdd()">Save lot</button><span class="sub" id="bkMsg"></span></div>
+<div class="fg"><div><label for="bkDue">Next storage check</label><input type="date" id="bkDue" onchange="bkDueSet()"></div></div>
+<div id="bkDueMsg" class="infobox"></div>
+<div id="bkList"></div>
+<div class="warnbox">Sample reference rules only (semen: WHO 2021 lower limits, DFI bands as commonly reported). The andrologist or embryologist sets the real limits. Illustrations are not patient photos.</div>
 </div>
 </section>
 
@@ -814,6 +831,59 @@ function boneRender(){
   $('bChk').innerHTML=C.map(function(c,k){var on=BONE.chk[k];return '<button class="chk'+(on?' on':'')+'" aria-pressed="'+!!on+'" onclick="BONE.chk['+k+']=!BONE.chk['+k+'];boneRender()">'+c+'</button>'}).join('');
 }
 
+
+/* ---------- gamete and embryo bank ---------- */
+var BK={tab:'sperm',rows:null,due:'',photo:''};
+var BF={
+ sperm:[['id','Lot ID','text'],['dt','Date banked','date'],['vol','Volume (mL)','number',.1],['conc','Concentration (M/mL)','number',.1],['tm','Total motility (%)','number',1],['pm','Progressive motility (%)','number',1],['mor','Normal morphology (%)','number',.5],['dfi','DFI (%)','number',.5],['n','Straws','number',1],['loc','Tank / position','text']],
+ eggs:[['id','Lot ID','text'],['dt','Date frozen','date'],['n','Oocytes frozen','number',1],['mii','Mature (MII)','number',1],['age','Age at freezing','number',1],['loc','Tank / position','text']],
+ emb:[['id','Lot ID','text'],['dt','Date frozen','date'],['n','Embryos','number',1],['stage','Stage','select',['Day 3','Day 5 blastocyst','Day 6 blastocyst']],['gr','Grade (e.g. 4AA)','text'],['pgt','PGT-A','select',['Not tested','Euploid','Mixed or other']],['loc','Tank / position','text']]};
+var BKN={sperm:'Sperm',eggs:'Eggs',emb:'Embryos'};
+function bkIllus(k){var c=document.createElement('canvas');c.width=c.height=160;var x=c.getContext('2d');x.fillStyle='#0E2342';x.fillRect(0,0,160,160);
+  if(k==='emb'){x.strokeStyle='#4CC3FF';x.lineWidth=3;x.beginPath();x.arc(80,80,56,0,7);x.stroke();x.fillStyle='rgba(95,224,143,.7)';[[62,70],[88,66],[74,92],[96,90],[58,94],[80,78]].forEach(function(p){x.beginPath();x.arc(p[0],p[1],14,0,7);x.fill()});x.fillStyle='#CFE3FF';x.beginPath();x.arc(80,80,0.1,0,7);x.fill()}
+  else if(k==='eggs'){x.strokeStyle='#4CC3FF';x.lineWidth=3;x.beginPath();x.arc(80,80,58,0,7);x.stroke();x.strokeStyle='#5FE08F';x.lineWidth=2;x.beginPath();x.arc(80,80,44,0,7);x.stroke();x.fillStyle='#CFE3FF';x.beginPath();x.arc(124,36,6,0,7);x.fill()}
+  else{x.fillStyle='#CFE3FF';[[40,50,-.5],[100,40,.4],[70,90,.9],[120,110,-.8],[40,120,.2],[96,70,-.2]].forEach(function(p){x.save();x.translate(p[0],p[1]);x.rotate(p[2]);x.beginPath();x.ellipse(0,0,8,5,0,0,7);x.fill();x.fillRect(6,-1,34,2);x.restore()})}
+  return c.toDataURL('image/jpeg',.7)}
+function bkSample(){return [
+ {k:'sperm',id:'SP-001',dt:'2026-09-12',vol:2.6,conc:48,tm:58,pm:44,mor:5,dfi:12,n:6,loc:'Tank A / R2',ph:bkIllus('sperm'),sm:1},
+ {k:'sperm',id:'SP-002',dt:'2026-09-30',vol:1.9,conc:22,tm:40,pm:28,mor:3,dfi:27,n:4,loc:'Tank A / R3',ph:bkIllus('sperm'),sm:1},
+ {k:'eggs',id:'OO-014',dt:'2026-09-20',n:12,mii:10,age:31,loc:'Tank B / R1',ph:bkIllus('eggs'),sm:1},
+ {k:'emb',id:'EM-007',dt:'2026-10-05',n:3,stage:'Day 5 blastocyst',gr:'4AA',pgt:'Euploid',loc:'Tank B / R4',ph:bkIllus('emb'),sm:1}]}
+function bkInit(){try{var r=JSON.parse(localStorage.getItem('ds_bank')||'null');if(r&&r.rows)BK.rows=r.rows;if(r&&r.due)BK.due=r.due}catch(e){}if(!BK.rows)BK.rows=bkSample()}
+function bkSave(){try{localStorage.setItem('ds_bank',JSON.stringify({rows:BK.rows.filter(function(r){return !r.sm}),due:BK.due}))}catch(e){upd('bkMsg','Saved, but the photo may be too large for this browser.')}}
+function bkTab(k){BK.tab=k;BK.photo='';upd('bkPh','No photo');bkRender()}
+function bkPhoto(el){var f=el.files&&el.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var m=320,sc=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext('2d').drawImage(im,0,0,c.width,c.height);BK.photo=c.toDataURL('image/jpeg',.7);upd('bkPh','Photo ready')};im.src=rd.result};rd.readAsDataURL(f)}
+function bkAdd(){var o={k:BK.tab,ph:BK.photo},ok=true;BF[BK.tab].forEach(function(f){var e=$('bk_'+f[0]),v=e.value;if(f[2]==='number'){v=parseFloat(v);if(isNaN(v))v=null}o[f[0]]=v});
+  if(!o.id||!o.dt){upd('bkMsg','Enter a lot ID and a date.');return}
+  if(BK.tab==='sperm'&&(o.conc==null||o.dfi==null)){upd('bkMsg','Enter at least concentration and DFI.');return}
+  var keep=BK.rows.filter(function(r){return !r.sm});BK.rows=keep;BK.rows.push(o);bkSave();BK.photo='';upd('bkMsg','Lot saved.');logEv('Bank lot saved');bkRender();upd('bkPh','No photo')}
+function bkDel(i){BK.rows.splice(i,1);if(!BK.rows.length)BK.rows=bkSample();bkSave();bkRender()}
+function bkDueSet(){BK.due=$('bkDue').value;bkSave();bkRender()}
+function bkStatus(r){
+  if(r.k==='sperm'){var low=0,m=[];
+    if(r.vol!=null&&r.vol<1.4){low++;m.push('volume')}if(r.conc<16){low++;m.push('concentration')}if(r.tm!=null&&r.tm<42){low++;m.push('motility')}if(r.pm!=null&&r.pm<30){low++;m.push('progressive motility')}if(r.mor!=null&&r.mor<4){low++;m.push('morphology')}
+    var lv=(r.dfi>30||low>=3)?'crit':((r.dfi>15||low>0)?'warn':'ok');
+    var t=lv==='ok'?'Within sample limits':(m.length?'Below limit: '+m.join(', '):'')+(r.dfi>15?(m.length?'. ':'')+'DFI '+r.dfi+'%':'');
+    return {lv:lv,t:t}}
+  if(r.k==='eggs'){var q=r.n?r.mii/r.n:0;return {lv:q>=.7?'ok':'warn',t:'Mature '+r.mii+' of '+r.n+' ('+Math.round(q*100)+'%)'}}
+  return {lv:r.pgt==='Not tested'?'warn':'ok',t:r.pgt==='Not tested'?'Not genetically tested':'PGT-A: '+r.pgt}}
+function bkRender(){
+  $('bkTabs').innerHTML=Object.keys(BKN).map(function(k){return '<button class="chip'+(BK.tab===k?' on':'')+'" aria-pressed="'+(BK.tab===k)+'" onclick="bkTab(\''+k+'\')">'+BKN[k]+'</button>'}).join('');
+  $('bkForm').innerHTML=BF[BK.tab].map(function(f){var h='<div><label for="bk_'+f[0]+'">'+f[1]+'</label>';
+    if(f[2]==='select')h+='<select id="bk_'+f[0]+'">'+f[3].map(function(o){return '<option>'+o+'</option>'}).join('')+'</select>';
+    else h+='<input id="bk_'+f[0]+'" type="'+f[2]+'"'+(f[3]?' step="'+f[3]+'"':'')+(f[2]==='number'?' inputmode="decimal"':'')+'>';return h+'</div>'}).join('');
+  var sp=0,eg=0,em=0,sl=0;BK.rows.forEach(function(r){if(r.k==='sperm'){sl++;sp+=r.n||0}else if(r.k==='eggs')eg+=r.n||0;else em+=r.n||0});
+  $('bkSum').innerHTML='<div><b>'+sp+'</b>sperm straws ('+sl+' lots)</div><div><b>'+eg+'</b>oocytes</div><div><b>'+em+'</b>embryos</div>';
+  $('bkDue').value=BK.due||'';
+  var dm='Set the date of the next storage check (liquid nitrogen level, tank log).';
+  if(BK.due){var d=Math.round((new Date(BK.due)-new Date(new Date().toDateString()))/864e5);dm=d<0?'Storage check is overdue by '+(-d)+' days. Tell the biobank team.':'Next storage check in '+d+' days.'}
+  $('bkDueMsg').textContent=dm;
+  $('bkList').innerHTML=BK.rows.map(function(r,i){var st=bkStatus(r),L='';
+    if(r.k==='sperm')L='SA: '+r.vol+' mL, '+r.conc+' M/mL, motility '+r.tm+'% (progressive '+r.pm+'%), morphology '+r.mor+'%. DFI '+r.dfi+'%. Straws: '+r.n;
+    else if(r.k==='eggs')L=r.n+' oocytes, '+r.mii+' mature, age '+r.age;
+    else L=r.n+' embryo(s), '+esc(r.stage)+', grade '+esc(r.gr||'-');
+    return '<div class="bk">'+(r.ph?'<img class="ph" alt="'+BKN[r.k]+' photo '+esc(r.id)+'" src="'+r.ph+'">':'<div class="ph">No photo</div>')+'<div><b>'+esc(r.id)+' · '+BKN[r.k]+'</b>'+(r.sm?' <span class="sub">(sample, illustration)</span>':'')+'<div class="sub">'+L+'</div><div class="sub">Frozen '+esc(r.dt)+' · '+esc(r.loc||'-')+'</div><div style="margin-top:6px">'+pillHTML(st.lv,esc(st.t))+'</div><button class="chip" style="margin-top:8px" onclick="bkDel('+i+')">Remove</button></div></div>'}).join('')}
+
 /* ---------- baseline, environment, sensors ---------- */
 function baseSave(){try{localStorage.setItem('ds_base',JSON.stringify(BASE))}catch(e){}}
 function baseRender(){
@@ -853,7 +923,7 @@ function bleConnect(){
 (function(){
   try{var t=JSON.parse(localStorage.getItem('ds_today')||'null');if(t)Object.keys(t).forEach(function(k){if(typeof t[k]==='number')W.today[k]=t[k]})}catch(e){}
   try{var bb=JSON.parse(localStorage.getItem('ds_base')||'null');if(bb){BASE.on=!!bb.on;BASE.env=bb.env||'earth';BASE.vals=bb.vals||{}}}catch(e){}
-  boneLoad();boneRender();renderPads();renderDock();csvInit();baseRender();sensRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
+  boneLoad();boneRender();bkInit();bkRender();renderPads();renderDock();csvInit();baseRender();sensRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
 })();
 </script>
 </body>
