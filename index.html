@@ -148,7 +148,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <span class="pill p-ok"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>SYSTEM ONLINE</span>
 </div>
 <nav class="tabs" aria-label="Sections" id="tabs">
-<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Reproductive</a><a href="#well">Wellness</a>
+<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Fertility</a><a href="#bone">Bone Watch</a><a href="#well">Wellness</a>
 </nav>
 </header>
 
@@ -164,8 +164,10 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="tiles">
 <button class="tile" onclick="go('scan','heart')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-8-4.8-8-10.4A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 8 2.5c0 5.6-8 10.4-8 10.4z"/><path d="M5 11h3l1.5-2.5 2.5 5 1.8-3.5H19"/></svg><b>Cardiac Scan</b><span>Heart assessment</span></button>
 <button class="tile" onclick="go('scan','abdomen')"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3.5"/><path d="M6.5 14.5l3-4 3 3 2.2-3 2.8 4"/></svg><b>Abdominal Scan</b><span>Organ assessment</span></button>
-<button class="tile" onclick="go('repro')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9"/><path d="M8.5 6.5h7M8.5 17.5h7M9.5 12h5"/></svg><b>Reproductive Health</b><span>Fertility monitoring</span></button>
+<button class="tile" onclick="go('repro')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3c0 5 10 5 10 9s-10 4-10 9M17 3c0 5-10 5-10 9s10 4 10 9"/><path d="M8.5 6.5h7M8.5 17.5h7M9.5 12h5"/></svg><b>Pre-flight Fertility</b><span>Banking plan</span></button>
 <button class="tile" onclick="go('well')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-2 2.8 3 3 0 0 0 1.2 2.4A3 3 0 0 0 6 17a3 3 0 0 0 6 .5V6a1.5 1.5 0 0 0-3-1.5zM15 4.5a3 3 0 0 1 3 3 3 3 0 0 1 2 2.8 3 3 0 0 1-1.2 2.4A3 3 0 0 1 18 17a3 3 0 0 1-6 .5V6a1.5 1.5 0 0 1 3-1.5z"/></svg><b>Neuro &amp; Wellness</b><span>Behavioral health</span></button>
+<button class="tile" onclick="go('bone')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5a2.2 2.2 0 0 1 3.6 2.4l6.5 6.5a2.2 2.2 0 1 1-2.4 3.6 2.2 2.2 0 0 1-3.6-2.4L4.6 8.1A2.2 2.2 0 0 1 7 4.5z"/></svg><b>Bone Watch</b><span>Magnetic heel pad</span></button>
+<button class="tile" onclick="go('pads')"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><path d="M12 4v3M12 17v3M4 12h3M17 12h3"/></svg><b>Pad Guide</b><span>Where the probe goes</span></button>
 </div>
 <hr>
 <h2>Self-Assessment Workflow</h2>
@@ -179,6 +181,19 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <span class="note">Concept interface — not a validated medical device</span>
 </div>
 
+<div class="card">
+<div class="head"><h2>Risk map</h2><span class="pill p-blue">NASA HRP risks</span></div>
+<p class="sub">Each spaceflight risk from NASA's public Human Research Program list, and the tool in this app that addresses it.</p>
+<div class="kv"><span>Cardiovascular adaptation</span><b>Cardiac Scan, vitals vs own baseline</b></div>
+<div class="kv"><span>Spaceflight bone changes</span><b>Bone Watch, magnetic heel pad</b></div>
+<div class="kv"><span>Reduced fitness</span><b>Exercise log in Bone Watch</b></div>
+<div class="kv"><span>Inadequate sleep</span><b>Sleep trend in Wellness</b></div>
+<div class="kv"><span>Behavioral changes</span><b>Mood trend in Wellness</b></div>
+<div class="kv"><span>Distance from Earth, support</span><b>Guided Scan, SOS, locked kit</b></div>
+<div class="kv"><span>Space radiation</span><b>Pre-flight fertility banking</b></div>
+<div class="kv"><span>Blood (space anemia)</span><b>Hemoglobin trend in Wellness</b></div>
+<span class="note">Source for the risk list: NASA Human Research Program, public pages.</span>
+</div>
 <div class="dk">
 <div style="font-size:15px;font-weight:700;letter-spacing:.12em;color:#CFE3FF">FULL BODY DIAGNOSTICS</div>
 <div class="sub">Simulated crew overview · sample values</div>
@@ -268,8 +283,8 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <!-- REPRODUCTIVE -->
 <section class="pg" id="p-repro">
 <div class="card">
-<div class="head"><h2>Reproductive Health</h2><span class="pill p-blue">Fertility monitoring</span></div>
-<p class="sub">Simulated follicle growth across a stimulation cycle. Sample data.</p>
+<div class="head"><h2>Pre-flight Fertility Planner</h2><span class="pill p-blue">Before launch</span></div>
+<p class="sub">Radiation is one of the five hazards. Banking sperm or embryos on Earth before launch keeps the option open. This is a proposal: it is not a current NASA program. Sample data.</p>
 <div class="rng"><label for="day"><span>Stimulation day</span><b id="dayV"></b></label><input id="day" type="range" min="1" max="12" value="6"></div>
 <svg id="fchart" viewBox="0 0 520 250" style="width:100%" role="img" aria-label="Growth of the three leading follicles"></svg>
 <div class="alert" id="fstat"></div>
@@ -282,12 +297,52 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="infobox">1. Monitor follicles with ultrasound. 2. The fertility doctor plans retrieval. 3. The embryologist freezes and logs each lot, with two witnesses. 4. The registry tracks consent, storage and mission readiness.</div>
 <div id="planMsg" class="alert a-ok" style="display:none;margin-top:12px"><p>Plan sent to the registry for AST-052 (simulated). The embryologist confirms dates and witnesses the freezing.</p></div>
 <button class="btn pri" style="width:100%;margin-top:12px" onclick="sendPlan()">Send plan to registry (simulated)</button>
-<div class="warnbox">Detailed follicle counts usually need a transvaginal probe, which a pad cannot hold. Pads on the lower abdomen suit screening. Magnets do not affect fertility.</div>
+<div class="warnbox">Detailed follicle counts usually need a transvaginal probe, which a pad cannot hold. Pads on the lower abdomen suit screening.</div>
 </div>
 </div>
 </section>
 
 <!-- WELLNESS -->
+<section class="pg" id="p-bone">
+<div class="card">
+<div class="head"><h2>Bone Watch</h2><span class="pill p-blue">Bone changes</span></div>
+<p class="sub">Without gravity, bones lose strength. NASA lists spaceflight bone change as a risk. Record a repeatable heel measurement and your exercise load. Sample data until you save your own.</p>
+<div id="bStat"></div>
+<svg id="bChart" viewBox="0 0 520 240" style="width:100%" role="img" aria-label="Heel index as a percent of baseline"></svg>
+<div class="sub">Line = heel index as a percent of the pre-flight baseline. Dashed line = your alert limit.</div>
+</div>
+<div class="card">
+<h2>Add an entry</h2>
+<div class="fg">
+<div><label for="bD">Mission day</label><input type="number" id="bD" value="100" inputmode="numeric"></div>
+<div><label for="bI">Heel index (reading)</label><input type="number" id="bI" value="93" step="0.1" inputmode="decimal"></div>
+<div><label for="bM">Exercise this week (min)</label><input type="number" id="bM" value="280" inputmode="numeric"></div>
+<div><label for="bL">Alert limit (% drop)</label><input type="number" id="bL" value="5" step="0.5" inputmode="decimal"></div>
+</div>
+<div class="row"><button class="btn pri" onclick="boneAdd()">Save entry</button><button class="btn" onclick="boneReset()">Reset to sample</button><span class="sub" id="bMsg"></span></div>
+<div id="bTable" style="margin-top:12px"></div>
+</div>
+<div class="grid2">
+<div class="card">
+<h2>Magnetic heel pad</h2>
+<svg viewBox="0 0 300 170" style="width:100%" role="img" aria-label="Heel pad with steel dots and a probe collar">
+<ellipse cx="150" cy="128" rx="92" ry="30" fill="#E3ECF7" stroke="#2F7BD6" stroke-width="2"/>
+<g fill="#556273"><circle cx="86" cy="128" r="6"/><circle cx="214" cy="128" r="6"/><circle cx="150" cy="106" r="6"/><circle cx="150" cy="150" r="6"/></g>
+<rect x="118" y="86" width="64" height="16" rx="5" fill="#2F7BD6"/><rect x="128" y="30" width="44" height="58" rx="8" fill="#0B2347"/>
+<text x="150" y="64" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" font-family="Inter,Arial">PROBE</text>
+<text x="150" y="20" text-anchor="middle" fill="#0B2347" font-size="12" font-family="Inter,Arial">Pad B1 · heel</text>
+</svg>
+<p class="sub">A steel-dot heel sticker and a magnetic collar bring the probe back to the same spot and angle each week. A change in the number is then more likely a change in the bone, not in the placement.</p>
+<div class="warnbox">Magnets here only fix the position. They do not strengthen bone. A heel reading is a screening aid, not a bone density scan.</div>
+</div>
+<div class="card">
+<h2>Daily countermeasures</h2>
+<p class="sub">Follow the plan set by the program and the flight surgeon.</p>
+<div class="row" style="flex-direction:column;align-items:stretch;gap:8px" id="bChk"></div>
+<div class="infobox">Doses and drugs are never chosen by this app. Exercise, nutrition and any medicine come from the flight surgeon.</div>
+</div>
+</div>
+</section>
 <section class="pg" id="p-well">
 <div class="card">
 <div class="head"><h2>Neuro &amp; Wellness</h2><span class="pill p-blue">Behavioral health</span></div>
@@ -325,7 +380,7 @@ function ico(l){return '<svg width="20" height="20" viewBox="0 0 24 24" fill="cu
 function pillHTML(l,t){var c={ok:'p-ok',warn:'p-warn',crit:'p-crit'}[l];return '<span class="pill '+c+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="'+SH[l]+'"/></svg>'+t+'</span>'}
 
 /* ---------- router ---------- */
-var PAGES=['home','scan','magni','pads','repro','well'];
+var PAGES=['home','scan','magni','pads','repro','bone','well'];
 function route(){
   var h=(location.hash||'#home').slice(1);if(PAGES.indexOf(h)<0)h='home';
   PAGES.forEach(function(p){$('p-'+p).classList.toggle('on',p===h)});
@@ -548,11 +603,12 @@ var M=[
  {id:'sys',l:'Systolic BP',u:'mmHg',min:70,max:180,ok:[95,130],wn:[85,150],step:1,def:120,tip:'Rest, drink water and recheck. Note any dizziness when you stand or float upright.'},
  {id:'dia',l:'Diastolic BP',u:'mmHg',min:40,max:110,ok:[60,85],wn:[50,95],step:1,def:78,tip:'Rest and recheck in 10 minutes.'},
  {id:'temp',l:'Temperature',u:'°C',min:34,max:40,ok:[36.1,37.5],wn:[35.5,38],step:.1,def:36.8,tip:'Check the cabin temperature, drink water and recheck in 30 minutes.'},
+ {id:'hb',l:'Hemoglobin',u:'g/dL',min:6,max:20,ok:[12,17.5],wn:[10,18.5],step:.1,def:14,tip:'Space anemia is usually fast red cell loss, not low iron. Do not take iron unless the flight surgeon orders it. Report tiredness, pale skin or breathlessness.'},
  {id:'glu',l:'Glucose',u:'mg/dL',min:40,max:260,ok:[70,140],wn:[54,200],step:1,def:100,tip:'Recheck after 15 minutes. Follow the nutrition plan and tell the flight surgeon if it stays out of range.'}];
-var SEED={sleep:[7.5,7.2,6.8,6.4,6,5.6],mood:[4,4,3,3,3,2],hr:[64,66,65,68,70,72],sys:[112,114,113,118,120,122],dia:[72,74,73,76,78,80],temp:[36.6,36.6,36.7,36.7,36.8,36.8],glu:[92,95,94,99,103,108]};
+var SEED={sleep:[7.5,7.2,6.8,6.4,6,5.6],mood:[4,4,3,3,3,2],hr:[64,66,65,68,70,72],sys:[112,114,113,118,120,122],dia:[72,74,73,76,78,80],temp:[36.6,36.6,36.7,36.7,36.8,36.8],glu:[92,95,94,99,103,108],hb:[14.4,14.3,14,13.8,13.5,13.3]};
 var W={today:{},sel:'sleep',log:[]};
 M.forEach(function(m){W.today[m.id]=m.def});
-var TOL={sleep:1.5,mood:1,hr:12,sys:12,dia:8,temp:.4,glu:20};
+var TOL={sleep:1.5,mood:1,hr:12,sys:12,dia:8,temp:.4,glu:20,hb:1};
 var BASE={on:true,env:'earth',vals:{}};
 function stOf(m,v){
   var a=v>=m.ok[0]&&v<=m.ok[1]?'ok':(v>=m.wn[0]&&v<=m.wn[1]?'warn':'crit');
@@ -726,6 +782,38 @@ function csvRender(){
 }
 
 
+
+/* ---------- bone watch ---------- */
+var BONE={rows:null,lim:5,tgt:300,chk:{}};
+var BSAMPLE=[{d:0,i:100,m:0},{d:30,i:98.6,m:330},{d:60,i:97.1,m:310},{d:90,i:95.4,m:290}];
+function boneLoad(){try{var r=JSON.parse(localStorage.getItem('ds_bone')||'null');if(r&&r.length)BONE.rows=r}catch(e){}if(!BONE.rows)BONE.rows=BSAMPLE.slice()}
+function boneSave(){try{localStorage.setItem('ds_bone',JSON.stringify(BONE.rows))}catch(e){}}
+function boneAdd(){var d=parseFloat($('bD').value),i=parseFloat($('bI').value),m=parseFloat($('bM').value),l=parseFloat($('bL').value);
+  if(isNaN(d)||isNaN(i)||isNaN(m)||i<=0){upd('bMsg','Enter numbers for day, reading and minutes.');return}
+  if(!isNaN(l)&&l>0)BONE.lim=l;
+  if(BONE.rows===BSAMPLE||BONE.rows.length&&BONE.rows[0]===BSAMPLE[0])BONE.rows=[];
+  BONE.rows.push({d:d,i:i,m:m});BONE.rows.sort(function(a,b){return a.d-b.d});boneSave();upd('bMsg','Saved.');logEv('Bone Watch entry');boneRender()}
+function boneReset(){BONE.rows=BSAMPLE.slice();try{localStorage.removeItem('ds_bone')}catch(e){}upd('bMsg','Sample restored.');boneRender()}
+function boneRender(){
+  var r=BONE.rows,b=r[0].i,last=r[r.length-1],drop=(b-last.i)/b*100,lv='ok',tx='Within your limit';
+  if(drop>=BONE.lim*2){lv='crit';tx='Large drop from baseline'}else if(drop>=BONE.lim){lv='warn';tx='Drop reached your limit'}
+  var ex=last.m<BONE.tgt&&last.d>0?'<p>Exercise last logged is below the sample target of '+BONE.tgt+' min per week.</p>':'';
+  $('bStat').innerHTML='<div class="alert '+(lv==='ok'?'a-ok':lv==='warn'?'a-warn':'a-crit')+'"><div><h3>'+pillHTML(lv,tx)+'</h3><p>Latest day '+last.d+': index '+last.i+' ('+(drop>0?'-':'+')+Math.abs(drop).toFixed(1)+'% vs baseline). '+(lv==='ok'?'Keep your routine.':'Send this trend to the flight surgeon.')+'</p>'+ex+'</div></div>';
+  var xs=r.map(function(x){return x.d}),mx=Math.max.apply(null,xs.concat([1])),pc=r.map(function(x){return x.i/b*100});
+  var lo=Math.min.apply(null,pc.concat([100-BONE.lim*2.5])),hi=105;
+  var X=function(d){return 54+d/mx*430},Y=function(v){return 210-(v-lo)/(hi-lo)*180};
+  var g='<line x1="54" y1="'+Y(100)+'" x2="484" y2="'+Y(100)+'" stroke="#6B7C8E" stroke-width="1"/><line x1="54" y1="'+Y(100-BONE.lim)+'" x2="484" y2="'+Y(100-BONE.lim)+'" stroke="#C2352A" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  g+='<polyline fill="none" stroke="#2F7BD6" stroke-width="3" points="'+r.map(function(x,k){return X(x.d)+','+Y(pc[k])}).join(' ')+'"/>';
+  r.forEach(function(x,k){g+='<circle cx="'+X(x.d)+'" cy="'+Y(pc[k])+'" r="5" fill="#2F7BD6"/><text x="'+X(x.d)+'" y="232" text-anchor="middle" font-size="12" fill="#556273">'+x.d+'</text>'});
+  g+='<text x="8" y="'+(Y(100)+4)+'" font-size="12" fill="#556273">100%</text><text x="8" y="'+(Y(100-BONE.lim)+4)+'" font-size="12" fill="#C2352A">-'+BONE.lim+'%</text>';
+  $('bChart').innerHTML=g;
+  var t='<table class="tbl" style="width:100%"><tr><th align="left">Day</th><th align="left">Index</th><th align="left">% of baseline</th><th align="left">Exercise min</th></tr>';
+  r.forEach(function(x){t+='<tr><td>'+x.d+'</td><td>'+x.i+'</td><td>'+(x.i/b*100).toFixed(1)+'</td><td>'+(x.d?x.m:'baseline')+'</td></tr>'});
+  $('bTable').innerHTML=t+'</table>';
+  var C=['Resistive exercise done today, per program plan','Nutrition plan followed, per flight surgeon','Medicine only as prescribed'];
+  $('bChk').innerHTML=C.map(function(c,k){var on=BONE.chk[k];return '<button class="chk'+(on?' on':'')+'" aria-pressed="'+!!on+'" onclick="BONE.chk['+k+']=!BONE.chk['+k+'];boneRender()">'+c+'</button>'}).join('');
+}
+
 /* ---------- baseline, environment, sensors ---------- */
 function baseSave(){try{localStorage.setItem('ds_base',JSON.stringify(BASE))}catch(e){}}
 function baseRender(){
@@ -765,7 +853,7 @@ function bleConnect(){
 (function(){
   try{var t=JSON.parse(localStorage.getItem('ds_today')||'null');if(t)Object.keys(t).forEach(function(k){if(typeof t[k]==='number')W.today[k]=t[k]})}catch(e){}
   try{var bb=JSON.parse(localStorage.getItem('ds_base')||'null');if(bb){BASE.on=!!bb.on;BASE.env=bb.env||'earth';BASE.vals=bb.vals||{}}}catch(e){}
-  renderPads();renderDock();csvInit();baseRender();sensRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
+  boneLoad();boneRender();renderPads();renderDock();csvInit();baseRender();sensRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
 })();
 </script>
 </body>
