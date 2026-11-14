@@ -15,6 +15,7 @@ Files: `index.html` (the whole app) and `echo_pad_set.pdf` (printable pad sheet)
 3. Settings, Pages, Deploy from a branch, `main` and `/ (root)`, Save.
 
 ## Before you submit
-- All data, images and values are simulated. Illustrations are AI-assisted: keep the on-screen labels (Space Apps asks for a visible mark on AI images).
+- All data, images and values are simulated and labeled as such in the app.
+- Declare any AI tools you used in the Space Apps submission form, as the submission guide asks.
 - Add the exact NASA pages or data you used to your project description.
 - Not a medical device. Doses, kit contents, limits and procedures are placeholders.

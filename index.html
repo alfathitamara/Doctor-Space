@@ -104,6 +104,16 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 .ecg{stroke-dasharray:200 200;animation:dash 3s linear infinite}
 @media (prefers-reduced-motion:reduce){.ecg{animation:none}}
 @media(max-width:520px){h1.big{font-size:30px}.card{padding:18px}.tile{min-height:140px;padding:16px}}
+.fab{position:fixed;right:14px;bottom:14px;z-index:20;width:78px;height:78px;border-radius:50%;border:4px solid #fff;background:#C2352A;color:#fff;font-weight:700;font-size:21px;letter-spacing:.03em;box-shadow:0 6px 22px rgba(194,53,42,.55)}
+#sos{position:fixed;inset:0;z-index:50;background:#FAFBFC;overflow:auto;display:none}
+#sos.on{display:block}
+.sos-top{background:#C2352A;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:2}
+.sos-top .btn{border-radius:14px}
+.big-btn{min-height:76px;width:100%;border-radius:18px;border:0;font-size:19px;font-weight:700;margin:8px 0;padding:0 16px}
+.pulse{width:150px;height:150px;border-radius:50%;background:#C2352A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;margin:10px auto}
+.pulse.on{animation:beat .545s infinite}
+@keyframes beat{0%{transform:scale(1)}15%{transform:scale(1.16)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pulse.on{animation:none;outline:6px solid #FFC66D}}
 </style>
 </head>
 <body>
@@ -137,7 +147,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <span class="pill p-ok"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>SYSTEM ONLINE</span>
 </div>
 <nav class="tabs" aria-label="Sections" id="tabs">
-<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Reproductive</a><a href="#well">Wellness</a>
+<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Reproductive</a><a href="#well">Wellness</a><a href="#about">About</a>
 </nav>
 </header>
 
@@ -145,6 +155,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 
 <!-- HOME -->
 <section class="pg" id="p-home">
+<div class="alert a-crit" style="align-items:center;justify-content:space-between;flex-wrap:wrap;border-radius:20px"><div><h3>Emergency</h3><p style="font-weight:400;margin:4px 0 0">Someone collapsed, or you feel faint? Tap SOS (bottom right).</p></div><button class="btn" style="background:#C2352A;color:#fff;border-color:#C2352A;min-height:54px" onclick="openSOS()">Open emergency</button></div>
 <div class="card">
 <div class="head"><div class="eyebrow">DOCTOR SPACE</div><span class="pill p-ok">SYSTEM ONLINE</span></div>
 <h1 class="big">Crew Health Center</h1>
@@ -184,7 +195,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="dtile"><span>Resp.</span><b>16</b><span>/min</span></div>
 </div>
 <svg viewBox="0 0 400 80" style="width:100%;margin-top:12px" aria-label="Simulated heart trace"><path class="ecg" d="M0 40H60l8-20 10 44 10-34 8 10H170l8-20 10 44 10-34 8 10H280l8-20 10 44 10-34 8 10H400" fill="none" stroke="#5FE08F" stroke-width="2.5"/></svg>
-<div class="cap">Illustration. AI-assisted artwork. Values are simulated.</div>
+<div class="cap">Illustration. Values are simulated.</div>
 </div>
 </div>
 </div>
@@ -250,6 +261,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="row" style="margin-top:14px"><a class="btn pri" style="display:inline-flex;align-items:center;text-decoration:none" href="echo_pad_set.pdf" download>Download printable pad set (PDF)</a></div>
 <div class="warnbox">Sample positions for an average adult. A trained sonographer or flight surgeon must confirm every window. Pads and magnets are a prototype aid, not a medical device.</div>
 </div>
+<div class="card" id="dockCard"></div>
 </section>
 
 <!-- REPRODUCTIVE -->
@@ -284,6 +296,8 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div id="wTable" style="margin-top:12px"></div>
 <div class="row" style="margin-top:12px"><button class="btn pri" onclick="saveToday()">Save today</button><span class="sub" id="wMsg"></span></div>
 </div>
+<div class="card" id="baseCard"></div>
+<div class="card" id="sensCard"></div>
 <div class="card">
 <h2>Trend</h2>
 <div class="row" id="wSel" style="margin:8px 0"></div>
@@ -292,10 +306,16 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="infobox" id="wAdvice"></div>
 <div class="warnbox">Sample limits only. The program's flight surgeons set the real limits. Behavioral health matters as much as physical health: talk to crewmates or the ground team early.</div>
 </div>
+<div class="card" id="csvCard"></div>
 </section>
 
+<!-- ABOUT -->
+<section class="pg" id="p-about"><div id="aboutBody"></div></section>
+
 </main>
-<div class="foot">DOCTOR SPACE · Concept prototype · Simulated data and illustrations (AI-assisted) · Not a validated medical device · Not affiliated with NASA</div>
+<button class="fab" onclick="openSOS()" aria-label="Emergency SOS: collapse or cardiac arrest">SOS</button>
+<div id="sos" role="dialog" aria-modal="true" aria-label="Emergency"><div id="sosBody"></div></div>
+<div class="foot">DOCTOR SPACE · Concept prototype · Simulated data and illustrations · Not a validated medical device</div>
 
 <script>
 /* ---------- helpers ---------- */
@@ -305,7 +325,7 @@ function ico(l){return '<svg width="20" height="20" viewBox="0 0 24 24" fill="cu
 function pillHTML(l,t){var c={ok:'p-ok',warn:'p-warn',crit:'p-crit'}[l];return '<span class="pill '+c+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="'+SH[l]+'"/></svg>'+t+'</span>'}
 
 /* ---------- router ---------- */
-var PAGES=['home','scan','magni','pads','repro','well'];
+var PAGES=['home','scan','magni','pads','repro','well','about'];
 function route(){
   var h=(location.hash||'#home').slice(1);if(PAGES.indexOf(h)<0)h='home';
   PAGES.forEach(function(p){$('p-'+p).classList.toggle('on',p===h)});
@@ -373,6 +393,7 @@ function sa(a,x,y){
   else if(a==='back')S.step=Math.max(0,S.step-1);
   else if(a==='restart')S=freshScan();
   renderScan();
+  if(SOSS&&SOSS.open)renderSOS();
 }
 function triage(E){
   var pos=0,uns=0,q1=false,found=[],sc=SYM.filter(function(_,i){return S.sym['s'+i]}).length;
@@ -485,7 +506,7 @@ function drawScan(){
   else{x.beginPath();x.ellipse(w*.44,h*.5,w*.2,h*.1,.2,0,7);x.fill();x.strokeStyle='rgba(240,248,250,.45)';x.lineWidth=3;x.beginPath();x.ellipse(w*.58,h*.36,w*.2,h*.14,-.3,0,7);x.stroke()}
   x.restore();
   x.fillStyle='#E4EEF0';x.font='700 17px Inter,sans-serif';x.fillText('SIMULATED · '+reg,16,28);
-  x.fillStyle='rgba(228,238,240,.75)';x.font='13px Inter,sans-serif';x.fillText('AI-assisted illustration — not diagnostic',16,h-14);
+  x.fillStyle='rgba(228,238,240,.75)';x.font='13px Inter,sans-serif';x.fillText('Simulated image — not diagnostic',16,h-14);
 }
 function loop(){mag.t+=.05;drawScan();mag.raf=setTimeout(loop,120)}
 function startMag(){drawScan();magUI()}
@@ -531,7 +552,12 @@ var M=[
 var SEED={sleep:[7.5,7.2,6.8,6.4,6,5.6],mood:[4,4,3,3,3,2],hr:[64,66,65,68,70,72],sys:[112,114,113,118,120,122],dia:[72,74,73,76,78,80],temp:[36.6,36.6,36.7,36.7,36.8,36.8],glu:[92,95,94,99,103,108]};
 var W={today:{},sel:'sleep',log:[]};
 M.forEach(function(m){W.today[m.id]=m.def});
-function stOf(m,v){return v>=m.ok[0]&&v<=m.ok[1]?'ok':(v>=m.wn[0]&&v<=m.wn[1]?'warn':'crit')}
+var TOL={sleep:1.5,mood:1,hr:12,sys:12,dia:8,temp:.4,glu:20};
+var BASE={on:true,env:'earth',vals:{}};
+function stOf(m,v){
+  var a=v>=m.ok[0]&&v<=m.ok[1]?'ok':(v>=m.wn[0]&&v<=m.wn[1]?'warn':'crit');
+  if(BASE.on&&a==='ok'&&BASE.vals[m.id]!=null&&TOL[m.id]){if(Math.abs(v-BASE.vals[m.id])>TOL[m.id])a='warn'}
+  return a}
 var MOODL=['Very low','Low','Okay','Good','Very good'];
 function wRender(){
   var o='';M.forEach(function(m){if(m.id==='mood')return;o+='<div><label for="w_'+m.id+'">'+m.l+' ('+m.u+')</label><input type="number" id="w_'+m.id+'" step="'+m.step+'" value="'+W.today[m.id]+'" inputmode="decimal"></div>'});
@@ -568,10 +594,200 @@ function saveToday(){
   $('wMsg').textContent=ok?'Saved on this device (simulated report queued).':'Could not save on this device. Values stay on screen only.';
 }
 
+
+/* ---------- emergency patch map ---------- */
+function dockSVG(){
+  function pad(cx,cy,rot,n){return '<g transform="rotate('+rot+' '+cx+' '+cy+')"><rect x="'+(cx-16)+'" y="'+(cy-24)+'" width="32" height="48" rx="6" fill="#C2352A" opacity=".93" stroke="#fff" stroke-width="2"/><circle cx="'+(cx-11)+'" cy="'+(cy-19)+'" r="2.6" fill="#fff"/><circle cx="'+(cx+11)+'" cy="'+(cy-19)+'" r="2.6" fill="#fff"/><circle cx="'+(cx-11)+'" cy="'+(cy+19)+'" r="2.6" fill="#fff"/><circle cx="'+(cx+11)+'" cy="'+(cy+19)+'" r="2.6" fill="#fff"/></g><text x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="Inter,sans-serif">'+n+'</text>'}
+  return TORSO+pad(102,68,-8,'1')+pad(167,116,8,'2')+'<text x="14" y="18" font-size="11" fill="#566472" font-family="Inter,sans-serif">Patient\'s right</text><text x="226" y="18" text-anchor="end" font-size="11" fill="#566472" font-family="Inter,sans-serif">Patient\'s left</text>'}
+function renderDock(){
+  $('dockCard').innerHTML='<div class="head"><h2>Emergency chest patch (AED dock)</h2>'+pillHTML('crit','Cardiac arrest')+'</div><p class="sub">Two magnetic dock frames mark where the AED pads go and hold them in place. Printable at 100% as page 5 of the pad set.</p><div class="grid2" style="margin-top:12px"><div style="text-align:center"><svg viewBox="0 0 240 320" style="width:100%;max-width:300px" role="img" aria-label="Two AED pad dock positions on the chest">'+dockSVG()+'</svg></div><div>'
+   +'<div class="kv"><b>Pad 1</b><span style="text-align:right">Patient\'s right upper chest, below the collarbone, right of the breastbone</span></div>'
+   +'<div class="kv"><b>Pad 2</b><span style="text-align:right">Patient\'s left side, below the armpit, on the ribs</span></div>'
+   +'<div class="infobox">The AED pad must touch skin. The magnet and steel ring only show where it goes and keep it from drifting in microgravity. Always follow the AED voice prompts. Use pediatric pads or settings if the device has them.</div>'
+   +'<div class="warnbox">Concept only. The layout follows the usual adult pad positions. It is not tested with a real AED.</div>'
+   +'<div class="row" style="margin-top:12px"><a class="btn pri" style="display:inline-flex;align-items:center;text-decoration:none" href="echo_pad_set.pdf" download>Download pad set (PDF)</a></div></div></div>';
+}
+
+/* ---------- SOS / emergency ---------- */
+function freshSOS(){return {open:false,mode:'',count:10,sent:false,t0:0,cprOn:false,cyc:120,cycles:0,shocks:0,sound:false,chk:{},feel:{}}}
+var SOSS=freshSOS(),sosTick=null,sosBeat=null,AC=null;
+function beep(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var o=AC.createOscillator(),g=AC.createGain();o.frequency.value=880;g.gain.value=.18;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+.07)}catch(e){}}
+function logEv(t){try{var a=JSON.parse(localStorage.getItem('ds_events')||'[]');a.push({t:new Date().toISOString(),e:t});localStorage.setItem('ds_events',JSON.stringify(a.slice(-30)))}catch(e){}}
+function fmt(x){x=Math.max(0,Math.floor(x));return ('0'+Math.floor(x/60)).slice(-2)+':'+('0'+x%60).slice(-2)}
+function upd(id,v){var e=$(id);if(e)e.textContent=v}
+function openSOS(){SOSS=freshSOS();SOSS.open=true;SOSS.t0=Date.now();$('sos').classList.add('on');document.body.style.overflow='hidden';logEv('SOS pressed');renderSOS();clearInterval(sosTick);sosTick=setInterval(tickSOS,1000);var b=$('sosFirst');if(b)b.focus()}
+function closeSOS(cancel){clearInterval(sosTick);clearInterval(sosBeat);SOSS.open=false;SOSS.cprOn=false;$('sos').classList.remove('on');document.body.style.overflow='';logEv(cancel?'Cancelled by crew (pressed by mistake)':'Emergency ended')}
+function tickSOS(){
+  if(!SOSS.open)return;
+  if(!SOSS.sent){SOSS.count--;if(SOSS.count<=0)sendAlert();else upd('sosCount',SOSS.count)}
+  upd('sosEl',fmt((Date.now()-SOSS.t0)/1000));
+  if(SOSS.cprOn){SOSS.cyc--;if(SOSS.cyc<=0){SOSS.cyc=120;SOSS.cycles++;logEv('Rhythm check due (cycle '+SOSS.cycles+')');renderSOS()}else upd('cprCyc',fmt(SOSS.cyc))}
+}
+function sendAlert(){if(SOSS.sent)return;SOSS.sent=true;logEv('Alert sent to ground and crew (simulated)');renderSOS()}
+function so(a,x){
+  if(a==='cancel')return closeSOS(true);
+  if(a==='end')return closeSOS(false);
+  if(a==='send')sendAlert();
+  else if(a==='mode'){SOSS.mode=x;logEv('Mode: '+x);if(x==='down')sendAlert()}
+  else if(a==='back')SOSS.mode='';
+  else if(a==='chk')SOSS.chk[x]=!SOSS.chk[x];
+  else if(a==='feel')SOSS.feel[x]=!SOSS.feel[x];
+  else if(a==='sound'){SOSS.sound=!SOSS.sound;if(SOSS.sound)beep()}
+  else if(a==='shock'){SOSS.shocks++;logEv('Shock delivered (count '+SOSS.shocks+')')}
+  else if(a==='cpr'){
+    SOSS.cprOn=!SOSS.cprOn;clearInterval(sosBeat);
+    if(SOSS.cprOn){SOSS.cyc=120;logEv('Compressions started');sosBeat=setInterval(function(){if(SOSS.sound)beep();try{if(navigator.vibrate)navigator.vibrate(40)}catch(e){}},545)}
+    else logEv('Compressions paused');
+  }
+  renderSOS();
+}
+var DOWN_STEPS=['Shout and tap the shoulders. No response?','Look for normal breathing for up to 10 seconds. Gasping is not normal breathing.','Call for help. Ask someone to bring the AED and the medical kit.','Secure yourself and the crew member to a restraint or handrails, using the approved method [PROCEDURE ID].','Start chest compressions now. Use the coach below.','Open the AED. Snap the pads onto the chest patch docks and follow its voice prompts.','Do not touch the crew member while the AED analyzes or gives a shock.','Every 2 minutes the AED checks again. Switch rescuers if you can.'];
+var FEEL=['Chest pain','Dizzy','Hard to breathe','Vision going dark','Racing or skipping heartbeat'];
+function renderSOS(){
+  var s=SOSS,h='';
+  h+='<div class="sos-top"><div class="head"><b style="font-size:22px">EMERGENCY</b><span>Since alert <b id="sosEl">'+fmt((Date.now()-s.t0)/1000)+'</b></span></div>';
+  if(!s.sent)h+='<div style="margin-top:8px;font-size:18px">Sending alert in <b id="sosCount" style="font-size:30px">'+s.count+'</b> s</div><div class="row" style="margin-top:10px"><button class="btn" id="sosFirst" style="background:#fff;color:#C2352A;border-color:#fff;flex:1 1 150px;min-height:56px" onclick="so(\'cancel\')">Cancel: pressed by mistake</button><button class="btn" style="background:#7A1710;color:#fff;border-color:#7A1710;flex:1 1 120px;min-height:56px" onclick="so(\'send\')">Send now</button></div>';
+  else h+='<div style="margin-top:8px;font-size:18px"><b>ALERT SENT (simulated)</b> · ground, crew and beacon notified</div>';
+  h+='</div><div style="max-width:760px;margin:auto;padding:16px">';
+  if(!s.mode){
+    h+='<h2 style="margin:4px 0 8px">What is happening?</h2><button class="big-btn" style="background:#C2352A;color:#fff" onclick="so(\'mode\',\'down\')">A crew member is down and not responding</button><button class="big-btn" style="background:#0B2347;color:#fff" onclick="so(\'mode\',\'self\')">I feel faint or about to collapse</button>';
+  }else if(s.mode==='self'){
+    var fl=FEEL.filter(function(f){return s.feel[f]});
+    h+='<h2 style="margin:4px 0 8px">Stay calm. Help is on the way.</h2><ol class="list" style="padding-left:22px"><li>Hold a handrail or strap in now. Do not push off.</li><li>Stay with this screen. Say out loud: "Medical emergency, [MODULE]".</li><li>Tell the ground what you feel:</li></ol><div class="row" style="margin:8px 0 12px">'+FEEL.map(function(f){return '<button class="chip'+(s.feel[f]?' on':'')+'" aria-pressed="'+!!s.feel[f]+'" style="min-height:52px" onclick="so(\'feel\',\''+f+'\')">'+f+'</button>'}).join('')+'</div>'
+     +'<div class="infobox"><b>Message to ground:</b> Crew member feels faint. '+(fl.length?fl.join(', ')+'. ':'')+'Alert at '+fmt((Date.now()-s.t0)/1000)+' ago. Location [MODULE].</div>'
+     +'<div class="warnbox">If you stop responding, a crewmate taps SOS and chooses "A crew member is down".</div>'
+     +'<div class="row" style="margin-top:12px"><button class="btn" onclick="so(\'back\')">Back</button><button class="btn dk" onclick="so(\'mode\',\'down\')">Switch: crew member is down</button></div>';
+  }else{
+    h+='<h2 style="margin:4px 0 8px">Cardiac arrest steps</h2><p class="sub">Tick each step as you do it. Your program\'s approved procedure comes first.</p>';
+    DOWN_STEPS.forEach(function(t,i){var on=s.chk['d'+i];h+='<button class="chk'+(on?' on':'')+'" style="min-height:56px;height:auto;padding:8px 12px" aria-pressed="'+!!on+'" onclick="so(\'chk\',\'d'+i+'\')"><i>'+(on?'✓':'')+'</i><span>'+(i+1)+'. '+t+'</span></button>'});
+    h+='<div class="card" style="margin-top:14px"><h2>Compression coach</h2><div class="sub">Adult: about 100 to 120 per minute, 5 to 6 cm deep, let the chest rise fully each time.</div>';
+    if(s.cprOn&&s.cycles>0&&s.cyc>=112)h+='<div class="alert a-crit" style="margin-top:10px"><p>RHYTHM CHECK NOW. Stop and follow the AED.</p></div>';
+    h+='<div class="pulse'+(s.cprOn?' on':'')+'" aria-live="off">'+(s.cprOn?'PUSH':'READY')+'</div><div style="text-align:center;font-weight:700;margin-bottom:8px">110 per minute</div>'
+     +'<div class="row"><button class="big-btn" style="flex:1 1 200px;margin:4px 0;background:'+(s.cprOn?'#0B2347':'#C2352A')+';color:#fff" onclick="so(\'cpr\')">'+(s.cprOn?'Pause compressions':'Start compressions')+'</button><button class="big-btn" style="flex:1 1 140px;margin:4px 0;background:#E3ECF7;color:#0B2347" onclick="so(\'sound\')">Sound: '+(s.sound?'on':'off')+'</button></div>'
+     +'<div class="kv"><span>Next rhythm check in</span><b id="cprCyc">'+fmt(s.cyc)+'</b></div><div class="kv"><span>Cycles done</span><b>'+s.cycles+'</b></div><div class="kv"><span>Shocks given</span><span><b>'+s.shocks+'</b> <button class="chip" style="margin-left:8px" onclick="so(\'shock\')">+1 shock</button></span></div>'
+     +'<div class="infobox">Methods studied for microgravity include Evetts–Russomano, handstand and reverse bear hug (manikin studies). Use the one your program has approved.</div></div>';
+    h+='<div class="card"><h2>Snap the AED pads onto the chest patch</h2><div class="grid2"><div style="text-align:center"><svg viewBox="0 0 240 320" style="width:100%;max-width:260px" role="img" aria-label="AED pad dock positions">'+dockSVG()+'</svg></div><div><div class="kv"><b>Pad 1</b><span style="text-align:right">Right upper chest, below the collarbone</span></div><div class="kv"><b>Pad 2</b><span style="text-align:right">Left side, below the armpit</span></div><div class="infobox">The pad must touch skin. The magnet holds it in place. Follow the AED voice.</div></div></div></div>';
+    h+='<div class="card"><h2>Medical kit dock</h2><div class="sub">A magnetic holder near the patient keeps the kit within reach. For cardiac arrest, drugs are given into a vein (IV) or bone (IO) by the trained crew medical officer, on a ground order or the approved protocol. The kit opens only after this checklist.</div><div style="margin-top:10px">'+kit('crit')+'</div></div>';
+    h+='<div class="card"><h2>Say this to the ground</h2><div class="infobox" style="font-size:16px"><b>Possible cardiac arrest.</b> Alert '+fmt((Date.now()-s.t0)/1000)+' ago. Compressions '+(s.cprOn?'in progress':'not running')+', '+s.cycles+' cycle(s). AED shocks: '+s.shocks+'. Location [MODULE]. Crew member [ID]. Flight surgeon on the loop, please.</div></div>';
+  }
+  var ev=getEv().slice(-5).reverse();
+  h+='<div class="card" style="margin-top:14px"><h3 style="margin:0 0 6px;font-size:17px">Event log (saved on this device)</h3>'+ev.map(function(e){return '<div class="kv" style="padding:6px 0;font-size:14px"><span>'+e.t.slice(11,19)+' UTC</span><span style="text-align:right">'+esc(e.e)+'</span></div>'}).join('')+'</div>';
+  h+='<div class="warnbox">Simulation. Steps, timings and kit contents are samples. Not a medical device. In a real emergency follow the approved crew procedure and the flight surgeon.</div>';
+  h+='<div class="row" style="margin:14px 0 30px"><button class="btn dk" style="min-height:56px;flex:1" onclick="so(\'end\')">End emergency</button></div></div>';
+  $('sosBody').innerHTML=h;
+}
+function getEv(){try{return JSON.parse(localStorage.getItem('ds_events')||'[]')}catch(e){return[]}}
+function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---------- CSV import (data lab) ---------- */
+var C={cols:[],rows:[],sel:-1,lo:'',hi:'',src:'',name:'',msg:''};
+function csvInit(){
+  $('csvCard').innerHTML='<h2>Import a dataset (CSV)</h2><p class="sub">Use a file from the NASA Space Apps Resources or another open source. The file stays in this browser. Pick a numeric column to chart and set limits to count values outside them.</p><div style="margin:10px 0"><label for="csvFile" class="sub" style="display:block;margin-bottom:4px">CSV file</label><input type="file" id="csvFile" accept=".csv,.txt,text/csv" style="font-size:15px;max-width:100%"></div><div id="csvOut"></div>';
+  $('csvFile').onchange=function(e){
+    var f=e.target.files[0];if(!f)return;
+    if(f.size>5*1024*1024){C.msg='File is larger than 5 MB. Use a smaller extract.';csvRender();return}
+    var r=new FileReader();r.onload=function(){csvParse(String(r.result),f.name)};r.readAsText(f);
+  };
+}
+function csvSplit(line,d){var o=[],cur='',q=false;for(var i=0;i<line.length;i++){var ch=line[i];if(q){if(ch==='"'){if(line[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch}else if(ch==='"')q=true;else if(ch===d){o.push(cur);cur=''}else cur+=ch}o.push(cur);return o}
+function csvParse(txt,name){
+  var lines=txt.split(/\r?\n/).filter(function(l){return l.trim()!==''});
+  if(lines.length<3){C.msg='Not enough rows to chart.';csvRender();return}
+  var cnt=function(c){return lines[0].split(c).length};
+  var d=cnt(',')>=cnt(';')&&cnt(',')>=cnt('\t')?',':(cnt(';')>=cnt('\t')?';':'\t');
+  var head=csvSplit(lines[0],d),rows=lines.slice(1,20001).map(function(l){return csvSplit(l,d)});
+  var cols=[];
+  head.forEach(function(h,ci){var vals=[],n=0;rows.forEach(function(r){var raw=(r[ci]||'').trim();if(raw==='')return;n++;var v=parseFloat(raw.replace(',','.'));if(isFinite(v)&&/^[-+]?[\d.,eE+-]+$/.test(raw))vals.push(v)});if(n&&vals.length/n>=.7&&vals.length>=3)cols.push({i:ci,name:h||('Column '+(ci+1)),vals:vals})});
+  C.cols=cols;C.rows=rows.length;C.name=name;C.sel=cols.length?0:-1;C.msg=cols.length?'':'No numeric column found.';
+  csvRender();
+}
+function csvRender(){
+  var o=$('csvOut');if(!o)return;
+  if(C.msg&&C.sel<0){o.innerHTML='<div class="warnbox">'+esc(C.msg)+'</div>';return}
+  if(C.sel<0){o.innerHTML='';return}
+  var col=C.cols[C.sel],v=col.vals,n=v.length,mn=Math.min.apply(null,v),mx=Math.max.apply(null,v),mean=v.reduce(function(a,b){return a+b},0)/n;
+  var lo=C.lo===''?null:parseFloat(C.lo),hi=C.hi===''?null:parseFloat(C.hi);
+  var out=v.filter(function(x){return (lo!==null&&isFinite(lo)&&x<lo)||(hi!==null&&isFinite(hi)&&x>hi)}).length;
+  var step=Math.max(1,Math.ceil(n/300)),pts=[];for(var i=0;i<n;i+=step)pts.push(v[i]);
+  var span=(mx-mn)||1,Y=function(x){return 200-(x-mn)/span*180},X=function(i){return 54+i/Math.max(1,pts.length-1)*430},sv='';
+  if(lo!==null&&hi!==null&&isFinite(lo)&&isFinite(hi)){var y1=Math.max(20,Math.min(200,Y(Math.min(hi,mx)))),y2=Math.max(20,Math.min(200,Y(Math.max(lo,mn))));sv+='<rect x="54" y="'+Math.min(y1,y2)+'" width="430" height="'+Math.abs(y2-y1)+'" fill="#DDF1E3"/>'}
+  [mn,(mn+mx)/2,mx].forEach(function(t){sv+='<line x1="54" y1="'+Y(t)+'" x2="484" y2="'+Y(t)+'" stroke="#D9E0E8"/><text x="48" y="'+(Y(t)+4)+'" text-anchor="end" font-size="11" fill="#566472">'+(Math.round(t*100)/100)+'</text>'});
+  sv+='<path d="'+pts.map(function(x,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(x).toFixed(1)}).join('')+'" fill="none" stroke="#2F7BD6" stroke-width="2.2"/>';
+  var h='<div class="row" style="margin:6px 0"><span class="pill p-blue">'+esc(C.name)+'</span><span class="sub">'+C.rows+' rows · '+C.cols.length+' numeric column(s)</span></div>';
+  h+='<div class="fg"><div><label for="csvCol">Column</label><select id="csvCol" style="width:100%;min-height:48px;border:1px solid #6B7C8E;border-radius:10px;font-size:16px;font-family:inherit;padding:0 8px">'+C.cols.map(function(c,i){return '<option value="'+i+'"'+(i===C.sel?' selected':'')+'>'+esc(c.name)+'</option>'}).join('')+'</select></div><div><label for="csvLo">Lower limit</label><input type="number" id="csvLo" value="'+esc(C.lo)+'" step="any"></div><div><label for="csvHi">Upper limit</label><input type="number" id="csvHi" value="'+esc(C.hi)+'" step="any"></div><div><label for="csvSrc">Source (name or link)</label><input type="text" id="csvSrc" value="'+esc(C.src)+'" style="width:100%;min-height:48px;border:1px solid #6B7C8E;border-radius:10px;padding:0 12px;font-size:16px;font-family:inherit"></div></div>';
+  h+='<svg viewBox="0 0 520 220" style="width:100%" role="img" aria-label="Chart of the selected column">'+sv+'</svg>';
+  h+='<table class="t"><tr><th>Values</th><th>Min</th><th>Mean</th><th>Max</th><th>Outside limits</th></tr><tr><td>'+n+'</td><td>'+(Math.round(mn*100)/100)+'</td><td>'+(Math.round(mean*100)/100)+'</td><td>'+(Math.round(mx*100)/100)+'</td><td>'+((lo!==null&&isFinite(lo))||(hi!==null&&isFinite(hi))?out+' ('+Math.round(out/n*100)+'%)':'set limits')+'</td></tr></table>';
+  if(C.src)h+='<div class="sub" style="margin-top:8px">Source: '+esc(C.src)+'</div>';
+  o.innerHTML=h;
+  $('csvCol').onchange=function(e){C.sel=+e.target.value;csvRender()};
+  $('csvLo').onchange=function(e){C.lo=e.target.value;csvRender()};
+  $('csvHi').onchange=function(e){C.hi=e.target.value;csvRender()};
+  $('csvSrc').onchange=function(e){C.src=e.target.value;csvRender()};
+}
+
+/* ---------- About / judging ---------- */
+function aboutRender(){
+  var HZ=[['Space Radiation','Roadmap','Dose log with limits from habitat sensors. Not in this build.','warn'],['Isolation and Confinement','Covered','Neuro & Wellness: sleep, mood and trend colors, with prompts to reach crew or ground.','ok'],['Distance from Earth','Covered','Offline use, guided scans for non-doctors, transmit to the flight surgeon, SOS and CPR coach.','ok'],['Gravity Fields','Covered','Ultrasound held by magnetic pads in microgravity, heart and fluid checks, fainting alert.','ok'],['Hostile/Closed Environments','Roadmap','Cabin sensor alerts and infection tracking. Not in this build.','warn']];
+  var CR=[
+   ['1. Innovation & Creativity','Magnetic-dock sticker pads let a non-doctor keep an ultrasound probe in place in microgravity. One flow joins scan, alert, AED dock and kit.','Show the pad sheet, MagniScan hold model and SOS in one story.','The hold force is a sample model, not a measurement. Test a printed pad and collar and add a photo.'],
+   ['2. Relevance to the Challenge','Visual self-assessment tool: indicators, body regions, color status, guidance and escalation to the ground.','Open Home, tap a body region, finish a scan, read the HEALTH ALERT.','Radiation and cabin hazards are not built yet. Say so and show them as roadmap.'],
+   ['3. Technical Implementation','Offline-capable static web app, rule-based triage, magnet physics model, CSV data import, PDF pad set made by script.','Import a NASA CSV on the Wellness page and show the chart and the out-of-range count.','No real NASA dataset is loaded yet. Download one from the Space Apps Resources and import it.'],
+   ['4. Impact & Value','Backup for long missions with delayed support. On Earth, remote clinics, disaster areas and ambulances could use the same pads and guided checks (concept).','Name who benefits and give one number you can source.','No user testing yet. Test with 3 to 5 non-doctors and report the times.'],
+   ['5. Presentation & Communication','Plain-language steps, color plus shape plus word on every status, English only.','Seven slides or a 30-second video. Open with the emergency scene.','Pitch deck and proposal still to be written.'],
+   ['6. Feasibility & Scalability','Static site, free hosting, printed pads, cheap magnets. Roadmap: protocols approved by flight surgeons, wearable trigger, real probe link.','Show the build sheet and the roadmap.','Medical-device rules and agency approval are far off. Present this as a training and backup concept.']];
+  var AW=[['Best Mission Concept','The pad, app and SOS system as a plausible crew backup.','Strong'],['Galactic Impact','Remote and emergency care on Earth as well as in space.','Strong'],['Best Use of Technology','Magnetic docking with guided scan and CPR coach.','Good'],['Best Use of Data','Needs a real NASA dataset analysed in the app.','Possible once you import data'],['Local Impact Award','Remote islands and clinics in Indonesia.','Possible, add local facts'],['Best Use of Science','Needs measured hold force and validation.','Weak for now']];
+  var REF=[['NASA Human Research Program: 5 Hazards of Human Spaceflight','https://www.nasa.gov/hrp/hazards/'],['NASA Space Apps: Judging & Awards Guide','https://www.spaceappschallenge.org/resources/judging-awards-guide'],['NASA Space Apps 2026','https://www.spaceappschallenge.org/2026/'],['Space Apps: Project Submission Guide','https://www.spaceappschallenge.org/resources/project-submission-guide/'],['Randomized Comparison of Two New Methods for Chest Compressions during CPR in Microgravity: A Manikin Study (J Clin Med 2022). Used for: 50 to 60 mm depth target, method names.','https://www2.mdpi.com/2077-0383/11/3/646'],['Stahn et al. 2017, Increased core body temperature in astronauts during long-duration space missions (Scientific Reports), summary','https://www.sci.news/space/weightlessness-body-temperature-05609.html'],['Cardiovascular responses in long-duration spaceflight (npj Microgravity 2019). Used for: heart rate, systolic and diastolic findings','https://www.nature.com/articles/s41526-019-0082-3'],['Development of insulin resistance by astronauts during spaceflight (Shuttle SLS-1, 4 crew)','https://www.researchwithrowan.com/en/publications/development-of-insulin-resistance-by-astronauts-during-spacefligh/'],['ESA: Advanced Ultrasound for the Space Program and on Earth','https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/International_Space_Station_Benefits_for_Humanity/Advanced_Ultrasound_for_the_Space_Program_and_on_Earth']];
+  var h='<div class="card"><div class="head"><h2>About DOCTOR SPACE</h2><span class="pill p-blue">Concept prototype</span></div><p style="font-size:17px">A crew health tool for missions where help is far away. It lets a non-doctor take an ultrasound with magnetic sticker pads, read the result in plain words, escalate to the ground, and act in an emergency: SOS, CPR coach, AED dock and a locked medical kit.</p><p class="sub">Built for the NASA Space Apps challenge on astronaut health monitoring software. All values, images and steps are simulated or sample.</p></div>';
+  h+='<div class="card"><h2>NASA\'s five hazards and this app</h2>'+HZ.map(function(r){return '<div class="kv" style="align-items:flex-start"><div><b>'+r[0]+'</b><div class="sub" style="margin:2px 0 0">'+r[2]+'</div></div>'+pillHTML(r[3],r[1])+'</div>'}).join('')+'<div class="sub" style="margin-top:8px">Hazard names from the NASA Human Research Program.</div></div>';
+  h+='<div class="card"><h2>Surabaya local awards: criteria map</h2><p class="sub">Evidence in this app, what to show, and the honest gap.</p>'+CR.map(function(r){return '<div class="q"><div class="qt">'+r[0]+'</div><div class="qh"><b>Evidence:</b> '+r[1]+'</div><div class="qh" style="margin-top:-4px"><b>Show in demo:</b> '+r[2]+'</div><div class="qh" style="margin-top:-4px;color:#7A4B00"><b>Gap:</b> '+r[3]+'</div></div>'}).join('')+'</div>';
+  h+='<div class="card"><h2>Global awards: best fit</h2><p class="sub">Category names from the Space Apps Judging & Awards Guide. The fit is the team\'s own estimate.</p>'+AW.map(function(r){return '<div class="kv" style="align-items:flex-start"><div><b>'+r[0]+'</b><div class="sub" style="margin:2px 0 0">'+r[1]+'</div></div><span style="text-align:right;font-weight:700;color:#1F4E8C;min-width:90px">'+r[2]+'</span></div>'}).join('')+'<div class="sub" style="margin-top:8px">Official judging criteria: Influence, Creativity, Validity, Relevance, Presentation.</div></div>';
+  h+='<div class="card"><h2>Roadmap</h2><div class="kv"><b>Now</b><span style="text-align:right">Guided scan, SOS, pad sheets, data import</span></div><div class="kv"><b>Next</b><span style="text-align:right">Real NASA dataset, measured pad hold force, user test</span></div><div class="kv"><b>Later</b><span style="text-align:right">Flight-surgeon-approved protocols, probe link, wearable trigger, radiation and cabin sensors</span></div></div>';
+  h+='<div class="card"><h2>References and data</h2><ol class="list" style="padding-left:20px">'+REF.map(function(r){return '<li><a href="'+r[1]+'" target="_blank" rel="noopener">'+r[0]+'</a></li>'}).join('')+'<li style="color:#7A4B00"><b>[ADD THE NASA DATASET YOU IMPORT: name and link]</b></li></ol></div>';
+  h+='<div class="card"><h2>Safety</h2><p>Not a medical device. Doses, kit contents, limits and procedures are placeholders. Magnets must stay away from pacemakers and other implants. Real use needs approval from flight surgeons and the program.</p></div>';
+  $('aboutBody').innerHTML=h;
+}
+
+
+/* ---------- baseline, environment, sensors ---------- */
+function baseSave(){try{localStorage.setItem('ds_base',JSON.stringify(BASE))}catch(e){}}
+function baseRender(){
+  var rows=M.filter(function(m){return TOL[m.id]}).map(function(m){var b=BASE.vals[m.id];return '<div><label for="b_'+m.id+'">'+m.l+' ('+m.u+')</label><input type="number" id="b_'+m.id+'" step="'+m.step+'" value="'+(b==null?'':b)+'" placeholder="not set" inputmode="decimal"></div>'}).join('');
+  var notes=BASE.env==='earth'?'<div class="infobox">Use values from your pre-flight exam on Earth as your baseline. The app flags a value that moves away from <b>your own</b> baseline, even when it is inside the usual range.</div>':
+   '<div class="q"><div class="qt">Temperature</div><div class="qh">On the ISS, core body temperature rose by about 1 °C at rest over about 2.5 months, and often passed 40 °C during exercise (Stahn et al., 2017; <a href="https://www.sci.news/space/weightlessness-body-temperature-05609.html" target="_blank" rel="noopener">summary</a>). That is core temperature from a special sensor, not a mouth or skin reading.</div></div>'
+   +'<div class="q"><div class="qt">Heart rate and blood pressure</div><div class="qh">In one study done lying down with a thigh-cuff test, heart rate and systolic pressure did not change in flight, while diastolic pressure was higher (69 vs 62 mmHg). A small study under special conditions: not a normal range (<a href="https://www.nature.com/articles/s41526-019-0082-3" target="_blank" rel="noopener">Nature npj Microgravity 2019</a>).</div></div>'
+   +'<div class="q"><div class="qt">Glucose</div><div class="qh">There is no standard in-flight glucose range. A Shuttle study of 4 crew (9.5 days) found less urinary C-peptide in flight, which points to changes in how insulin is handled, but it did not report glucose (<a href="https://www.researchwithrowan.com/en/publications/development-of-insulin-resistance-by-astronauts-during-spacefligh/" target="_blank" rel="noopener">study page</a>).</div></div>'
+   +'<div class="infobox"><b>So the safe way:</b> reset your baseline in flight and let the flight surgeons set the limits. Do not use Earth limits as "normal" in space.</div>';
+  $('baseCard').innerHTML='<h2>Baseline and environment</h2><p class="sub">Normal differs from person to person, and Earth values may not fit in flight.</p>'
+   +'<div class="row" style="margin:8px 0" role="group" aria-label="Environment"><button class="chip'+(BASE.env==='earth'?' on':'')+'" onclick="BASE.env=\'earth\';baseSave();baseRender()">On Earth</button><button class="chip'+(BASE.env==='flight'?' on':'')+'" onclick="BASE.env=\'flight\';baseSave();baseRender()">In flight</button><button class="chip'+(BASE.on?' on':'')+'" aria-pressed="'+BASE.on+'" onclick="BASE.on=!BASE.on;baseSave();baseRender();wRender()">Compare with my baseline: '+(BASE.on?'on':'off')+'</button></div>'
+   +notes+'<h3 style="font-size:17px;margin:14px 0 4px">My baseline</h3><div class="fg">'+rows+'</div><div class="row"><button class="btn" onclick="baseFromToday()">Set baseline from today\'s values</button><span class="sub" id="baseMsg"></span></div>';
+  M.forEach(function(m){var e=$('b_'+m.id);if(e)e.onchange=function(){var v=parseFloat(e.value);if(isNaN(v))delete BASE.vals[m.id];else BASE.vals[m.id]=v;baseSave();wTable();wChart()}});
+}
+function baseFromToday(){M.forEach(function(m){if(TOL[m.id])BASE.vals[m.id]=W.today[m.id]});baseSave();baseRender();wTable();wChart();upd('baseMsg','Baseline saved on this device.')}
+var BLE={dev:null,hr:null,msg:'Not connected.'};
+function sensRender(){
+  var rows=[['Chest strap or arm band (Bluetooth)','Heart rate. Some also send an ECG trace.','Reads live in this prototype'],['Fingertip pulse oximeter','Oxygen saturation and pulse.','Manual entry for now'],['Digital or forehead thermometer','Body temperature.','Manual entry for now'],['Blood pressure cuff','Systolic and diastolic pressure.','Manual entry for now'],['Glucose meter or sensor','Blood sugar.','Manual entry for now'],['Chest patch with ECG electrodes (concept)','Heart rhythm and heartbeat, using the same magnetic dock as the AED pads.','Roadmap'],['Ultrasound pads C1, C2','Heart movement as an image.','Simulated in MagniScan']];
+  $('sensCard').innerHTML='<h2>Sensors</h2><p class="sub">The simplest setup: a Bluetooth heart-rate strap, plus manual entry for the rest.</p><div class="row" style="margin:10px 0"><button class="btn pri" onclick="bleConnect()">Connect heart-rate sensor</button>'+(BLE.dev?'<button class="btn" onclick="bleDisc()">Disconnect</button>':'')+'<span class="sub">'+esc(BLE.msg)+'</span></div>'
+   +(BLE.hr!=null?'<div class="dtile" style="background:#0B2347;color:#fff;display:inline-block;min-width:170px;margin-bottom:10px"><span>Live heart rate</span><b id="bleHr">'+BLE.hr+'</b><span>bpm</span></div>':'')
+   +'<table class="t"><tr><th>Sensor</th><th>Gives</th><th>In this app</th></tr>'+rows.map(function(r){return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>'}).join('')+'</table>'
+   +'<div class="infobox">Works with any sensor that uses the standard Bluetooth Heart Rate profile, in Chrome on Android or desktop over a secure (https) page. iPhone Safari does not support Web Bluetooth: enter the value by hand.</div>'
+   +'<div class="sub" style="margin-top:10px">Other things the app can track by hand or from sensors: oxygen saturation, breathing rate, weight and water intake, exercise minutes, sleep, mood and pain, stress from heart-rate variability, cabin CO₂ and radiation dose (roadmap).</div>';
+}
+function bleDisc(){try{if(BLE.dev&&BLE.dev.gatt.connected)BLE.dev.gatt.disconnect()}catch(e){}BLE.dev=null;BLE.msg='Disconnected.';sensRender()}
+function bleConnect(){
+  if(!navigator.bluetooth){BLE.msg='Bluetooth is not available in this browser. Use Chrome on Android or desktop, or enter the heart rate by hand.';sensRender();return}
+  navigator.bluetooth.requestDevice({filters:[{services:['heart_rate']}]}).then(function(d){
+    BLE.dev=d;BLE.msg='Connecting to '+(d.name||'sensor')+'...';sensRender();
+    d.addEventListener('gattserverdisconnected',function(){BLE.msg='Sensor disconnected.';sensRender()});
+    return d.gatt.connect()}).then(function(srv){return srv.getPrimaryService('heart_rate')}).then(function(svc){return svc.getCharacteristic('heart_rate_measurement')}).then(function(ch){
+    ch.addEventListener('characteristicvaluechanged',function(e){var dv=e.target.value,f=dv.getUint8(0),hr=(f&1)?dv.getUint16(1,true):dv.getUint8(1);BLE.hr=hr;W.today.hr=hr;var i=$('w_hr');if(i)i.value=hr;upd('bleHr',hr);wTable();wChart()});
+    return ch.startNotifications()}).then(function(){BLE.msg='Connected. Live heart rate below.';sensRender()}).catch(function(e){BLE.msg='Could not connect: '+(e&&e.message?e.message:e);sensRender()});
+}
+
 /* ---------- init ---------- */
 (function(){
   try{var t=JSON.parse(localStorage.getItem('ds_today')||'null');if(t)Object.keys(t).forEach(function(k){if(typeof t[k]==='number')W.today[k]=t[k]})}catch(e){}
-  renderPads();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
+  try{var bb=JSON.parse(localStorage.getItem('ds_base')||'null');if(bb){BASE.on=!!bb.on;BASE.env=bb.env||'earth';BASE.vals=bb.vals||{}}}catch(e){}
+  renderPads();renderDock();csvInit();baseRender();sensRender();aboutRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
 })();
 </script>
 </body>
