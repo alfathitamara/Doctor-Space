@@ -148,7 +148,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <span class="pill p-ok"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="5" fill="currentColor"/></svg>SYSTEM ONLINE</span>
 </div>
 <nav class="tabs" aria-label="Sections" id="tabs">
-<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Reproductive</a><a href="#well">Wellness</a><a href="#pitch">Pitch</a><a href="#about">About</a>
+<a href="#home">Home</a><a href="#scan">Guided Scan</a><a href="#magni">MagniScan</a><a href="#pads">Pad Guide</a><a href="#repro">Reproductive</a><a href="#well">Wellness</a>
 </nav>
 </header>
 
@@ -310,11 +310,7 @@ input[type=number]{width:100%;min-height:48px;border:1px solid #6B7C8E;border-ra
 <div class="card" id="csvCard"></div>
 </section>
 
-<!-- PITCH -->
-<section class="pg" id="p-pitch"><div id="pitchBody"></div></section>
 
-<!-- ABOUT -->
-<section class="pg" id="p-about"><div id="aboutBody"></div></section>
 
 </main>
 <button class="fab" onclick="openSOS()" aria-label="Emergency SOS: collapse or cardiac arrest">SOS</button>
@@ -329,7 +325,7 @@ function ico(l){return '<svg width="20" height="20" viewBox="0 0 24 24" fill="cu
 function pillHTML(l,t){var c={ok:'p-ok',warn:'p-warn',crit:'p-crit'}[l];return '<span class="pill '+c+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="'+SH[l]+'"/></svg>'+t+'</span>'}
 
 /* ---------- router ---------- */
-var PAGES=['home','scan','magni','pads','repro','well','pitch','about'];
+var PAGES=['home','scan','magni','pads','repro','well'];
 function route(){
   var h=(location.hash||'#home').slice(1);if(PAGES.indexOf(h)<0)h='home';
   PAGES.forEach(function(p){$('p-'+p).classList.toggle('on',p===h)});
@@ -681,26 +677,6 @@ function renderSOS(){
   $('sosBody').innerHTML=h;
 }
 function getEv(){try{return JSON.parse(localStorage.getItem('ds_events')||'[]')}catch(e){return[]}}
-var SL=[
- {t:'DOCTOR SPACE',k:'Crew Health Center',b:['A health backup that a non-doctor can run, far from Earth.','Challenge: health monitoring software for astronaut self-assessment.','Team: [TEAM NAME] · Surabaya'],n:'Open with one sentence: when help is far away, the crew must be able to check and act on their own health.'},
- {t:'The problem',k:'Distance makes care hard',b:['NASA lists five hazards: space radiation, isolation and confinement, distance from Earth, gravity fields, hostile or closed environments.','As missions go farther, resupply, instructions and medical care get harder to reach.','Astronauts must assess themselves, often without a doctor on board.'],n:'Source: NASA Human Research Program, 5 Hazards of Human Spaceflight.'},
- {t:'The idea',k:'Guided self-assessment',b:['Magnetic sticker pads hold an ultrasound probe in place in microgravity.','Plain-language questions turn what you see into a status: clear, review or urgent.','The result goes to the ground, and an emergency mode is one tap away.'],n:'Say: no medical training needed to follow the steps. The pads and the app do the guiding.'},
- {t:'How it works',k:'Five steps',b:['1  Select the body region','2  Apply the anatomical sticker pad','3  Dock the probe: the system checks position and image quality','4  Guided image assessment against reference limits','5  Action guidance and a message to ground medical support'],n:'Demo: Home, Cardiac Scan, mark pads, answer, read the HEALTH ALERT.'},
- {t:'Emergency mode',k:'When someone collapses',b:['SOS button: 10 seconds to cancel, then ground and crew are alerted.','CPR coach: 110 per minute, 2-minute rhythm checks, shock count.','Magnetic chest patch shows where the AED pads snap on.','Medical kit stays locked until an order and a checklist.'],n:'Demo: tap SOS, crew member is down, start compressions. Say the drugs are never chosen by the app.'},
- {t:'Data and validity',k:'Your own baseline',b:['Normal changes in flight: core temperature rose about 1 °C at rest on the ISS; one study found diastolic pressure higher in flight.','The app compares each value with your own baseline and flags drift.','NASA dataset used: [DATASET NAME AND LINK], imported in the app: [WHAT YOU FOUND]','Tested with [N] non-doctors: [TIME TO FIRST SCAN]'],n:'Fill the amber items with real results before you present. Do not claim what you did not do.'},
- {t:'Impact and next steps',k:'Space first, Earth too',b:['In space: a backup for long missions with delayed support.','On Earth: remote clinics, disaster areas and ambulances could use the same pads and guided checks.','Next: measure pad hold force, flight-surgeon-approved protocols, a real probe link, radiation and cabin sensors.','Concept for training and backup. Not a medical device.'],n:'Close with the ask: feedback from medical and space-flight experts.'}];
-var SLI=0;
-function pitchRender(){
-  var x=SL[SLI];
-  var h='<div class="dk" style="min-height:360px;display:flex;flex-direction:column;justify-content:space-between"><div><div style="font-size:15px;font-weight:700;letter-spacing:.12em;color:#CFE3FF">SLIDE '+(SLI+1)+' OF '+SL.length+' · '+x.k.toUpperCase()+'</div><h2 style="margin:10px 0 14px;font-size:36px">'+x.t+'</h2><ul style="margin:0;padding-left:22px;font-size:21px;line-height:1.55;color:#E9F2FF">'+x.b.map(function(b){return '<li style="margin:8px 0;'+(b.indexOf('[')>=0?'color:#FFC66D':'')+'">'+esc(b)+'</li>'}).join('')+'</ul></div><div class="sub" style="margin-top:14px;font-size:15px"><b>Say:</b> '+esc(x.n)+'</div></div>';
-  h+='<div class="row" style="justify-content:space-between;margin-bottom:16px"><button class="btn" '+(SLI?'':'disabled')+' onclick="SLI--;pitchRender()">Previous</button><div class="row">'+SL.map(function(_,i){return '<button class="chip'+(i===SLI?' on':'')+'" aria-label="Slide '+(i+1)+'" style="min-width:44px;padding:0" onclick="SLI='+i+';pitchRender()">'+(i+1)+'</button>'}).join('')+'</div><button class="btn pri" '+(SLI<SL.length-1?'':'disabled')+' onclick="SLI++;pitchRender()">Next</button></div>';
-  h+='<div class="card"><h2>30-second video script</h2><div class="kv"><b>0 to 5 s</b><span style="text-align:right">"Far from Earth, an astronaut may have no doctor. DOCTOR SPACE lets the crew check their own health."</span></div><div class="kv"><b>5 to 13 s</b><span style="text-align:right">Screen: Home, Cardiac Scan, pads, questions, HEALTH ALERT.</span></div><div class="kv"><b>13 to 20 s</b><span style="text-align:right">Screen: MagniScan, magnetic hold. "Magnetic pads keep the probe steady in microgravity."</span></div><div class="kv"><b>20 to 27 s</b><span style="text-align:right">Screen: SOS, crew member is down, compressions, chest patch. "One tap starts the emergency."</span></div><div class="kv"><b>27 to 30 s</b><span style="text-align:right">Logo and link. "DOCTOR SPACE: care that works far from home."</span></div><div class="sub" style="margin-top:8px">Record the phone screen. English only, or add English subtitles.</div></div>';
-  var prop='DOCTOR SPACE is a crew health tool for missions where medical help is far away. It lets a non-doctor take a guided ultrasound with magnetic sticker pads, read the result in plain words, send it to ground medical support, and act in an emergency with an SOS button, a CPR coach, an AED chest-patch dock and a locked medical kit. It compares each reading with the crew member\'s own baseline, because normal values change in flight. It works offline in a browser and can import open datasets as CSV files. Dataset used: [DATASET NAME AND LINK]. Status: concept prototype with simulated data, not a medical device. Next steps: measure pad hold force, test with users, and develop protocols with flight surgeons.';
-  h+='<div class="card"><h2>Proposal summary</h2><p id="propTxt" style="font-size:16px">'+esc(prop)+'</p><div class="row"><button class="btn pri" onclick="copyProp()">Copy text</button><span class="sub" id="propMsg"></span></div><div class="warnbox">Replace every amber [bracket] with real facts before you submit.</div></div>';
-  $('pitchBody').innerHTML=h;
-}
-function copyProp(){var t=$('propTxt').textContent;try{navigator.clipboard.writeText(t).then(function(){upd('propMsg','Copied.')},function(){upd('propMsg','Select the text and copy it by hand.')})}catch(e){upd('propMsg','Select the text and copy it by hand.')}}
-document.addEventListener('keydown',function(e){if(!$('p-pitch').classList.contains('on'))return;if(e.key==='ArrowRight'&&SLI<SL.length-1){SLI++;pitchRender()}else if(e.key==='ArrowLeft'&&SLI>0){SLI--;pitchRender()}});
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 
 /* ---------- CSV import (data lab) ---------- */
@@ -749,28 +725,6 @@ function csvRender(){
   $('csvSrc').onchange=function(e){C.src=e.target.value;csvRender()};
 }
 
-/* ---------- About / judging ---------- */
-function aboutRender(){
-  var HZ=[['Space Radiation','Roadmap','Dose log with limits from habitat sensors. Not in this build.','warn'],['Isolation and Confinement','Covered','Neuro & Wellness: sleep, mood and trend colors, with prompts to reach crew or ground.','ok'],['Distance from Earth','Covered','Offline use, guided scans for non-doctors, transmit to the flight surgeon, SOS and CPR coach.','ok'],['Gravity Fields','Covered','Ultrasound held by magnetic pads in microgravity, heart and fluid checks, fainting alert.','ok'],['Hostile/Closed Environments','Roadmap','Cabin sensor alerts and infection tracking. Not in this build.','warn']];
-  var CR=[
-   ['1. Innovation & Creativity','Magnetic-dock sticker pads let a non-doctor keep an ultrasound probe in place in microgravity. One flow joins scan, alert, AED dock and kit.','Show the pad sheet, MagniScan hold model and SOS in one story.','The hold force is a sample model, not a measurement. Test a printed pad and collar and add a photo.'],
-   ['2. Relevance to the Challenge','Visual self-assessment tool: indicators, body regions, color status, guidance and escalation to the ground.','Open Home, tap a body region, finish a scan, read the HEALTH ALERT.','Radiation and cabin hazards are not built yet. Say so and show them as roadmap.'],
-   ['3. Technical Implementation','Offline-capable static web app, rule-based triage, magnet physics model, CSV data import, PDF pad set made by script.','Import a NASA CSV on the Wellness page and show the chart and the out-of-range count.','No real NASA dataset is loaded yet. Download one from the Space Apps Resources and import it.'],
-   ['4. Impact & Value','Backup for long missions with delayed support. On Earth, remote clinics, disaster areas and ambulances could use the same pads and guided checks (concept).','Name who benefits and give one number you can source.','No user testing yet. Test with 3 to 5 non-doctors and report the times.'],
-   ['5. Presentation & Communication','Plain-language steps, color plus shape plus word on every status, English only.','Seven slides or a 30-second video. Open with the emergency scene.','Pitch deck and proposal still to be written.'],
-   ['6. Feasibility & Scalability','Static site, free hosting, printed pads, cheap magnets. Roadmap: protocols approved by flight surgeons, wearable trigger, real probe link.','Show the build sheet and the roadmap.','Medical-device rules and agency approval are far off. Present this as a training and backup concept.']];
-  var AW=[['Best Mission Concept','The pad, app and SOS system as a plausible crew backup.','Strong'],['Galactic Impact','Remote and emergency care on Earth as well as in space.','Strong'],['Best Use of Technology','Magnetic docking with guided scan and CPR coach.','Good'],['Best Use of Data','Needs a real NASA dataset analysed in the app.','Possible once you import data'],['Local Impact Award','Remote islands and clinics in Indonesia.','Possible, add local facts'],['Best Use of Science','Needs measured hold force and validation.','Weak for now']];
-  var REF=[['NASA Human Research Program: 5 Hazards of Human Spaceflight','https://www.nasa.gov/hrp/hazards/'],['NASA Space Apps: Judging & Awards Guide','https://www.spaceappschallenge.org/resources/judging-awards-guide'],['NASA Space Apps 2026','https://www.spaceappschallenge.org/2026/'],['Space Apps: Project Submission Guide','https://www.spaceappschallenge.org/resources/project-submission-guide/'],['Randomized Comparison of Two New Methods for Chest Compressions during CPR in Microgravity: A Manikin Study (J Clin Med 2022). Used for: 50 to 60 mm depth target, method names.','https://www2.mdpi.com/2077-0383/11/3/646'],['Stahn et al. 2017, Increased core body temperature in astronauts during long-duration space missions (Scientific Reports), summary','https://www.sci.news/space/weightlessness-body-temperature-05609.html'],['Cardiovascular responses in long-duration spaceflight (npj Microgravity 2019). Used for: heart rate, systolic and diastolic findings','https://www.nature.com/articles/s41526-019-0082-3'],['Development of insulin resistance by astronauts during spaceflight (Shuttle SLS-1, 4 crew)','https://www.researchwithrowan.com/en/publications/development-of-insulin-resistance-by-astronauts-during-spacefligh/'],['ESA: Advanced Ultrasound for the Space Program and on Earth','https://www.esa.int/Science_Exploration/Human_and_Robotic_Exploration/International_Space_Station_Benefits_for_Humanity/Advanced_Ultrasound_for_the_Space_Program_and_on_Earth']];
-  var h='<div class="card"><div class="head"><h2>About DOCTOR SPACE</h2><span class="pill p-blue">Concept prototype</span></div><p style="font-size:17px">A crew health tool for missions where help is far away. It lets a non-doctor take an ultrasound with magnetic sticker pads, read the result in plain words, escalate to the ground, and act in an emergency: SOS, CPR coach, AED dock and a locked medical kit.</p><p class="sub">Built for the NASA Space Apps challenge on astronaut health monitoring software. All values, images and steps are simulated or sample.</p></div>';
-  h+='<div class="card"><h2>NASA\'s five hazards and this app</h2>'+HZ.map(function(r){return '<div class="kv" style="align-items:flex-start"><div><b>'+r[0]+'</b><div class="sub" style="margin:2px 0 0">'+r[2]+'</div></div>'+pillHTML(r[3],r[1])+'</div>'}).join('')+'<div class="sub" style="margin-top:8px">Hazard names from the NASA Human Research Program.</div></div>';
-  h+='<div class="card"><h2>Surabaya local awards: criteria map</h2><p class="sub">Evidence in this app, what to show, and the honest gap.</p>'+CR.map(function(r){return '<div class="q"><div class="qt">'+r[0]+'</div><div class="qh"><b>Evidence:</b> '+r[1]+'</div><div class="qh" style="margin-top:-4px"><b>Show in demo:</b> '+r[2]+'</div><div class="qh" style="margin-top:-4px;color:#7A4B00"><b>Gap:</b> '+r[3]+'</div></div>'}).join('')+'</div>';
-  h+='<div class="card"><h2>Global awards: best fit</h2><p class="sub">Category names from the Space Apps Judging & Awards Guide. The fit is the team\'s own estimate.</p>'+AW.map(function(r){return '<div class="kv" style="align-items:flex-start"><div><b>'+r[0]+'</b><div class="sub" style="margin:2px 0 0">'+r[1]+'</div></div><span style="text-align:right;font-weight:700;color:#1F4E8C;min-width:90px">'+r[2]+'</span></div>'}).join('')+'<div class="sub" style="margin-top:8px">Official judging criteria: Influence, Creativity, Validity, Relevance, Presentation.</div></div>';
-  h+='<div class="card"><h2>Roadmap</h2><div class="kv"><b>Now</b><span style="text-align:right">Guided scan, SOS, pad sheets, data import</span></div><div class="kv"><b>Next</b><span style="text-align:right">Real NASA dataset, measured pad hold force, user test</span></div><div class="kv"><b>Later</b><span style="text-align:right">Flight-surgeon-approved protocols, probe link, wearable trigger, radiation and cabin sensors</span></div></div>';
-  h+='<div class="card"><h2>References and data</h2><ol class="list" style="padding-left:20px">'+REF.map(function(r){return '<li><a href="'+r[1]+'" target="_blank" rel="noopener">'+r[0]+'</a></li>'}).join('')+'<li style="color:#7A4B00"><b>[ADD THE NASA DATASET YOU IMPORT: name and link]</b></li></ol></div>';
-  h+='<div class="card"><h2>Safety</h2><p>Not a medical device. Doses, kit contents, limits and procedures are placeholders. Magnets must stay away from pacemakers and other implants. Real use needs approval from flight surgeons and the program.</p></div>';
-  $('aboutBody').innerHTML=h;
-}
-
 
 /* ---------- baseline, environment, sensors ---------- */
 function baseSave(){try{localStorage.setItem('ds_base',JSON.stringify(BASE))}catch(e){}}
@@ -811,7 +765,7 @@ function bleConnect(){
 (function(){
   try{var t=JSON.parse(localStorage.getItem('ds_today')||'null');if(t)Object.keys(t).forEach(function(k){if(typeof t[k]==='number')W.today[k]=t[k]})}catch(e){}
   try{var bb=JSON.parse(localStorage.getItem('ds_base')||'null');if(bb){BASE.on=!!bb.on;BASE.env=bb.env||'earth';BASE.vals=bb.vals||{}}}catch(e){}
-  renderPads();renderDock();csvInit();baseRender();sensRender();aboutRender();pitchRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
+  renderPads();renderDock();csvInit();baseRender();sensRender();renderScan();initMag();$('day').oninput=renderRepro;renderRepro();wRender();route();
 })();
 </script>
 </body>
