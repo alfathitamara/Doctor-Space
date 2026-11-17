@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Embryo's Big Day · Asha IVF</title>
+<meta name="description" content="A friendly, illustrated guide for Asha IVF patients: how embryos grow, how freezing and warming work, and how our AI helper fits into your care team's decision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: big friendly sections stacked, each with one hands-on toy (day slider, warm-up button, AI explainer, checklist, flip cards). */
+:root{
+  --bg:#eefaf7; --surface:#ffffff; --ink:#12302f; --muted:#4a6866; --line:#cfe8e2;
+  --teal:#12857f; --teal-soft:#d6f1ec; --sun:#ffc94d; --sun-soft:#fff2c9; --coral:#ff7a66; --coral-soft:#ffe3dd; --sky:#8ad3f4; --sky-soft:#dcf2fc; --lav:#b9a7f2; --lav-soft:#ece6fd; --on-fill:#ffffff;
+  --cell:#ffd9a8; --cell-d:#f3a85e; --ice:#bfe6fb;
+  --font-display:"Fredoka","Trebuchet MS",system-ui,sans-serif;
+  --font-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1f21; --surface:#12302f; --ink:#eaf7f4; --muted:#a6c6c1; --line:#245250;
+    --teal:#56d3c9; --teal-soft:#14403f; --sun:#ffd466; --sun-soft:#3f3516; --coral:#ff907e; --coral-soft:#42231f; --sky:#8ad3f4; --sky-soft:#173a4a; --lav:#c4b6f5; --lav-soft:#2c2850; --on-fill:#08201f;
+    --cell:#f1c690; --cell-d:#d98d3f; --ice:#74b9de;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1f21; --surface:#12302f; --ink:#eaf7f4; --muted:#a6c6c1; --line:#245250;
+  --teal:#56d3c9; --teal-soft:#14403f; --sun:#ffd466; --sun-soft:#3f3516; --coral:#ff907e; --coral-soft:#42231f; --sky:#8ad3f4; --sky-soft:#173a4a; --lav:#c4b6f5; --lav-soft:#2c2850; --on-fill:#08201f;
+  --cell:#f1c690; --cell-d:#d98d3f; --ice:#74b9de;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding-block:16px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0;letter-spacing:.005em}
+h1{font-size:clamp(2.3rem,7vw,4rem);line-height:1.05;text-wrap:balance}
+h2{font-size:clamp(1.7rem,4.4vw,2.3rem);line-height:1.15;text-wrap:balance}
+h3{font-size:1.25rem}
+p{margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:2px solid var(--line)}
+nav.bar .in{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:1.15rem;margin-right:auto;white-space:nowrap;padding-right:12px}
+.brand svg{width:28px;height:28px;flex:none}
+nav.bar a{white-space:nowrap;text-decoration:none;color:var(--muted);font-weight:700;font-size:.95rem;padding:8px 14px;border-radius:999px}
+nav.bar a:hover,nav.bar a:focus-visible{background:var(--teal-soft);color:var(--teal);outline:none}
+section{padding-top:64px}
+.kicker{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:.95rem;padding:4px 14px;border-radius:999px;background:var(--sun-soft);color:var(--ink);margin-bottom:10px}
+.lead{font-size:1.15rem;color:var(--muted);max-width:56ch;margin-top:10px}
+:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+button{font-family:inherit}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px;align-items:center;padding-top:40px}
+.hero .lead{margin-bottom:22px}
+.bigbtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 26px;border-radius:999px;background:var(--coral);color:#2b0f0a;font-family:var(--font-display);font-weight:600;font-size:1.1rem;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.bigbtn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.bigbtn:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+.hero-art{background:var(--sky-soft);border-radius:32px;padding:16px;display:grid;place-items:center}
+.hero-art svg{width:100%;max-width:340px;height:auto}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+.bob{animation:bob 4s ease-in-out infinite;transform-origin:150px 150px}
+.tw{animation:twinkle 2.6s ease-in-out infinite}
+.tw.b{animation-delay:.9s}.tw.c{animation-delay:1.6s}
+
+/* panels */
+.panel{background:var(--surface);border:2px solid var(--line);border-radius:28px;padding:26px;margin-top:22px}
+.panel.sky{background:var(--sky-soft);border-color:transparent}
+.panel.sun{background:var(--sun-soft);border-color:transparent}
+.panel.lav{background:var(--lav-soft);border-color:transparent}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:center}
+.stagevis{background:var(--surface);border-radius:24px;padding:12px;display:grid;place-items:center}
+.stagevis svg{width:100%;max-width:300px;height:auto}
+.stagevis.ice{background:var(--sky-soft)}
+
+/* day slider */
+.days{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 8px}
+.day{all:unset;box-sizing:border-box;cursor:pointer;min-width:64px;padding:8px 14px;border-radius:999px;background:var(--surface);border:2px solid var(--line);text-align:center;font-family:var(--font-display);font-weight:600}
+.day small{display:block;font-family:var(--font-body);font-weight:600;font-size:.7rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.day[aria-pressed="true"]{background:var(--teal);color:var(--on-fill);border-color:var(--teal)}
+.day[aria-pressed="true"] small{color:var(--on-fill)}
+.day:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+.fact{margin-top:10px;padding:12px 16px;border-radius:18px;background:var(--surface)}
+.cellpop{transform-box:fill-box;transform-origin:center;animation:pop .45s ease both}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* warm up */
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:14px 0}
+.stp{all:unset;box-sizing:border-box;cursor:pointer;padding:10px 8px;border-radius:16px;background:var(--surface);border:2px solid var(--line);text-align:center;font-family:var(--font-display);font-weight:600;font-size:.95rem;line-height:1.2}
+.stp small{display:block;font-family:var(--font-body);font-weight:600;font-size:.72rem;color:var(--muted);margin-top:2px}
+.stp[aria-pressed="true"]{background:var(--coral);border-color:var(--coral);color:#2b0f0a}
+.stp[aria-pressed="true"] small{color:#2b0f0a}
+.stp:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+.wg{transform-box:view-box;transform-origin:150px 150px;transition:transform .9s cubic-bezier(.3,1.4,.5,1)}
+.ice-layer{transition:opacity .8s}
+
+/* AI */
+.aigrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.aibox{background:var(--surface);border-radius:20px;padding:16px;text-align:center}
+.aibox .ic{width:56px;height:56px;margin:0 auto 8px}
+.aibox h3{font-size:1.05rem;margin-bottom:4px}
+.aibox p{font-size:.95rem;color:var(--muted)}
+.team{margin-top:16px;padding:14px 18px;border-radius:18px;background:var(--surface);font-weight:700}
+
+/* paths */
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.path{border-radius:24px;padding:22px;background:var(--surface);border:2px solid var(--line)}
+.path h3{margin-bottom:6px}
+.path ul{margin:10px 0 0;padding-left:20px;color:var(--muted)}
+.path li{margin:4px 0}
+.path .tag{display:inline-block;font-family:var(--font-display);font-size:.85rem;padding:2px 12px;border-radius:999px;margin-bottom:8px}
+.path.a .tag{background:var(--teal-soft);color:var(--teal)}
+.path.b .tag{background:var(--coral-soft);color:var(--ink)}
+
+/* checklist */
+.chk{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.chk label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:16px;background:var(--surface);border:2px solid var(--line);cursor:pointer;font-weight:600}
+.chk input{width:22px;height:22px;margin-top:2px;accent-color:var(--teal);flex:none}
+.chk label:has(input:checked){border-color:var(--teal);background:var(--teal-soft)}
+.mini{font-size:.9rem;color:var(--muted);margin-top:10px}
+.copybtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;min-height:46px;padding:0 22px;border-radius:999px;background:var(--teal);color:var(--on-fill);font-family:var(--font-display);font-weight:600;margin-top:14px}
+.copybtn:focus-visible{outline:4px solid var(--teal);outline-offset:3px}
+
+/* flip cards */
+.flips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.flip{all:unset;box-sizing:border-box;cursor:pointer;display:block;min-height:156px;perspective:700px}
+.flip:focus-visible{outline:4px solid var(--teal);outline-offset:3px;border-radius:22px}
+.flip .in{display:block;position:relative;width:100%;min-height:156px;transition:transform .5s;transform-style:preserve-3d}
+.flip[aria-pressed="true"] .in{transform:rotateY(180deg)}
+.flip .f,.flip .b{position:absolute;inset:0;border-radius:22px;padding:14px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip .f{background:var(--sky-soft);font-family:var(--font-display);font-weight:600;font-size:1.15rem}
+.flip .f small{font-family:var(--font-body);font-weight:600;font-size:.75rem;color:var(--muted);margin-top:4px}
+.flip .b{background:var(--sun-soft);transform:rotateY(180deg);font-size:.92rem;line-height:1.4}
+.flip:nth-child(3n+2) .f{background:var(--lav-soft)}
+.flip:nth-child(3n) .f{background:var(--coral-soft)}
+
+.note{margin-top:56px;padding:18px 20px;border-radius:20px;background:var(--surface);border:2px dashed var(--line);color:var(--muted);font-size:.95rem}
+footer{margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:.85rem}
+[hidden]{display:none!important}
+@media (max-width:760px){
+  body{font-size:17px}
+  .hero,.two,.paths,.aigrid{grid-template-columns:1fr}
+  .flips{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-art{order:-1}
+}
+@media (max-width:420px){ .flips{grid-template-columns:1fr} .brand span{display:none} }
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Guide sections">
+  <div class="in">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="var(--teal)" stroke-width="3"/><circle cx="16" cy="16" r="6" fill="var(--sun)"/></svg>
+      <span>Asha IVF</span>
+    </div>
+    <a href="#grow">Growing</a>
+    <a href="#freeze">Freeze &amp; warm</a>
+    <a href="#ai">AI helper</a>
+    <a href="#choices">Your choices</a>
+    <a href="#words">Words</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="hero">
+    <div>
+      <span class="kicker">Patient guide</span>
+      <h1>Your embryo's big day</h1>
+      <p class="lead">Today your care team may warm your frozen embryo and watch how it wakes up. This guide shows what is happening, step by step, in plain words. Tap, slide and flip things as you go.</p>
+      <button type="button" class="bigbtn" id="start">Let's start</button>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <svg viewBox="0 0 300 300">
+        <circle class="tw" cx="40" cy="50" r="5" fill="var(--sun)"/><circle class="tw b" cx="262" cy="70" r="6" fill="var(--sun)"/><circle class="tw c" cx="236" cy="252" r="4" fill="var(--coral)"/><circle class="tw b" cx="56" cy="244" r="5" fill="var(--lav)"/>
+        <g class="bob">
+          <circle cx="150" cy="150" r="104" fill="none" stroke="var(--cell-d)" stroke-opacity=".5" stroke-width="8"/>
+          <circle cx="150" cy="150" r="92" fill="var(--cell)"/>
+          <g fill="var(--cell-d)" fill-opacity=".55">
+            <circle cx="150" cy="70" r="14"/><circle cx="196" cy="86" r="14"/><circle cx="224" cy="128" r="14"/><circle cx="224" cy="176" r="14"/><circle cx="196" cy="216" r="14"/><circle cx="150" cy="232" r="14"/><circle cx="104" cy="216" r="14"/><circle cx="76" cy="176" r="14"/><circle cx="76" cy="128" r="14"/><circle cx="104" cy="86" r="14"/>
+          </g>
+          <ellipse cx="128" cy="140" rx="36" ry="30" fill="var(--coral)" fill-opacity=".85"/>
+          <circle cx="116" cy="134" r="4" fill="#2b0f0a"/><circle cx="140" cy="134" r="4" fill="#2b0f0a"/>
+          <path d="M118 150 Q128 160 138 150" fill="none" stroke="#2b0f0a" stroke-width="3" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <!-- 1. GROW -->
+  <section id="grow" aria-labelledby="t-grow">
+    <span class="kicker">1 · Growing</span>
+    <h2 id="t-grow">From one tiny cell to a blastocyst</h2>
+    <p class="lead">An embryo grows for about five to six days in the lab incubator. Pick a day and watch the cells multiply.</p>
+    <div class="panel sky">
+      <div class="two">
+        <div class="stagevis"><svg viewBox="0 0 300 300" id="grow-svg" role="img" aria-label="Illustration of the embryo on the selected day"></svg></div>
+        <div>
+          <h3 id="grow-title"></h3>
+          <p id="grow-text" style="margin-top:6px"></p>
+          <div class="days" id="days" role="group" aria-label="Choose a day"></div>
+          <div class="fact" id="grow-fact"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. FREEZE & WARM -->
+  <section id="freeze" aria-labelledby="t-freeze">
+    <span class="kicker">2 · Freeze and warm</span>
+    <h2 id="t-freeze">A pause button, then a gentle wake-up</h2>
+    <p class="lead">Blastocysts can be frozen very quickly and kept safe until you are ready. On transfer day we warm one and give it time to wake up. Tap each step.</p>
+    <div class="panel">
+      <div class="two">
+        <div class="stagevis ice" id="warm-box"><svg viewBox="0 0 300 300" id="warm-svg" role="img" aria-label="Illustration of the embryo being warmed"></svg></div>
+        <div>
+          <h3 id="warm-title"></h3>
+          <p id="warm-text" style="margin-top:6px"></p>
+          <div class="steps" id="steps" role="group" aria-label="Warming steps"></div>
+          <p class="mini" id="warm-mini"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. AI -->
+  <section id="ai" aria-labelledby="t-ai">
+    <span class="kicker">3 · Our AI helper</span>
+    <h2 id="t-ai">A second pair of eyes, never the decision-maker</h2>
+    <p class="lead">While your embryo recovers, our embryologists take a few photos. A computer program then looks at those photos and gives a score from 0 to 10.</p>
+    <div class="panel lav">
+      <div class="aigrid">
+        <div class="aibox"><svg class="ic" viewBox="0 0 56 56" aria-hidden="true"><rect x="8" y="14" width="40" height="30" rx="8" fill="var(--sky)"/><circle cx="28" cy="29" r="9" fill="var(--surface)"/><circle cx="28" cy="29" r="5" fill="var(--teal)"/><rect x="20" y="9" width="16" height="7" rx="3" fill="var(--sky)"/></svg><h3>Photos</h3><p>Photos are taken while your embryo wakes up.</p></div>
+        <div class="aibox"><svg class="ic" viewBox="0 0 56 56" aria-hidden="true"><rect x="10" y="10" width="36" height="36" rx="10" fill="var(--lav)"/><circle cx="21" cy="24" r="3.5" fill="var(--surface)"/><circle cx="35" cy="24" r="3.5" fill="var(--surface)"/><path d="M20 35 Q28 41 36 35" stroke="var(--surface)" stroke-width="3" fill="none" stroke-linecap="round"/></svg><h3>AI score</h3><p>The program gives one number from 0 to 10.</p></div>
+        <div class="aibox"><svg class="ic" viewBox="0 0 56 56" aria-hidden="true"><circle cx="19" cy="22" r="8" fill="var(--sun)"/><circle cx="37" cy="22" r="8" fill="var(--coral)"/><path d="M6 46 Q19 30 28 40 Q37 30 50 46Z" fill="var(--teal)"/></svg><h3>Your team</h3><p>Your doctor and embryologist weigh the score together with what they see and with you.</p></div>
+      </div>
+      <p class="team">The score is one clue, like a weather forecast. It does not tell us what will happen, and it never decides for you.</p>
+    </div>
+  </section>
+
+  <!-- 4. CHOICES -->
+  <section id="choices" aria-labelledby="t-choices">
+    <span class="kicker">4 · Your choices</span>
+    <h2 id="t-choices">Two paths, and you are part of the choice</h2>
+    <p class="lead">Sometimes the team asks: shall we go ahead with this embryo, or warm another one too? Either can be a good, caring choice. Your doctor will talk it through with you.</p>
+    <div class="paths">
+      <div class="path a"><span class="tag">Path A</span><h3>Go ahead with this embryo</h3><ul><li>We continue today as planned.</li><li>No other embryo needs to be warmed.</li><li>Your doctor explains what the photos and score mean for your case.</li></ul></div>
+      <div class="path b"><span class="tag">Path B</span><h3>Warm one more embryo</h3><ul><li>Only possible if you have another frozen embryo.</li><li>Gives the team another embryo to look at.</li><li>Not every embryo wakes up after warming, so we talk about this first.</li></ul></div>
+    </div>
+    <div class="panel sun">
+      <h3>Questions to bring to your doctor</h3>
+      <p style="margin-top:4px">Tick the ones you want to ask. Then copy the list and keep it on your phone.</p>
+      <div class="chk" id="chk"></div>
+      <button type="button" class="copybtn" id="copy">Copy my list</button>
+      <span class="mini" id="copied" hidden style="margin-left:10px">Copied!</span>
+    </div>
+  </section>
+
+  <!-- 5. WORDS -->
+  <section id="words" aria-labelledby="t-words">
+    <span class="kicker">5 · Words you may hear</span>
+    <h2 id="t-words">Tap a card to flip it</h2>
+    <div class="flips" id="flips"></div>
+  </section>
+
+  <p class="note">This guide is general education and not medical advice. Your own care team will explain what applies to you. Nothing here predicts the result of your treatment. Feel free to ask any question, at any time.</p>
+  <footer><span>Asha IVF · Fertility Dialogue 2026</span><a href="../" style="color:inherit">Care team overview</a></footer>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var NS = 'http://www.w3.org/2000/svg';
+  $('start').addEventListener('click', function(){ document.getElementById('grow').scrollIntoView({behavior:'smooth'}); });
+
+  /* ---------- 1. growing ---------- */
+  var DAYS = [
+    {d:'Day 1', s:'Fertilized', n:1, t:'One brave cell', x:'Egg and sperm have met. Together they make one new cell that holds all the instructions for a person.', f:'Everything starts from a single cell.'},
+    {d:'Day 2', s:'4 cells', n:4, t:'Four little cells', x:'The cell has divided again and again. Each cell is smaller, but together they stay the same size.', f:'The cells are busy copying themselves.'},
+    {d:'Day 3', s:'8+ cells', n:8, t:'A tiny cluster', x:'Now there are about eight cells, and some days even more. They stay close together like a bunch of grapes.', f:'The team watches growth speed each day.'},
+    {d:'Day 4', s:'Morula', n:16, t:'The morula', x:'The cells squeeze into a tight ball. This shape is called a morula, which is Latin for mulberry.', f:'Cells are starting to take on different jobs.'},
+    {d:'Day 5-6', s:'Blastocyst', n:0, t:'The blastocyst', x:'A fluid-filled space opens up. The outer ring of cells will help form the placenta. A small clump inside, the inner cell mass, can become the baby.', f:'This is the stage we freeze and transfer.'}
+  ];
+  var dayI = 4;
+  function mk(tag, attrs){ var e = document.createElementNS(NS, tag); for(var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function growDraw(i){
+    var svg = $('grow-svg'), D = DAYS[i], k; svg.innerHTML = '';
+    svg.appendChild(mk('circle',{cx:150,cy:150,r:124,fill:'none',stroke:'var(--cell-d)','stroke-opacity':.45,'stroke-width':8}));
+    if(D.n===0){
+      svg.appendChild(mk('circle',{cx:150,cy:150,r:108,fill:'var(--cell)','fill-opacity':.35,stroke:'var(--cell-d)','stroke-width':3}));
+      for(k=0;k<18;k++){ var a=Math.PI*2*k/18, c=mk('circle',{cx:150+100*Math.cos(a),cy:150+100*Math.sin(a),r:11,fill:'var(--cell-d)','fill-opacity':.8,class:'cellpop'}); c.style.animationDelay=(k*25)+'ms'; svg.appendChild(c); }
+      var icm = mk('ellipse',{cx:118,cy:130,rx:40,ry:32,fill:'var(--coral)','fill-opacity':.85,class:'cellpop'}); svg.appendChild(icm);
+      var t1 = mk('text',{x:118,y:135,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'#2b0f0a','font-family':'Nunito,sans-serif'}); t1.textContent='future baby'; svg.appendChild(t1);
+      var t2 = mk('text',{x:198,y:292,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'var(--ink)','font-family':'Nunito,sans-serif'}); t2.textContent='future placenta'; svg.appendChild(t2);
+      return;
+    }
+    var pts = [], n = D.n;
+    if(n===1) pts=[[150,150,52]];
+    else if(n===4) pts=[[118,118,44],[182,118,44],[118,182,44],[182,182,44]];
+    else if(n===8) pts=[[110,100,36],[150,92,36],[190,100,36],[100,142,36],[200,142,36],[110,190,36],[150,200,36],[190,190,36]].concat([[150,146,36]]);
+    else { for(k=0;k<n;k++){ var ang=Math.PI*2*k/12, rr = k<12?78:34; if(k>=12) ang=Math.PI*2*(k-12)/4+.6; pts.push([150+rr*Math.cos(ang),150+rr*Math.sin(ang),k<12?30:28]); } }
+    pts.forEach(function(p,idx){ var c = mk('circle',{cx:p[0].toFixed(1),cy:p[1].toFixed(1),r:p[2],fill:'var(--cell)',stroke:'var(--cell-d)','stroke-width':3,class:'cellpop'}); c.style.animationDelay=(idx*40)+'ms'; svg.appendChild(c); svg.appendChild(mk('circle',{cx:(p[0]-p[2]*.25).toFixed(1),cy:(p[1]-p[2]*.2).toFixed(1),r:(p[2]*.28).toFixed(1),fill:'var(--cell-d)','fill-opacity':.5})); });
+  }
+  var daysEl = $('days');
+  DAYS.forEach(function(D,i){
+    var b = document.createElement('button'); b.type='button'; b.className='day'; b.setAttribute('aria-pressed', i===dayI?'true':'false');
+    b.innerHTML = D.d+'<small>'+D.s+'</small>'; b.addEventListener('click', function(){ pickDay(i); }); daysEl.appendChild(b);
+  });
+  function pickDay(i){
+    dayI = i; var D = DAYS[i];
+    Array.prototype.forEach.call(daysEl.children, function(b,j){ b.setAttribute('aria-pressed', j===i?'true':'false'); });
+    $('grow-title').textContent = D.t; $('grow-text').textContent = D.x; $('grow-fact').textContent = D.f; growDraw(i);
+  }
+  pickDay(dayI);
+
+  /* ---------- 2. warm up ---------- */
+  var WS = [
+    {b:'Frozen', s:'Safe and paused', t:'Safe and paused', x:'Your embryo is frozen very fast, so no ice crystals form. It rests in a tank of liquid nitrogen. Nothing changes while it waits.', m:'Frozen embryos can wait until your body is ready.', scale:.62, ice:1, tint:.9},
+    {b:'Warming', s:'Gentle and quick', t:'Warming up', x:'On transfer day an embryologist warms the embryo in special liquids. This takes only a few minutes and is done with great care.', m:'The embryo may look shrunken for a moment. That is expected.', scale:.5, ice:.35, tint:.5},
+    {b:'Waking up', s:'About 2 hours', t:'Waking up', x:'The embryo takes a rest and slowly begins to fill with fluid again. We take photos to see how it is doing.', m:'Think of a balloon slowly filling with air.', scale:.76, ice:0, tint:0},
+    {b:'Ready', s:'Fully expanded', t:'Ready to go', x:'Once the embryo has re-expanded, the team reviews the photos, the AI score and everything they know about your case, together with you.', m:'Not every embryo looks the same. Your team explains what they see.', scale:1, ice:0, tint:0}
+  ];
+  var wI = 0, stepsEl = $('steps');
+  WS.forEach(function(w,i){
+    var b = document.createElement('button'); b.type='button'; b.className='stp'; b.setAttribute('aria-pressed', i===0?'true':'false');
+    b.innerHTML = w.b+'<small>'+w.s+'</small>'; b.addEventListener('click', function(){ pickWarm(i); }); stepsEl.appendChild(b);
+  });
+  (function buildWarm(){
+    var svg = $('warm-svg'); svg.innerHTML = '';
+    svg.appendChild(mk('circle',{cx:150,cy:150,r:128,fill:'none',stroke:'var(--cell-d)','stroke-opacity':.45,'stroke-width':8}));
+    var g = mk('g',{id:'wg',class:'wg'}); svg.appendChild(g);
+    g.appendChild(mk('circle',{cx:150,cy:150,r:110,fill:'var(--cell)',stroke:'var(--cell-d)','stroke-width':3}));
+    for(var k=0;k<14;k++){ var a=Math.PI*2*k/14; g.appendChild(mk('circle',{cx:150+98*Math.cos(a),cy:150+98*Math.sin(a),r:11,fill:'var(--cell-d)','fill-opacity':.7})); }
+    g.appendChild(mk('ellipse',{cx:128,cy:138,rx:34,ry:28,fill:'var(--coral)','fill-opacity':.85}));
+    g.appendChild(mk('circle',{cx:118,cy:134,r:3.5,fill:'#2b0f0a'})); g.appendChild(mk('circle',{cx:138,cy:134,r:3.5,fill:'#2b0f0a'}));
+    g.appendChild(mk('path',{d:'M119 147 Q128 155 137 147',fill:'none',stroke:'#2b0f0a','stroke-width':3,'stroke-linecap':'round'}));
+    var ice = mk('g',{id:'ice',class:'ice-layer'}); svg.appendChild(ice);
+    ice.appendChild(mk('circle',{cx:150,cy:150,r:128,fill:'var(--ice)','fill-opacity':.55}));
+    [[70,90],[230,100],[90,220],[220,215],[150,50],[150,255]].forEach(function(p){ ice.appendChild(mk('path',{d:'M'+(p[0]-10)+' '+p[1]+'H'+(p[0]+10)+'M'+p[0]+' '+(p[1]-10)+'V'+(p[1]+10)+'M'+(p[0]-7)+' '+(p[1]-7)+'L'+(p[0]+7)+' '+(p[1]+7)+'M'+(p[0]+7)+' '+(p[1]-7)+'L'+(p[0]-7)+' '+(p[1]+7),stroke:'var(--surface)','stroke-width':3,'stroke-linecap':'round'})); });
+  })();
+  function pickWarm(i){
+    wI = i; var w = WS[i];
+    Array.prototype.forEach.call(stepsEl.children, function(b,j){ b.setAttribute('aria-pressed', j===i?'true':'false'); });
+    $('warm-title').textContent = w.t; $('warm-text').textContent = w.x; $('warm-mini').textContent = w.m;
+    $('wg').style.transform = 'scale('+w.scale+')';
+    $('ice').style.opacity = w.ice;
+  }
+  pickWarm(0);
+
+  /* ---------- 4. checklist ---------- */
+  var Q = [
+    'What does the AI score mean for my embryo, in plain words?',
+    'What did you see in the photos while it was waking up?',
+    'How many frozen embryos do I have left?',
+    'If we warm another one, what happens to the first one?',
+    'Are there extra costs if we warm another embryo?',
+    'What are the next steps after today?'
+  ];
+  var chk = $('chk');
+  Q.forEach(function(q,i){
+    var l = document.createElement('label'); l.innerHTML = '<input type="checkbox" id="q'+i+'"><span>'+q+'</span>'; chk.appendChild(l);
+  });
+  $('copy').addEventListener('click', function(){
+    var picked = Q.filter(function(q,i){ return $('q'+i).checked; });
+    var txt = 'My questions for my doctor:\n' + (picked.length ? picked : Q).map(function(q){ return '- '+q; }).join('\n');
+    var done = function(){ $('copied').hidden = false; setTimeout(function(){ $('copied').hidden = true; }, 1800); };
+    try{ navigator.clipboard.writeText(txt).then(done, function(){}); }catch(e){}
+  });
+
+  /* ---------- 5. flip cards ---------- */
+  var W = [
+    ['Blastocyst','Day 5-6 embryo','An embryo about five or six days old with a fluid-filled space inside.'],
+    ['Vitrification','Fast freezing','A very fast way to freeze that helps prevent ice crystals from forming.'],
+    ['Thawing','Warming up','Gently warming a frozen embryo before transfer.'],
+    ['Recovery','Waking up','The time after warming when the embryo refills with fluid and expands again.'],
+    ['Biopsy','A few cells checked','A few cells from the outer layer are taken for genetic testing. The embryo keeps growing.'],
+    ['Grade 4BB','The embryo’s report card','A short code for size and quality. The number is how expanded it is. The two letters describe the inner clump and the outer layer.'],
+    ['Inner cell mass','The future baby','The small clump of cells inside the blastocyst.'],
+    ['Trophectoderm','The future placenta','The outer layer of cells on the blastocyst.'],
+    ['AI score','One clue from 0 to 10','A computer’s reading of recovery photos. It helps your team, who make the decisions with you.']
+  ];
+  var fl = $('flips');
+  W.forEach(function(w){
+    var b = document.createElement('button'); b.type='button'; b.className='flip'; b.setAttribute('aria-pressed','false');
+    b.innerHTML = '<span class="in"><span class="f">'+w[0]+'<small>'+w[1]+'</small></span><span class="b">'+w[2]+'</span></span>';
+    b.addEventListener('click', function(){ b.setAttribute('aria-pressed', b.getAttribute('aria-pressed')==='true'?'false':'true'); });
+    fl.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>

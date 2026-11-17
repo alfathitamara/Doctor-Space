@@ -1,18 +1,19 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Asha IVF · Embryo AI Grading</title>
-<meta name="description" content="AI Model 2 di Asha IVF: perlu mencairkan satu embrio lagi? Dari foto recovery sampai konsultasi dokter dan pasien, lengkap dengan penjelasan istilah IVF.">
+<meta name="description" content="AI Model 2 at Asha IVF: should we warm one more embryo? Interactive Embryo 4D Map, AI grading from recovery photos, and the embryology team's recovery log.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Layout: sticky section nav; four stacked sections (journey stepper, 4D map, consultation, glossary). */
+/* Layout: top bar; hero with decision flow; Embryo 4D Map (time-proportional axis, stage viewer, data, AI panel); grading key; tool links. */
 :root{
   --bg:#f4f8f7; --surface:#ffffff; --ink:#0d2b2a; --muted:#4d6b69; --line:#d3e2df;
   --teal:#0f7f7a; --teal-soft:#dff1ee; --mint:#2fbf8f; --coral:#d9503f; --coral-soft:#fbe6e2; --on-fill:#ffffff;
+  --embryo:#9aa5a4; --embryo-d:#6c7877; --stage-bg:#e8efee;
   --font-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
   --font-body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
@@ -20,86 +21,82 @@
   :root:not([data-theme="light"]){
     --bg:#0a1b1a; --surface:#10292a; --ink:#e6f4f1; --muted:#9bbab6; --line:#1f4040;
     --teal:#4cc9c0; --teal-soft:#123635; --mint:#4fd9a7; --coral:#ff8a78; --coral-soft:#3a1f1c; --on-fill:#06201f;
+    --embryo:#b5c2c0; --embryo-d:#7f8f8d; --stage-bg:#0b2222;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0a1b1a; --surface:#10292a; --ink:#e6f4f1; --muted:#9bbab6; --line:#1f4040;
   --teal:#4cc9c0; --teal-soft:#123635; --mint:#4fd9a7; --coral:#ff8a78; --coral-soft:#3a1f1c; --on-fill:#06201f;
+  --embryo:#b5c2c0; --embryo-d:#7f8f8d; --stage-bg:#0b2222;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1080px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--font-display);letter-spacing:-.01em;margin:0}
-h1{font-weight:700;font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;max-width:20ch;margin-bottom:14px}
+h1{font-weight:700;font-size:clamp(2rem,5.2vw,3.4rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance;max-width:20ch;margin:8px 0 14px}
 h2{font-size:1.6rem;margin-bottom:6px;text-wrap:balance}
 h3{font-size:1.15rem}
-.lede{max-width:62ch;color:var(--muted);font-size:1.06rem;margin:0 0 8px}
-.sub{color:var(--muted);margin:0 0 20px;max-width:64ch}
+.lede{max-width:64ch;color:var(--muted);font-size:1.06rem;margin:0}
+.sub{color:var(--muted);margin:0 0 20px;max-width:66ch}
 section{padding-top:56px}
 .label{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);font-weight:700}
-
-/* nav */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
 nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-nav.bar .in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
+nav.bar .in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px))}
 .brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:1.1rem;margin-right:auto;white-space:nowrap;padding-right:12px}
 .brand svg{width:26px;height:26px;flex:none}
 nav.bar a.lnk{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.88rem;font-weight:600;padding:8px 12px;border-radius:999px}
 nav.bar a.lnk:hover,nav.bar a.lnk:focus-visible{background:var(--teal-soft);color:var(--teal);outline:none}
+nav.bar a.lnk.cta{background:var(--teal);color:var(--on-fill)}
 .hero{padding-top:36px}
-
-/* flow */
 .flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:28px 0 0;padding:0;list-style:none}
 .flow li{position:relative;padding:16px 18px;border-radius:12px;background:var(--teal);color:var(--on-fill);font-weight:600;line-height:1.3;display:flex;align-items:center;min-height:72px}
 .flow li.decision{background:var(--coral)}
 .flow li:not(:last-child)::after{content:"";position:absolute;right:-12px;top:50%;width:12px;height:2px;background:var(--coral)}
-
-/* shared */
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+button{font-family:inherit}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
 .chip{font-size:.8rem;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--teal-soft);color:var(--teal);display:inline-block}
 .chip.ex{background:transparent;border:1px dashed var(--line);color:var(--muted)}
-button{font-family:inherit}
-:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+/* 4D map */
+.mapbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 22px 18px;margin-top:16px}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.ctrls{display:flex;gap:8px;align-items:center}
+.ibtn{all:unset;box-sizing:border-box;cursor:pointer;min-width:42px;height:42px;padding:0 14px;border-radius:999px;border:1px solid var(--teal);color:var(--teal);font-weight:700;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.ibtn.fill{background:var(--teal);color:var(--on-fill)}
+.ibtn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.axis{display:flex;align-items:stretch;gap:0;margin:62px 0 10px}
+.seg{position:relative;height:6px;background:var(--line);border-radius:3px;margin-top:20px}
+.seg .cap{position:absolute;top:-34px;left:0;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.brk{flex:none;width:96px;position:relative;margin-top:20px;height:6px;display:flex;align-items:center;justify-content:center}
+.brk::before{content:"";position:absolute;left:6px;right:6px;top:2px;border-top:2px dotted var(--muted)}
+.brk span{position:absolute;top:-56px;left:50%;transform:translateX(-50%);font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.node{all:unset;box-sizing:border-box;position:absolute;top:50%;width:28px;height:28px;margin:-14px 0 0 -14px;border-radius:50%;background:var(--surface);border:3px solid var(--teal);cursor:pointer;display:block;transition:transform .15s}
+.node:hover{transform:scale(1.15)}
+.node:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.node.ai{border-color:var(--coral)}
+.node[aria-pressed="true"]{background:var(--teal);transform:scale(1.2)}
+.node.ai[aria-pressed="true"]{background:var(--coral)}
+.node .t{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:.74rem;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;pointer-events:none}
+.node[aria-pressed="true"] .t{color:var(--ink)}
+.dur{position:absolute;top:-22px;transform:translateX(-50%);font-size:.7rem;color:var(--teal);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.78rem;color:var(--muted);margin:46px 0 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;border:3px solid var(--teal);margin-right:6px;vertical-align:-1px}
+.legend i.ai{border-color:var(--coral)}
+.view{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:16px;margin-top:16px}
+.stagebox{background:var(--stage-bg);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.stagebox svg{width:100%;max-width:270px;height:auto}
+.stagebox .cap{font-size:.78rem;color:var(--muted);text-align:center}
+.sg{transform-origin:150px 150px;transition:transform .5s ease}
+.detail h3{margin:2px 0 4px}
+.detail p{margin:0;color:var(--muted)}
 dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 18px;margin:16px 0 0}
 dt{color:var(--muted);font-size:.88rem} dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums}
-ul.tight{margin:8px 0 0;padding-left:20px} ul.tight li{margin:4px 0}
-
-/* journey */
-.journey{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.7fr);gap:16px;align-items:start}
-.steps{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
-.steps button{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font-weight:600;line-height:1.25}
-.steps button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-.steps button .n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-size:.82rem;font-variant-numeric:tabular-nums}
-.steps button[aria-selected="true"]{background:var(--teal);color:var(--on-fill);border-color:var(--teal)}
-.steps button[aria-selected="true"] .n{background:var(--on-fill);color:var(--teal)}
-.cols2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
-.cols2 h4{margin:0 0 4px;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--teal)}
-.cols2 p{margin:0}
-.progress{height:6px;background:var(--line);border-radius:3px;margin-bottom:16px;overflow:hidden}
-.progress i{display:block;height:100%;background:var(--mint);transition:width .25s}
-
-/* map */
-.track{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 8px 18px}
-.stage{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 6px 10px;border-radius:12px;text-align:center;min-width:0}
-.stage:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-.stage .time{font-weight:600;font-size:.9rem;font-variant-numeric:tabular-nums}
-.stage .who{font-size:.72rem;color:var(--muted)}
-.stage .pic{width:78px;height:78px;border-radius:12px;display:grid;place-items:center;border:2px solid transparent;transition:transform .15s}
-.stage:hover .pic{transform:translateY(-2px)}
-.stage[aria-pressed="true"]{background:var(--teal-soft)}
-.stage[aria-pressed="true"] .pic{border-color:var(--teal)}
-.pic svg{width:58px;height:58px}
-.stage .state{font-size:.78rem;font-weight:600;line-height:1.2}
-.stage .phase{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);font-weight:700}
-.pic.bio{background:#f2c9c4}.pic.vit{background:#bfe8d3}.pic.thaw{background:#e9dccb}.pic.rec{background:#dfe3e3}.pic.pre{background:#eadfc9}
-:root[data-theme="dark"] .pic{filter:brightness(.82)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pic{filter:brightness(.82)}}
-.durations{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));margin:6px 8px 0;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.durations span{text-align:right;padding-right:calc(50% - 36px)}
-.panel{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;margin-top:16px}
+.lower{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;margin-top:16px}
 .ai{display:flex;flex-direction:column;gap:10px}
 .score{display:flex;align-items:baseline;gap:6px;font-family:var(--font-display)}
 .score b{font-size:3.6rem;line-height:1;color:var(--coral)}
@@ -109,92 +106,66 @@ ul.tight{margin:8px 0 0;padding-left:20px} ul.tight li{margin:4px 0}
 .meter i.on{background:var(--coral)}
 .suggest{padding:12px 14px;border-radius:12px;background:var(--coral-soft);font-weight:600}
 .suggest small{display:block;font-weight:500;color:var(--muted);margin-top:2px}
+.phototrack{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.photo{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:.78rem;color:var(--muted);background:var(--bg)}
+.photo b{display:block;color:var(--ink);font-variant-numeric:tabular-nums}
 
-/* consult */
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px;background:var(--surface);gap:4px}
-.seg button{all:unset;box-sizing:border-box;cursor:pointer;padding:8px 18px;border-radius:999px;font-weight:600;font-size:.92rem;color:var(--muted)}
-.seg button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-.seg button[aria-pressed="true"]{background:var(--teal);color:var(--on-fill)}
-.casebar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
-.casebar div{padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
-.casebar small{display:block;color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em}
-.casebar b{font-variant-numeric:tabular-nums}
-details.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
-details.q summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
-details.q summary::-webkit-details-marker{display:none}
-details.q summary::after{content:"+";font-size:1.3rem;color:var(--teal);line-height:1}
-details.q[open] summary::after{content:"\2212"}
-details.q .ans{padding:0 16px 16px}
-.for-doc{display:none}
-[data-role="doc"] .for-doc{display:block}
-[data-role="doc"] .for-pt{display:none}
-.rolenote{font-size:.86rem;color:var(--muted);margin:0 0 12px}
-.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
-.opt h3{margin-bottom:4px}
-.opt .tagline{color:var(--muted);margin:0 0 8px}
-.opt h4{margin:12px 0 0;font-size:.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--teal)}
-.prefs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-fieldset{border:0;margin:0;padding:0;min-width:0}
-legend{font-weight:700;margin-bottom:8px;padding:0}
-.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;cursor:pointer}
-.check input{margin-top:5px;width:18px;height:18px;accent-color:var(--teal);flex:none}
-.summary{white-space:pre-wrap;font-family:var(--font-body);font-size:.92rem;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0 12px;overflow-wrap:anywhere}
-.btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-block;padding:10px 18px;border-radius:999px;background:var(--teal);color:var(--on-fill);font-weight:700;font-size:.92rem}
-.btn:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-.btn.ghost{background:transparent;color:var(--teal);border:1px solid var(--teal)}
-
-/* glossary */
-.search{width:100%;max-width:420px;min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:0 14px;font:inherit;margin-bottom:16px}
-.gloss{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.gloss .card{padding:16px 18px}
-.gloss h3{font-size:1.05rem;margin-bottom:2px}
-.gloss .en{font-size:.78rem;color:var(--teal);font-weight:700;letter-spacing:.04em}
-.gloss p{margin:6px 0 0;color:var(--muted)}
-.empty{color:var(--muted);padding:12px 0}
-.note{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem;max-width:80ch}
+/* key */
+.key{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.key h3{margin-bottom:8px}
+.key table{width:100%;border-collapse:collapse;font-size:.88rem}
+.key td{padding:7px 0;border-top:1px solid var(--line);vertical-align:top}
+.key td:first-child{width:2.2em;font-weight:700;color:var(--teal);font-variant-numeric:tabular-nums}
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.tools a{display:block;text-decoration:none;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.tools a:hover,.tools a:focus-visible{border-color:var(--teal)}
+.tools h3{margin:4px 0 6px}
+.tools p{margin:0;color:var(--muted)}
+.tools .go{display:inline-block;margin-top:12px;font-weight:700;color:var(--teal)}
+.note{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.86rem;max-width:84ch}
 footer{margin-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:.82rem}
-[hidden]{display:none!important}
-
 @media (max-width:860px){
   .flow{grid-template-columns:1fr 1fr}
   .flow li:nth-child(2)::after{display:none}
-  .track{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:10px}
-  .durations{display:none}
-  .panel,.journey,.options,.prefs,.gloss{grid-template-columns:1fr}
-  .casebar{grid-template-columns:1fr 1fr}
+  .view,.lower,.key,.tools{grid-template-columns:1fr}
+  .stagebox{max-width:340px;margin:0 auto;width:100%}
 }
 @media (max-width:520px){
   .flow{grid-template-columns:1fr}
   .flow li::after{display:none!important}
-  .track{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .stage .pic{width:68px;height:68px}
-  .cols2{grid-template-columns:1fr}
   .brand span{display:none}
+  .node .t{display:none}
+  .dur{display:none}
+  .node[aria-pressed="true"] .t{display:block}
+  .brk{width:28px}
+  .brk span{display:none}
+  .mapbox{padding:18px 14px}
+  .phototrack{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<nav class="bar" aria-label="Navigasi halaman">
+<nav class="bar" aria-label="Site">
   <div class="in">
     <div class="brand">
       <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14" fill="none" stroke="var(--teal)" stroke-width="2.5"/><circle cx="16" cy="16" r="6" fill="var(--mint)"/></svg>
       <span>Asha IVF</span>
     </div>
-    <a class="lnk" href="#perjalanan">Perjalanan</a>
-    <a class="lnk" href="#peta">4D Map</a>
-    <a class="lnk" href="#konsultasi">Konsultasi</a>
-    <a class="lnk" href="#istilah">Istilah IVF</a>
-    <a class="lnk" href="lab/" style="background:var(--teal);color:var(--on-fill)">Alat Embriolog →</a>
+    <a class="lnk" href="#map">4D Map</a>
+    <a class="lnk" href="#key">Grading key</a>
+    <a class="lnk" href="#tools">Tools</a>
+    <a class="lnk" href="patients/">Patient education</a>
+    <a class="lnk cta" href="lab/">Recovery Log</a>
   </div>
 </nav>
 
 <div class="wrap">
   <header class="hero">
-    <span class="label">AI Model 2 · Embryo Lab</span>
-    <h1 style="margin-top:8px">Should we warm one more embryo?</h1>
-    <p class="lede">Setelah embrio dicairkan, kami memotretnya saat recovery. AI memberi skor 0 sampai 10 dan menampilkan seluruh riwayat embrio. Skor itu membantu dokter dan pasien memutuskan bersama: transfer sekarang, atau mencairkan satu embrio lagi.</p>
-    <ol class="flow" aria-label="Alur keputusan">
+    <span class="label">AI Model 2 · Embryology</span>
+    <h1>Should we warm one more embryo?</h1>
+    <p class="lede">After warming, each embryo is photographed during recovery. The model grades the photos from 0 to 10 and the Embryo 4D Map keeps the full handling history alongside it, so the team can decide whether to transfer now or warm another.</p>
+    <ol class="flow" aria-label="Decision flow">
       <li>Warm the embryo</li>
       <li>Photo during recovery</li>
       <li>AI grading (0–10)</li>
@@ -202,321 +173,182 @@ footer{margin-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap
     </ol>
   </header>
 
-  <!-- 1. PERJALANAN -->
-  <section id="perjalanan" aria-labelledby="t-jalan">
-    <h2 id="t-jalan">Perjalanan pasien dan embrio</h2>
-    <p class="sub">Dari konsultasi pertama sampai tes kehamilan. Pilih satu langkah untuk melihat apa yang terjadi di lab dan apa yang dialami pasien.</p>
-    <div class="journey">
-      <ol class="steps" id="steps" role="tablist" aria-label="Langkah perjalanan"></ol>
-      <div class="card" id="step-detail" role="tabpanel" aria-live="polite"></div>
-    </div>
-  </section>
-
-  <!-- 2. 4D MAP -->
-  <section id="peta" aria-labelledby="t-peta">
-    <h2 id="t-peta">Embryo 4D Map</h2>
-    <p class="sub">Setiap penanganan embrio tercatat dengan jam dan pengamatannya. Pilih satu tahap untuk melihat detail.</p>
+  <section id="map" aria-labelledby="t-map">
+    <h2 id="t-map">Embryo 4D Map</h2>
+    <p class="sub">Every handling event on one time axis, scaled to the minute. Select a node, use the arrow keys, or press Play to step through the case.</p>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <span class="chip">Usia pasien saat OPU: 35 tahun</span>
-      <span class="chip ex">Contoh kasus</span>
+      <span class="chip">Age at OPU: 35</span>
+      <span class="chip">Blastocyst 4BB</span>
+      <span class="chip ex">Example case</span>
     </div>
-    <div class="track" id="track" role="group" aria-label="Timeline embrio"></div>
-    <div class="durations" id="durations" aria-hidden="true"></div>
-    <div class="panel">
-      <div class="card" id="detail" aria-live="polite"></div>
+
+    <div class="mapbox">
+      <div class="maphead">
+        <span class="label">Timeline</span>
+        <div class="ctrls">
+          <button type="button" class="ibtn" id="prev" aria-label="Previous event">‹</button>
+          <button type="button" class="ibtn fill" id="play" aria-pressed="false">▶ Play</button>
+          <button type="button" class="ibtn" id="next" aria-label="Next event">›</button>
+        </div>
+      </div>
+      <div class="axis" id="axis" role="group" aria-label="Embryo handling timeline"></div>
+      <p class="legend"><span><i></i>Handling event</span><span><i class="ai"></i>Photo graded by AI</span><span>Axis is proportional to time within each day</span></p>
+    </div>
+
+    <div class="view">
+      <div class="stagebox">
+        <svg viewBox="0 0 300 300" id="viz" role="img" aria-label="Schematic of the selected embryo state"></svg>
+        <div class="cap" id="viz-cap"></div>
+      </div>
+      <div class="card detail" id="detail" aria-live="polite"></div>
+    </div>
+
+    <div class="lower">
+      <div class="card">
+        <span class="label">Post-thaw photo series</span>
+        <h3 style="margin:2px 0 4px">Three recovery photos, one score</h3>
+        <p style="margin:0;color:var(--muted)">Each photo is sent to the model. The score summarises the series.</p>
+        <div class="phototrack">
+          <div class="photo"><b>11:21</b>Slightly expanding</div>
+          <div class="photo"><b>12:22</b>Fully expanding</div>
+          <div class="photo"><b>13:30</b>Fully expanding</div>
+        </div>
+      </div>
       <div class="card ai">
         <span class="label">AI Grading</span>
         <div class="score"><b>2</b><span>/ 10</span></div>
         <div class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        <div class="suggest">Suggest: thaw one more<small>Berdasarkan foto recovery pukul 11:21, 12:22 dan 13:30.</small></div>
+        <div class="suggest">Suggest: thaw one more<small>Decision support only. Final call by the embryologist and physician.</small></div>
       </div>
     </div>
   </section>
 
-  <!-- 3. KONSULTASI -->
-  <section id="konsultasi" aria-labelledby="t-konsul" data-role="pt">
-    <h2 id="t-konsul">Konsultasi dokter dan pasien</h2>
-    <p class="sub">Hasil AI dibahas bersama sebelum ada keputusan. Pilih tampilan sesuai peran Anda.</p>
-    <div class="seg" role="group" aria-label="Tampilan peran">
-      <button type="button" id="r-pt" aria-pressed="true">Saya pasien</button>
-      <button type="button" id="r-doc" aria-pressed="false">Saya dokter / embriolog</button>
-    </div>
-
-    <div class="casebar" aria-label="Ringkasan kasus contoh">
-      <div><small>Embrio</small><b>Blastokista 4BB</b></div>
-      <div><small>Recovery</small><b>Mulai → penuh mengembang</b></div>
-      <div><small>Skor AI</small><b>2 / 10</b></div>
-      <div><small>Saran AI</small><b>Thaw one more</b></div>
-    </div>
-
-    <h3 style="margin-bottom:10px">Pertanyaan yang sering muncul</h3>
-    <p class="rolenote" id="rolenote"></p>
-    <div id="qa"></div>
-
-    <h3 style="margin:28px 0 4px">Dua pilihan yang dibahas</h3>
-    <p class="sub" style="margin-bottom:0">Tidak ada pilihan yang otomatis benar. Keputusan akhir ada pada pasien bersama dokter.</p>
-    <div class="options">
-      <div class="card opt">
-        <h3>Transfer satu embrio ini</h3>
-        <p class="tagline">Lanjut hari ini dengan embrio yang sudah dicairkan.</p>
-        <h4>Yang perlu dipertimbangkan</h4>
-        <ul class="tight">
-          <li>Tidak perlu mencairkan embrio lain.</li>
-          <li>Skor AI rendah, jadi dokter akan menjelaskan peluang berdasarkan kondisi klinis pasien.</li>
-          <li>Jika tidak berhasil, siklus berikutnya memakai embrio beku yang tersisa (bila ada).</li>
-        </ul>
-      </div>
-      <div class="card opt">
-        <h3>Hangatkan satu embrio lagi</h3>
-        <p class="tagline">Menyiapkan pembanding atau cadangan sebelum transfer.</p>
-        <h4>Yang perlu dipertimbangkan</h4>
-        <ul class="tight">
-          <li>Hanya bisa jika masih ada embrio beku lain.</li>
-          <li>Tidak semua embrio bertahan setelah dicairkan, dan tim akan menjelaskan konsekuensinya.</li>
-          <li>Perlu persetujuan pasien dan, bila berlaku, kebijakan klinik soal embrio yang sudah dicairkan.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:16px">
-      <h3>Siapkan diskusi Anda</h3>
-      <p class="sub" style="margin:4px 0 16px">Centang yang sesuai. Ringkasan di bawah dibuat otomatis dan berisi pertanyaan untuk dibawa ke ruang konsultasi. Ini bukan rekomendasi medis.</p>
-      <div class="prefs">
-        <fieldset>
-          <legend>Kecenderungan saya saat ini</legend>
-          <label class="check"><input type="radio" name="lean" value="transfer"> Condong transfer satu embrio ini</label>
-          <label class="check"><input type="radio" name="lean" value="warm"> Condong menghangatkan satu lagi</label>
-          <label class="check"><input type="radio" name="lean" value="unsure" checked> Belum tahu, ingin penjelasan dulu</label>
-        </fieldset>
-        <fieldset>
-          <legend>Yang penting bagi saya</legend>
-          <label class="check"><input type="checkbox" name="pri" value="chance"> Memaksimalkan peluang pada siklus ini</label>
-          <label class="check"><input type="checkbox" name="pri" value="cost"> Biaya dan jumlah tindakan tambahan</label>
-          <label class="check"><input type="checkbox" name="pri" value="spare"> Tidak ingin ada embrio dicairkan lalu tidak terpakai</label>
-          <label class="check"><input type="checkbox" name="pri" value="today"> Transfer sesuai jadwal hari ini</label>
-          <label class="check"><input type="checkbox" name="pri" value="remaining"> Saya ingin tahu jumlah embrio beku yang tersisa</label>
-        </fieldset>
-      </div>
-      <pre class="summary" id="summary" aria-live="polite"></pre>
-      <button type="button" class="btn" id="copy">Salin ringkasan</button>
-      <span id="copied" class="rolenote" style="margin-left:10px" hidden>Tersalin</span>
-    </div>
-
-    <div class="card" style="margin-top:16px" data-doc-only>
-      <h3>Daftar periksa dokter dan embriolog</h3>
-      <ul class="tight">
-        <li>Identitas pasien dan embrio sudah dikonfirmasi ulang.</li>
-        <li>Jumlah dan kualitas embrio beku yang tersisa sudah disampaikan.</li>
-        <li>Skor AI dijelaskan sebagai alat bantu, bersama foto recovery dan pengamatan embriolog.</li>
-        <li>Persetujuan tertulis untuk pencairan embrio tambahan sudah diperoleh bila dipilih.</li>
-        <li>Keputusan dan alasannya dicatat di rekam medis.</li>
-      </ul>
+  <section id="key" aria-labelledby="t-key">
+    <h2 id="t-key">Grading key</h2>
+    <p class="sub">Gardner blastocyst grading, as used in the map (for example 4BB: expansion 4, ICM B, TE B).</p>
+    <div class="key">
+      <div class="card"><h3>Expansion</h3><table>
+        <tr><td>1</td><td>Early blastocyst, cavity less than half the embryo</td></tr>
+        <tr><td>2</td><td>Blastocyst, cavity half or more</td></tr>
+        <tr><td>3</td><td>Full blastocyst, cavity fills the embryo</td></tr>
+        <tr><td>4</td><td>Expanded, larger than the original embryo, thinning zona</td></tr>
+        <tr><td>5</td><td>Hatching</td></tr>
+        <tr><td>6</td><td>Hatched</td></tr></table></div>
+      <div class="card"><h3>Inner cell mass</h3><table>
+        <tr><td>A</td><td>Many cells, tightly packed</td></tr>
+        <tr><td>B</td><td>Several cells, loosely grouped</td></tr>
+        <tr><td>C</td><td>Very few cells</td></tr></table></div>
+      <div class="card"><h3>Trophectoderm</h3><table>
+        <tr><td>A</td><td>Many cells forming a cohesive epithelium</td></tr>
+        <tr><td>B</td><td>Few cells, loose epithelium</td></tr>
+        <tr><td>C</td><td>Very few, large cells</td></tr></table></div>
     </div>
   </section>
 
-  <!-- 4. ISTILAH -->
-  <section id="istilah" aria-labelledby="t-istilah">
-    <h2 id="t-istilah">Keterangan istilah IVF</h2>
-    <p class="sub">Penjelasan singkat dalam bahasa sehari-hari. Ketik untuk mencari.</p>
-    <label for="q" class="rolenote" style="display:block">Cari istilah</label>
-    <input id="q" class="search" type="search" placeholder="Contoh: biopsi, 4BB, vitrification" autocomplete="off">
-    <div class="gloss" id="gloss"></div>
-    <p class="empty" id="none" hidden>Istilah tidak ditemukan. Tanyakan langsung kepada tim Asha IVF.</p>
+  <section id="tools" aria-labelledby="t-tools">
+    <h2 id="t-tools">Tools</h2>
+    <p class="sub">Open these in the lab or in clinic.</p>
+    <div class="tools">
+      <a href="lab/"><span class="label">For embryologists</span><h3>Embryo Recovery Log</h3><p>Record each handling event with time, photo and condition. Durations are calculated automatically. Add the AI score and the decision, then print or export.</p><span class="go">Open the log →</span></a>
+      <a href="patients/"><span class="label">For patient education</span><h3>Your Embryo's Big Day</h3><p>A friendly, illustrated walkthrough of freezing, warming and the AI helper, built to be shown in the consultation room.</p><span class="go">Open the guide →</span></a>
+    </div>
   </section>
 
-  <p class="note">Halaman ini memakai contoh kasus untuk demonstrasi dan bukan nasihat medis. Skor AI mendukung tim embriologi dan tidak menggantikan penilaian klinis. Keputusan transfer atau mencairkan embrio tambahan ada pada dokter yang menangani dan pasien.</p>
+  <p class="note">Example case shown for demonstration. The AI score supports the embryology team and does not replace clinical judgment. The decision to transfer or to warm another embryo rests with the treating physician and the patient.</p>
   <footer><span>Asha IVF · Fertility Dialogue 2026</span><span>AI Model 2</span></footer>
 </div>
 
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-
-  /* ---------- 1. Perjalanan ---------- */
-  var journey = [
-    {t:'Konsultasi awal dan stimulasi', lab:'Tim menyusun rencana terapi dari riwayat, hasil lab dan USG.', pt:'Anda menjalani pemeriksaan, lalu suntik hormon selama sekitar dua minggu. Dokter memantau pertumbuhan folikel dengan USG.', ask:'Berapa lama stimulasi? Apa efek sampingnya?'},
-    {t:'Pengambilan sel telur (OPU)', lab:'Sel telur dibuahi dengan sperma (ICSI atau IVF konvensional) dan embrio dikultur di inkubator.', pt:'Tindakan singkat dengan pembiusan. Biasanya Anda pulang di hari yang sama.', ask:'Bagaimana persiapan dan pemulihannya?'},
-    {t:'Kultur dan biopsi', lab:'Embrio dikultur sampai tahap blastokista. Jika dipilih, beberapa sel trofektoderm diambil untuk tes genetik (PGT).', pt:'Anda tidak perlu hadir. Tim akan menghubungi Anda saat hasil kultur atau tes tersedia.', ask:'Apakah biopsi perlu untuk kasus saya?'},
-    {t:'Vitrification (pembekuan)', lab:'Embrio dibekukan sangat cepat dengan vitrification dan disimpan di nitrogen cair.', pt:'Embrio disimpan sampai siklus transfer Anda siap. Tubuh Anda bisa dipersiapkan lebih dulu.', ask:'Berapa embrio yang dibekukan dan di mana disimpan?'},
-    {t:'Thawing dan recovery', lab:'Pada hari transfer, embrio dihangatkan. Embriolog mengamati apakah embrio kembali mengembang dan memotretnya.', pt:'Anda datang sesuai jadwal. Pencairan dilakukan di hari yang sama dengan transfer.', ask:'Apa artinya jika embrio “belum mengembang penuh”?'},
-    {t:'AI grading (0–10)', lab:'AI membaca foto recovery, menghasilkan skor 0–10, dan menampilkannya di Embryo 4D Map.', pt:'Skor ini hanya salah satu masukan untuk dokter dan embriolog Anda.', ask:'Seberapa besar skor menentukan keputusan?'},
-    {t:'Konsultasi dokter dan pasien', lab:'Dokter dan embriolog menyiapkan foto, skor, riwayat 4D Map dan jumlah embrio beku tersisa.', pt:'Anda dan dokter membahas dua pilihan: transfer satu embrio ini, atau menghangatkan satu lagi.', ask:'Lihat bagian Konsultasi di bawah.'},
-    {t:'Transfer dan tes kehamilan', lab:'Embrio dipindahkan ke rahim di bawah panduan USG.', pt:'Prosedurnya singkat. Tes kehamilan dilakukan sekitar dua minggu kemudian sesuai jadwal dokter.', ask:'Apa yang boleh dan tidak boleh setelah transfer?'}
+  /* min = minutes from the start of that day's segment */
+  var E = [
+    {k:'Biopsy',        seg:0, min:0,   time:'10:04', by:'Embryologist A', state:'Grade 4BB', scale:1.0,  ai:false,
+      note:'Trophectoderm biopsy on the day of sampling.', rows:[['Time','10:04'],['Embryo grade','4BB'],['TE cells','10'],['Biopsy cell count','4'],['ORA','2.6 / 0.3']], bio:true},
+    {k:'Vitrification', seg:0, min:131, time:'12:15', by:'Embryologist B', state:'Grade 4BB', scale:1.0,  ai:false,
+      note:'Vitrified 2 h 11 m after biopsy.', rows:[['Time','12:15'],['Embryo grade','4BB'],['TE cells','7'],['Expanding rate','90%']]},
+    {k:'Thawing',       seg:1, min:0,   time:'09:14', by:'Embryologist A', state:'Collapse', scale:0.52, ai:false,
+      note:'Warmed on the transfer day. The blastocyst collapses on warming.', rows:[['Time','09:14'],['Condition','Collapse']]},
+    {k:'Recovery',      seg:1, min:127, time:'11:21', by:'Embryologist C', state:'Slightly expanding', scale:0.7, ai:true,
+      note:'2 h 7 m after warming. Photo sent to AI grading.', rows:[['Time','11:21'],['Condition','Slightly expanding'],['AI photo','Yes']]},
+    {k:'Recovery',      seg:1, min:188, time:'12:22', by:'Embryologist D', state:'Fully expanding', scale:0.95, ai:true,
+      note:'1 h 1 m after the first photo. Photo sent to AI grading.', rows:[['Time','12:22'],['Condition','Fully expanding'],['AI photo','Yes']]},
+    {k:'Pre-transfer',  seg:1, min:256, time:'13:30', by:'Embryologist E', state:'Fully expanding', scale:0.95, ai:true,
+      note:'1 h 8 m after the second photo, immediately before transfer.', rows:[['Time','13:30'],['Condition','Fully expanding'],['TE cells','7'],['AI photo','Yes']]}
   ];
-  var stepsEl = $('steps'), stepDetail = $('step-detail'), cur = 0;
-  journey.forEach(function(s,i){
-    var li = document.createElement('li');
-    var b = document.createElement('button');
-    b.type = 'button'; b.setAttribute('role','tab'); b.setAttribute('aria-selected', i===0?'true':'false');
-    b.innerHTML = '<span class="n">'+(i+1)+'</span><span>'+s.t+'</span>';
-    b.addEventListener('click', function(){ pickStep(i); });
-    li.appendChild(b); stepsEl.appendChild(li);
-  });
-  function pickStep(i){
-    cur = i; var s = journey[i];
-    Array.prototype.forEach.call(stepsEl.querySelectorAll('button'), function(b,j){ b.setAttribute('aria-selected', j===i?'true':'false'); });
-    stepDetail.innerHTML =
-      '<div class="progress"><i style="width:'+Math.round((i+1)/journey.length*100)+'%"></i></div>'+
-      '<span class="label">Langkah '+(i+1)+' dari '+journey.length+'</span><h3 style="margin-top:2px">'+s.t+'</h3>'+
-      '<div class="cols2"><div><h4>Di laboratorium</h4><p>'+s.lab+'</p></div><div><h4>Yang dialami pasien</h4><p>'+s.pt+'</p></div></div>'+
-      '<p style="margin:16px 0 0;color:var(--muted)"><b>Pertanyaan umum:</b> '+s.ask+'</p>';
-  }
-  pickStep(0);
+  var SEGS = [{cap:'Biopsy day', len:131, flex:131},{cap:'Warming day', len:256, flex:256}];
+  var axis = $('axis'), cur = 0, timer = null, nodes = [];
 
-  /* ---------- 2. 4D Map ---------- */
-  var embryo = function(kind){
-    var ring = '<circle cx="30" cy="30" r="26" fill="none" stroke="#555" stroke-opacity=".35" stroke-width="2"/>';
-    var blob = {
-      bio:'<circle cx="30" cy="30" r="20" fill="#9a9a9a" fill-opacity=".55"/><circle cx="30" cy="26" r="9" fill="#6f6f6f" fill-opacity=".6"/>',
-      vit:'<circle cx="30" cy="30" r="21" fill="#a9a9a9" fill-opacity=".6"/><circle cx="24" cy="26" r="7" fill="#777" fill-opacity=".6"/><circle cx="36" cy="33" r="6" fill="#777" fill-opacity=".5"/>',
-      thaw:'<ellipse cx="30" cy="31" rx="13" ry="10" fill="#8a8a8a" fill-opacity=".7"/>',
-      rec1:'<circle cx="30" cy="30" r="14" fill="#8f8f8f" fill-opacity=".65"/>',
-      rec2:'<circle cx="30" cy="30" r="19" fill="#a2a2a2" fill-opacity=".6"/><circle cx="30" cy="27" r="8" fill="#707070" fill-opacity=".55"/>',
-      pre:'<circle cx="30" cy="30" r="21" fill="#a9a9a9" fill-opacity=".6"/><circle cx="25" cy="28" r="7" fill="#777" fill-opacity=".55"/><circle cx="36" cy="32" r="5" fill="#777" fill-opacity=".5"/>'
-    };
-    return '<svg viewBox="0 0 60 60" aria-hidden="true">'+(kind==='rec1'||kind==='rec2'?ring:'')+blob[kind]+'</svg>';
-  };
-  var stages = [
-    {phase:'Biopsy', time:'10:04', who:'Embriolog A', state:'Grade 4BB', cls:'bio', art:'bio', title:'Biopsy', note:'Biopsi trofektoderm pada hari pengambilan sampel.', rows:[['Jam','10:04'],['Grade embrio','4BB'],['Sel TE','10'],['Jumlah sel biopsi','4'],['ORA','2,6 / 0,3']]},
-    {phase:'Vitrification', time:'12:15', who:'Embriolog B', state:'Grade 4BB', cls:'vit', art:'vit', title:'Vitrification', note:'Embrio dibekukan 2 j 11 m setelah biopsi.', rows:[['Jam','12:15'],['Grade embrio','4BB'],['Sel TE','7'],['Expanding rate','90%']]},
-    {phase:'Thawing', time:'09:14', who:'Embriolog A', state:'Collapse', cls:'thaw', art:'thaw', title:'Thawing', note:'Embrio dihangatkan dan menciut (collapse) saat dicairkan.', rows:[['Jam','09:14'],['Kondisi','Collapse']]},
-    {phase:'Recovery', time:'11:21', who:'Embriolog C', state:'Mulai mengembang', cls:'rec', art:'rec1', title:'Recovery · foto pertama', note:'2 j 7 m setelah thawing. Foto dikirim ke AI grading.', rows:[['Jam','11:21'],['Kondisi','Slightly expanding'],['Foto AI','Ya']]},
-    {phase:'Recovery', time:'12:22', who:'Embriolog D', state:'Mengembang penuh', cls:'rec', art:'rec2', title:'Recovery · foto kedua', note:'1 j 1 m setelah foto pertama. Foto dikirim ke AI grading.', rows:[['Jam','12:22'],['Kondisi','Fully expanding'],['Foto AI','Ya']]},
-    {phase:'Pre-transfer', time:'13:30', who:'Embriolog E', state:'Mengembang penuh', cls:'pre', art:'pre', title:'Pre-transfer', note:'1 j 8 m setelah foto kedua, tepat sebelum transfer.', rows:[['Jam','13:30'],['Kondisi','Fully expanding'],['Sel TE','7'],['Foto AI','Ya']]}
-  ];
-  var gaps = ['','2 j 11 m','','2 j 7 m','1 j 1 m','1 j 8 m'];
-  var track = $('track'), dur = $('durations'), detail = $('detail');
-  stages.forEach(function(s,i){
-    var b = document.createElement('button');
-    b.className='stage'; b.type='button'; b.setAttribute('aria-pressed', i===0?'true':'false');
-    b.innerHTML='<span class="phase">'+s.phase+'</span><span class="time">'+s.time+'</span><span class="who">'+s.who+'</span><span class="pic '+s.cls+'">'+embryo(s.art)+'</span><span class="state">'+s.state+'</span>';
-    b.addEventListener('click', function(){ pickStage(i); });
-    track.appendChild(b);
-    var g=document.createElement('span'); g.textContent=gaps[i]; dur.appendChild(g);
+  /* axis build */
+  var segEls = SEGS.map(function(s,i){
+    var d = document.createElement('div'); d.className='seg'; d.style.flex = s.flex+' 1 0';
+    d.innerHTML = '<span class="cap">'+s.cap+'</span>';
+    axis.appendChild(d);
+    if(i===0){ var b=document.createElement('div'); b.className='brk'; b.innerHTML='<span>Cryostorage</span>'; axis.appendChild(b); }
+    return d;
   });
-  function pickStage(i){
-    var s=stages[i];
-    Array.prototype.forEach.call(track.children,function(el,j){ el.setAttribute('aria-pressed', j===i?'true':'false'); });
-    var h='<span class="label">'+s.phase+'</span><h3>'+s.title+'</h3><p style="margin:0;color:var(--muted)">'+s.note+'</p><dl>';
-    s.rows.forEach(function(r){ h+='<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; });
-    detail.innerHTML=h+'</dl>';
-  }
-  pickStage(0);
-
-  /* ---------- 3. Konsultasi ---------- */
-  var QA = [
-    {q:'Apa arti skor AI 2 dari 10?',
-     pt:'Skor ini menilai foto embrio saat recovery. Angka rendah berarti AI melihat tanda yang kurang menguntungkan pada foto itu. Skor tidak menyatakan embrio pasti gagal atau pasti berhasil, dan dokter akan menilainya bersama pengamatan embriolog.',
-     doc:['Jelaskan skor sebagai alat bantu atas foto recovery, bukan prediksi individual.','Padukan dengan morfologi, kecepatan re-expansion dan riwayat pada 4D Map.','Sebutkan keterbatasan: contoh kasus ini hanya demonstrasi.']},
-    {q:'Mengapa disarankan menghangatkan satu embrio lagi?',
-     pt:'Karena skornya rendah, sistem menyarankan menyiapkan embrio lain sebagai pembanding atau cadangan. Ini hanya saran. Embrio kedua baru dicairkan jika Anda setuju dan memang masih ada embrio beku lain.',
-     doc:['Konfirmasi dulu masih ada embrio beku tersisa dan kualitasnya.','Jelaskan bahwa saran AI tidak otomatis menjadi keputusan.','Ambil persetujuan pasien sebelum mencairkan embrio tambahan.']},
-    {q:'Apa arti “4BB”?',
-     pt:'Ini kode kualitas blastokista. Angka 4 berarti embrio sudah mengembang besar. Huruf pertama menilai calon janin (inner cell mass), huruf kedua menilai calon plasenta (trofektoderm). Huruf B berarti kualitas baik.',
-     doc:['Sistem Gardner: angka 1–6 untuk ekspansi, huruf A–C untuk ICM dan TE.','Grade menilai morfologi, bukan status genetik.']},
-    {q:'Apakah embrio yang sudah dicairkan bisa dibekukan lagi?',
-     pt:'Pada umumnya embrio yang sudah dicairkan tidak dibekukan ulang secara rutin. Kebijakan tiap klinik berbeda, jadi tanyakan kepada embriolog sebelum memutuskan.',
-     doc:['Sampaikan kebijakan Asha IVF tentang pembekuan ulang secara jelas.','Catat bila pasien memilih opsi di luar kebijakan standar.']},
-    {q:'Apakah mencairkan embrio berisiko?',
-     pt:'Pembekuan dan pencairan dengan vitrification umum dilakukan. Meski begitu, tidak semua embrio bertahan setelah dicairkan. Tim akan menjelaskan hal ini sesuai kondisi Anda.',
-     doc:['Jelaskan kemungkinan embrio tidak bertahan setelah thawing.','Hindari angka persentase kecuali berasal dari data laboratorium sendiri.']},
-    {q:'Bagaimana jika saya tetap ingin transfer embrio ini?',
-     pt:'Itu hak Anda. Dokter akan menjelaskan konsekuensinya, lalu keputusan dicatat. Pilihan ini tetap bisa dibahas sampai sebelum transfer dilakukan.',
-     doc:['Hormati preferensi pasien setelah informasi lengkap disampaikan.','Dokumentasikan penjelasan, keputusan dan waktunya.']}
-  ];
-  var qa = $('qa');
-  QA.forEach(function(x){
-    var d = document.createElement('details'); d.className='q';
-    d.innerHTML = '<summary>'+x.q+'</summary><div class="ans"><div class="for-pt">'+x.pt+'</div><div class="for-doc"><ul class="tight">'+x.doc.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul></div></div>';
-    qa.appendChild(d);
-  });
-  var sec = $('konsultasi');
-  var docOnly = document.querySelectorAll('[data-doc-only]');
-  function setRole(r){
-    sec.setAttribute('data-role', r);
-    $('r-pt').setAttribute('aria-pressed', r==='pt'?'true':'false');
-    $('r-doc').setAttribute('aria-pressed', r==='doc'?'true':'false');
-    $('rolenote').textContent = r==='pt' ? 'Jawaban dalam bahasa sehari-hari untuk pasien.' : 'Poin pembicaraan untuk dokter dan embriolog.';
-    Array.prototype.forEach.call(docOnly, function(el){ el.hidden = (r!=='doc'); });
-  }
-  $('r-pt').addEventListener('click', function(){ setRole('pt'); });
-  $('r-doc').addEventListener('click', function(){ setRole('doc'); });
-  setRole('pt');
-
-  var PRI = {
-    chance:'Memaksimalkan peluang pada siklus ini',
-    cost:'Biaya dan jumlah tindakan tambahan',
-    spare:'Tidak ingin ada embrio dicairkan lalu tidak terpakai',
-    today:'Transfer sesuai jadwal hari ini',
-    remaining:'Mengetahui jumlah embrio beku yang tersisa'
-  };
-  var LEAN = {transfer:'Condong transfer satu embrio ini', warm:'Condong menghangatkan satu lagi', unsure:'Belum tahu, ingin penjelasan dulu'};
-  var QS = {
-    chance:'Bagaimana skor AI dan pengamatan Anda memengaruhi peluang pada siklus ini?',
-    cost:'Berapa biaya dan tindakan tambahan jika satu embrio lagi dicairkan?',
-    spare:'Apa kebijakan klinik jika embrio sudah dicairkan tetapi tidak dipakai?',
-    today:'Apakah menghangatkan satu lagi mengubah jadwal transfer hari ini?',
-    remaining:'Berapa embrio beku yang tersisa dan bagaimana kualitasnya?'
-  };
-  var out = $('summary');
-  function buildSummary(){
-    var lean = document.querySelector('input[name="lean"]:checked').value;
-    var pri = Array.prototype.map.call(document.querySelectorAll('input[name="pri"]:checked'), function(e){ return e.value; });
-    var t = 'RINGKASAN DISKUSI (bukan rekomendasi medis)\n\n';
-    t += 'Kasus contoh: blastokista 4BB, recovery dari mulai mengembang ke mengembang penuh, skor AI 2/10, saran AI: thaw one more.\n\n';
-    t += 'Kecenderungan saya: '+LEAN[lean]+'\n\n';
-    t += 'Yang penting bagi saya:\n';
-    t += pri.length ? pri.map(function(k){ return '- '+PRI[k]; }).join('\n') : '- (belum dipilih)';
-    t += '\n\nPertanyaan untuk dokter:\n';
-    t += '- Apa arti skor 2/10 untuk embrio ini, bersama pengamatan embriolog?\n';
-    pri.forEach(function(k){ t += '- '+QS[k]+'\n'; });
-    out.textContent = t.replace(/\n+$/,'');
-  }
-  Array.prototype.forEach.call(document.querySelectorAll('input[name="lean"],input[name="pri"]'), function(e){ e.addEventListener('change', buildSummary); });
-  buildSummary();
-  $('copy').addEventListener('click', function(){
-    var done = function(){ $('copied').hidden = false; setTimeout(function(){ $('copied').hidden = true; }, 1800); };
-    try{
-      navigator.clipboard.writeText(out.textContent).then(done, function(){ sel(); });
-    }catch(e){ sel(); }
-    function sel(){
-      var r = document.createRange(); r.selectNodeContents(out);
-      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  E.forEach(function(e,i){
+    var s = SEGS[e.seg], b = document.createElement('button');
+    b.type='button'; b.className='node'+(e.ai?' ai':''); b.style.left = (e.min/s.len*100)+'%';
+    b.setAttribute('aria-pressed','false'); b.setAttribute('aria-label', e.k+' at '+e.time);
+    b.innerHTML='<span class="t">'+e.time+'</span>';
+    b.addEventListener('click', function(){ stop(); go(i); });
+    segEls[e.seg].appendChild(b); nodes.push(b);
+    var prev = E[i-1];
+    if(prev && prev.seg===e.seg){
+      var m = e.min-prev.min, h=Math.floor(m/60), mm=m%60, d=document.createElement('span');
+      d.className='dur'; d.style.left=(((prev.min+e.min)/2)/s.len*100)+'%';
+      d.textContent = '+'+(h?h+' h ':'')+(mm?mm+' m':''); segEls[e.seg].appendChild(d);
     }
   });
 
-  /* ---------- 4. Istilah ---------- */
-  var G = [
-    ['IVF','In Vitro Fertilization','Sel telur dan sperma dipertemukan di laboratorium. Embrio yang terbentuk kemudian dipindahkan ke rahim.'],
-    ['OPU','Oocyte Pick-Up','Tindakan pengambilan sel telur dari ovarium dengan jarum halus di bawah panduan USG.'],
-    ['ICSI','Intracytoplasmic Sperm Injection','Satu sperma disuntikkan langsung ke dalam satu sel telur untuk membantu pembuahan.'],
-    ['Blastokista','Blastocyst','Embrio berusia sekitar 5–6 hari yang sudah punya rongga berisi cairan, calon janin, dan calon plasenta.'],
-    ['Grade 4BB','Gardner grading','Angka (1–6) menunjukkan seberapa mengembang embrio. Huruf pertama menilai calon janin, huruf kedua calon plasenta (A terbaik, C terendah).'],
-    ['Trofektoderm (TE)','Trophectoderm','Lapisan sel luar blastokista yang kelak menjadi plasenta. Sel TE inilah yang diambil saat biopsi.'],
-    ['Biopsi embrio','Embryo biopsy','Beberapa sel TE diambil untuk dites. Embrio tetap dikembangkan dan dibekukan sambil menunggu hasil.'],
-    ['PGT','Preimplantation Genetic Testing','Tes genetik pada sel hasil biopsi sebelum transfer, misalnya untuk memeriksa jumlah kromosom.'],
-    ['Vitrification','Vitrification','Teknik pembekuan sangat cepat agar tidak terbentuk kristal es yang merusak sel.'],
-    ['Thawing','Thawing / warming','Proses menghangatkan embrio beku sebelum transfer.'],
-    ['Recovery & re-expansion','Recovery','Masa setelah thawing ketika embrio pulih dan mengembang kembali. Embriolog mengamati dan memotretnya.'],
-    ['Collapse','Collapse','Embrio menciut saat dicairkan. Ini diamati lagi untuk melihat apakah embrio kembali mengembang.'],
-    ['Embryo 4D Map','Embryo 4D Map','Riwayat embrio per waktu dan per tahap, dari biopsi sampai sebelum transfer, dengan foto dan catatan.'],
-    ['AI grading','AI grading (0–10)','Skor dari foto recovery sebagai masukan tambahan bagi dokter dan embriolog. Bukan keputusan akhir.'],
-    ['FET','Frozen Embryo Transfer','Transfer embrio yang sebelumnya dibekukan, setelah rahim dipersiapkan pada siklus terpisah.'],
-    ['Tes kehamilan (beta hCG)','Beta hCG','Tes darah untuk mendeteksi hormon kehamilan, biasanya sekitar dua minggu setelah transfer.']
-  ];
-  var gl = $('gloss'), none = $('none'), qi = $('q');
-  function renderG(){
-    var f = qi.value.trim().toLowerCase(), n = 0; gl.innerHTML = '';
-    G.forEach(function(g){
-      if(f && (g.join(' ').toLowerCase().indexOf(f) < 0)) return;
-      n++;
-      var c = document.createElement('div'); c.className='card';
-      c.innerHTML = '<h3>'+g[0]+'</h3><span class="en">'+g[1]+'</span><p>'+g[2]+'</p>';
-      gl.appendChild(c);
-    });
-    none.hidden = n>0;
+  /* embryo schematic */
+  function viz(e){
+    var sc = e.scale, ns = 'http://www.w3.org/2000/svg', n = parseInt((e.rows.filter(function(r){return r[0]==='TE cells';})[0]||[0,10])[1],10) || 10;
+    var cav = Math.max(0, (sc-0.55)/0.45);               /* cavity openness 0..1 */
+    var R = 118*sc, g = '';
+    g += '<g class="sg">';
+    /* zona pellucida */
+    g += '<circle cx="150" cy="150" r="'+(sc>=0.9?132:124)+'" fill="none" stroke="var(--embryo-d)" stroke-opacity=".45" stroke-width="'+(sc>=0.9?4:7)+'"/>';
+    /* embryo body */
+    g += '<circle cx="150" cy="150" r="'+R.toFixed(1)+'" fill="var(--embryo)" fill-opacity="'+(0.25+0.2*cav).toFixed(2)+'" stroke="var(--embryo-d)" stroke-width="3"/>';
+    /* TE cells ring */
+    var tr = R-6, i;
+    for(i=0;i<n;i++){
+      var a = (Math.PI*2*i/n) - Math.PI/2, x = 150+tr*Math.cos(a), y = 150+tr*Math.sin(a);
+      var hot = e.bio && i<4;
+      g += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(sc<0.6?7:9)+'" fill="'+(hot?'var(--coral)':'var(--embryo-d)')+'" fill-opacity="'+(hot?0.9:0.7)+'"/>';
+    }
+    /* ICM */
+    var ir = sc<0.6 ? 20 : 26;
+    g += '<ellipse cx="'+(150-R*0.28).toFixed(1)+'" cy="'+(150-R*0.12).toFixed(1)+'" rx="'+ir+'" ry="'+(ir*0.8).toFixed(1)+'" fill="var(--embryo-d)" fill-opacity=".75"/>';
+    g += '</g>';
+    $('viz').innerHTML = g;
+    $('viz-cap').textContent = e.bio ? 'Schematic. Highlighted cells: biopsy sample (4).' : 'Schematic of '+e.state.toLowerCase()+'. Not a patient image.';
   }
-  qi.addEventListener('input', renderG); renderG();
+
+  function go(i){
+    cur = (i+E.length)%E.length; var e = E[cur];
+    nodes.forEach(function(n,j){ n.setAttribute('aria-pressed', j===cur?'true':'false'); });
+    viz(e);
+    var h='<span class="label">'+e.k+'</span><h3>'+e.state+'</h3><p>'+e.note+'</p><dl><dt>Handled by</dt><dd>'+e.by+'</dd>';
+    e.rows.forEach(function(r){ h+='<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; });
+    $('detail').innerHTML = h+'</dl>';
+  }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } var p=$('play'); p.setAttribute('aria-pressed','false'); p.textContent='▶ Play'; }
+  $('play').addEventListener('click', function(){
+    if(timer){ stop(); return; }
+    this.setAttribute('aria-pressed','true'); this.textContent='❚❚ Pause';
+    if(cur===E.length-1) go(0);
+    timer = setInterval(function(){ if(cur>=E.length-1){ stop(); return; } go(cur+1); }, 1700);
+  });
+  $('prev').addEventListener('click', function(){ stop(); go(cur-1); });
+  $('next').addEventListener('click', function(){ stop(); go(cur+1); });
+  axis.addEventListener('keydown', function(ev){
+    if(ev.key==='ArrowRight'){ stop(); go(Math.min(cur+1,E.length-1)); nodes[cur].focus(); ev.preventDefault(); }
+    if(ev.key==='ArrowLeft'){ stop(); go(Math.max(cur-1,0)); nodes[cur].focus(); ev.preventDefault(); }
+  });
+  go(0);
 })();
 </script>
 </body>

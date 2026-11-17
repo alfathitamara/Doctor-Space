@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Asha IVF · Embryo Recovery Log</title>
-<meta name="description" content="Alat kerja embriolog Asha IVF: catat tahap embrio, foto recovery, skor AI dan keputusan. Data tersimpan di perangkat ini.">
+<meta name="description" content="Asha IVF embryology working tool: log embryo handling events, recovery photos, AI score and the transfer decision. Data stays on this device.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -128,35 +128,35 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
       Asha IVF · Embryo Recovery Log
     </div>
     <span id="saved" aria-live="polite"></span>
-    <a class="back" href="../">← Halaman utama</a>
+    <a class="back" href="../">← Back to overview</a>
   </div>
 </header>
 
 <main class="wrap">
-  <p class="privacy"><b>Data hanya tersimpan di browser perangkat ini.</b> Pakai kode kasus, bukan nama pasien. Alat ini membantu pencatatan dan tidak menggantikan rekam medis resmi. Ekspor cadangan secara berkala.</p>
+  <p class="privacy"><b>Data is stored only in this browser on this device.</b> Use case codes, not patient names. This tool supports record keeping and does not replace the official medical record. Export a backup regularly.</p>
 
   <div class="layout">
     <aside class="rail">
       <div class="card">
-        <h2>Kasus</h2>
-        <button type="button" class="btn full" id="new">+ Kasus baru</button>
+        <h2>Cases</h2>
+        <button type="button" class="btn full" id="new">+ New case</button>
         <ul class="cases" id="cases"></ul>
         <div class="row">
-          <button type="button" class="btn ghost sm" id="exp-all">Cadangan (JSON)</button>
-          <label class="btn ghost sm" for="imp" style="cursor:pointer">Pulihkan</label>
+          <button type="button" class="btn ghost sm" id="exp-all">Backup (JSON)</button>
+          <label class="btn ghost sm" for="imp" style="cursor:pointer">Restore</label>
           <input id="imp" type="file" accept="application/json,.json" hidden>
         </div>
         <details class="set" style="margin-top:14px">
-          <summary>Pengaturan lab</summary>
-          <label class="f" style="margin-top:10px" for="thr">Saran “thaw one more” bila skor AI ≤
-            <input id="thr" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="belum diatur">
+          <summary>Lab settings</summary>
+          <label class="f" style="margin-top:10px" for="thr">Suggest “thaw one more” when AI score ≤
+            <input id="thr" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="not set">
           </label>
-          <p class="hint">Isi sesuai SOP dan validasi lab. Kosongkan bila belum ada ambang; alat tidak akan menampilkan saran.</p>
+          <p class="hint">Set according to your SOP and lab validation. Leave empty if no threshold is defined; the tool will then show no suggestion.</p>
         </details>
       </div>
     </aside>
 
-    <section id="editor" aria-label="Editor kasus"></section>
+    <section id="editor" aria-label="Case editor"></section>
   </div>
 </main>
 
@@ -168,15 +168,15 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
   var KEY = 'asha_embryo_log_v1';
   var TYPES = [['biopsy','Biopsy'],['vitrification','Vitrification'],['thawing','Thawing'],['recovery','Recovery'],['pretransfer','Pre-transfer']];
   var STATES = ['','Collapse','Slightly expanding','Expanding','Fully expanding'];
-  var DECISIONS = [['','Belum diputuskan'],['transfer','Transfer satu embrio ini'],['warm','Hangatkan satu embrio lagi'],['other','Lainnya (lihat catatan)']];
+  var DECISIONS = [['','Not decided'],['transfer','Transfer this embryo'],['warm','Warm one more embryo'],['other','Other (see note)']];
   var S = {cases:[], settings:{threshold:null}, sel:null, editing:null, photo:''};
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
   function uid(){ return Math.random().toString(36).slice(2,9); }
   function pad(n){ return (n<10?'0':'')+n; }
   function nowLocal(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes()); }
-  function fmtDT(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return s; var M=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']; return d.getDate()+' '+M[d.getMonth()]+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }
-  function fmtDur(ms){ var m=Math.round(ms/60000); if(m<60) return m+' m'; var h=Math.floor(m/60), mm=m%60; if(h<24) return h+' j'+(mm?' '+mm+' m':''); var d=Math.floor(h/24); h=h%24; return d+' hari'+(h?' '+h+' j':''); }
+  function fmtDT(s){ if(!s) return ''; var d=new Date(s); if(isNaN(d)) return s; var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return d.getDate()+' '+M[d.getMonth()]+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+  function fmtDur(ms){ var m=Math.round(ms/60000); if(m<60) return m+' m'; var h=Math.floor(m/60), mm=m%60; if(h<24) return h+' h'+(mm?' '+mm+' m':''); var d=Math.floor(h/24); h=h%24; return d+' d'+(h?' '+h+' h':''); }
   function typeName(k){ for(var i=0;i<TYPES.length;i++) if(TYPES[i][0]===k) return TYPES[i][1]; return k; }
   function decName(k){ for(var i=0;i<DECISIONS.length;i++) if(DECISIONS[i][0]===k) return DECISIONS[i][1]; return ''; }
 
@@ -185,8 +185,8 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
     if(S.cases.length) S.sel=S.cases[0].id;
   }
   function save(){
-    try{ localStorage.setItem(KEY, JSON.stringify({cases:S.cases, settings:S.settings})); var d=new Date(); $('saved').textContent='Tersimpan di perangkat ini · '+pad(d.getHours())+':'+pad(d.getMinutes()); }
-    catch(e){ $('saved').textContent='Gagal menyimpan (penyimpanan penuh atau diblokir). Ekspor cadangan sekarang.'; }
+    try{ localStorage.setItem(KEY, JSON.stringify({cases:S.cases, settings:S.settings})); var d=new Date(); $('saved').textContent='Saved on this device · '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+    catch(e){ $('saved').textContent='Could not save (storage full or blocked). Export a backup now.'; }
   }
   function cur(){ for(var i=0;i<S.cases.length;i++) if(S.cases[i].id===S.sel) return S.cases[i]; return null; }
   function sorted(c){ return c.stages.slice().sort(function(a,b){ return new Date(a.dt)-new Date(b.dt); }); }
@@ -198,7 +198,7 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
       var li=document.createElement('li'); var b=document.createElement('button'); b.type='button';
       if(c.id===S.sel) b.setAttribute('aria-current','true');
       var sc = c.ai && c.ai.score!=null && c.ai.score!=='' ? ' · AI '+c.ai.score+'/10' : '';
-      b.innerHTML='<b>'+esc(c.code||'(tanpa kode)')+'</b><small>'+c.stages.length+' tahap'+esc(sc)+'</small>';
+      b.innerHTML='<b>'+esc(c.code||'(no code)')+'</b><small>'+c.stages.length+' events'+esc(sc)+'</small>';
       b.addEventListener('click', function(){ S.sel=c.id; S.editing=null; S.photo=''; render(); });
       li.appendChild(b); ul.appendChild(li);
     });
@@ -209,20 +209,20 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
   function renderEditor(){
     var c=cur(), ed=$('editor');
     if(!c){
-      ed.innerHTML='<div class="card empty"><h2>Belum ada kasus</h2><p>Buat kasus pertama, lalu catat tahap embrio dari biopsy sampai pre-transfer.</p><button type="button" class="btn" id="new2">+ Kasus baru</button></div>';
+      ed.innerHTML='<div class="card empty"><h2>No cases yet</h2><p>Create the first case, then log embryo events from biopsy through pre-transfer.</p><button type="button" class="btn" id="new2">+ New case</button></div>';
       $('new2').addEventListener('click', newCase); $('sheet').innerHTML=''; return;
     }
     var st=sorted(c), tl='';
-    if(!st.length) tl='<p class="hint">Belum ada tahap. Gunakan tombol cepat di bawah untuk mencatat tahap pertama.</p>';
+    if(!st.length) tl='<p class="hint">No events yet. Use the quick buttons below to log the first event.</p>';
     else{
       tl='<ul class="tl">';
       st.forEach(function(s,i){
-        var gap = i>0 ? '<div class="gap">+ '+fmtDur(new Date(s.dt)-new Date(st[i-1].dt))+' sejak '+esc(typeName(st[i-1].type))+'</div>' : '';
+        var gap = i>0 ? '<div class="gap">+ '+fmtDur(new Date(s.dt)-new Date(st[i-1].dt))+' since '+esc(typeName(st[i-1].type))+'</div>' : '';
         var meta=[]; if(s.state) meta.push(esc(s.state)); if(s.te!=='' && s.te!=null) meta.push('Sel TE '+esc(s.te)); if(s.exp!=='' && s.exp!=null) meta.push('Expanding '+esc(s.exp)+'%'); if(s.by) meta.push(esc(s.by));
-        tl+='<li>'+(s.photo?'<img class="thumb" src="'+s.photo+'" alt="Foto '+esc(typeName(s.type))+'">':'<div class="noimg">tanpa foto</div>')+
+        tl+='<li>'+(s.photo?'<img class="thumb" src="'+s.photo+'" alt="Photo '+esc(typeName(s.type))+'">':'<div class="noimg">no photo</div>')+
           '<div><div class="t">'+esc(typeName(s.type))+' <span class="m">· '+esc(fmtDT(s.dt))+'</span></div>'+
           (meta.length?'<div class="m">'+meta.join(' · ')+'</div>':'')+(s.note?'<div class="n">'+esc(s.note)+'</div>':'')+'</div>'+
-          '<div class="acts"><button type="button" class="btn ghost sm" data-edit="'+s.id+'">Ubah</button><button type="button" class="btn danger sm" data-del="'+s.id+'">Hapus</button></div>'+gap+'</li>';
+          '<div class="acts"><button type="button" class="btn ghost sm" data-edit="'+s.id+'">Edit</button><button type="button" class="btn danger sm" data-del="'+s.id+'">Delete</button></div>'+gap+'</li>';
       });
       tl+='</ul>';
     }
@@ -235,58 +235,58 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
     var decOpts=DECISIONS.map(function(d){return '<option value="'+d[0]+'"'+(d[0]===(dc.choice||'')?' selected':'')+'>'+d[1]+'</option>';}).join('');
 
     ed.innerHTML =
-    '<div class="card"><h2>Data kasus</h2><div class="grid4">'+
-      '<label class="f">Kode kasus / embrio<input id="c-code" value="'+esc(c.code)+'" placeholder="mis. A-0123/E2" autocomplete="off"></label>'+
-      '<label class="f">Usia saat OPU<input id="c-age" type="number" min="15" max="60" inputmode="numeric" value="'+esc(c.age)+'"></label>'+
-      '<label class="f">Grade embrio<input id="c-grade" value="'+esc(c.grade)+'" placeholder="mis. 4BB" autocomplete="off"></label>'+
-      '<label class="f">Embrio beku lain tersisa<input id="c-rem" type="number" min="0" inputmode="numeric" value="'+esc(c.remaining)+'"></label>'+
+    '<div class="card"><h2>Case data</h2><div class="grid4">'+
+      '<label class="f">Case / embryo code<input id="c-code" value="'+esc(c.code)+'" placeholder="e.g. A-0123/E2" autocomplete="off"></label>'+
+      '<label class="f">Age at OPU<input id="c-age" type="number" min="15" max="60" inputmode="numeric" value="'+esc(c.age)+'"></label>'+
+      '<label class="f">Embryo grade<input id="c-grade" value="'+esc(c.grade)+'" placeholder="e.g. 4BB" autocomplete="off"></label>'+
+      '<label class="f">Other frozen embryos remaining<input id="c-rem" type="number" min="0" inputmode="numeric" value="'+esc(c.remaining)+'"></label>'+
     '</div></div>'+
 
-    '<div class="card"><h2>Timeline embrio (4D Map)</h2>'+tl+'</div>'+
+    '<div class="card"><h2>Embryo timeline (4D Map)</h2>'+tl+'</div>'+
 
-    '<div class="card" id="stage-form"><h2>'+(e?'Ubah tahap':'Catat tahap')+'</h2>'+
-      (e?'':'<div class="chips" aria-label="Tombol cepat">'+chips+'</div>')+
+    '<div class="card" id="stage-form"><h2>'+(e?'Edit event':'Log event')+'</h2>'+
+      (e?'':'<div class="chips" aria-label="Quick add">'+chips+'</div>')+
       '<div class="grid3">'+
-        '<label class="f">Tahap<select id="f-type">'+typeOpts+'</select></label>'+
-        '<label class="f">Waktu<input id="f-dt" type="datetime-local" value="'+esc(v.dt)+'"></label>'+
-        '<label class="f">Embriolog (inisial)<input id="f-by" value="'+esc(v.by)+'" maxlength="12" autocomplete="off"></label>'+
-        '<label class="f">Kondisi<select id="f-state">'+stOpts+'</select></label>'+
+        '<label class="f">Event<select id="f-type">'+typeOpts+'</select></label>'+
+        '<label class="f">Time<input id="f-dt" type="datetime-local" value="'+esc(v.dt)+'"></label>'+
+        '<label class="f">Embryologist (initials)<input id="f-by" value="'+esc(v.by)+'" maxlength="12" autocomplete="off"></label>'+
+        '<label class="f">Condition<select id="f-state">'+stOpts+'</select></label>'+
         '<label class="f">Sel TE<input id="f-te" type="number" min="0" inputmode="numeric" value="'+esc(v.te)+'"></label>'+
         '<label class="f">Expanding rate (%)<input id="f-exp" type="number" min="0" max="100" inputmode="numeric" value="'+esc(v.exp)+'"></label>'+
       '</div>'+
-      '<label class="f" style="margin-top:12px">Catatan<textarea id="f-note">'+esc(v.note)+'</textarea></label>'+
+      '<label class="f" style="margin-top:12px">Note<textarea id="f-note">'+esc(v.note)+'</textarea></label>'+
       '<div class="row" style="margin-top:12px">'+
-        '<label class="btn ghost sm" for="f-photo" style="cursor:pointer">'+(S.photo?'Ganti foto':'Tambah foto')+'</label>'+
+        '<label class="btn ghost sm" for="f-photo" style="cursor:pointer">'+(S.photo?'Replace photo':'Add photo')+'</label>'+
         '<input id="f-photo" type="file" accept="image/*" hidden>'+
-        '<span class="preview" id="f-prev">'+(S.photo?'<img class="thumb" src="'+S.photo+'" alt="Pratinjau foto"><button type="button" class="btn ghost sm" id="f-rmphoto">Hapus foto</button>':'')+'</span>'+
+        '<span class="preview" id="f-prev">'+(S.photo?'<img class="thumb" src="'+S.photo+'" alt="Photo preview"><button type="button" class="btn ghost sm" id="f-rmphoto">Remove photo</button>':'')+'</span>'+
       '</div>'+
-      '<div class="row" style="margin-top:14px"><button type="button" class="btn" id="f-save">'+(e?'Simpan perubahan':'Tambah ke timeline')+'</button>'+(e?'<button type="button" class="btn ghost" id="f-cancel">Batal</button>':'')+'<span class="hint" id="f-msg" aria-live="polite"></span></div>'+
+      '<div class="row" style="margin-top:14px"><button type="button" class="btn" id="f-save">'+(e?'Save changes':'Add to timeline')+'</button>'+(e?'<button type="button" class="btn ghost" id="f-cancel">Cancel</button>':'')+'<span class="hint" id="f-msg" aria-live="polite"></span></div>'+
     '</div>'+
 
-    '<div class="card"><h2>AI grading dan keputusan</h2><div class="grid2">'+
-      '<div><label class="f">Skor AI (0–10)<input id="a-score" type="number" min="0" max="10" step="0.1" inputmode="decimal" value="'+esc(ai.score==null?'':ai.score)+'"></label>'+
+    '<div class="card"><h2>AI grading and decision</h2><div class="grid2">'+
+      '<div><label class="f">AI score (0–10)<input id="a-score" type="number" min="0" max="10" step="0.1" inputmode="decimal" value="'+esc(ai.score==null?'':ai.score)+'"></label>'+
         '<div id="a-show"></div></div>'+
       '<div class="grid2" style="align-content:start">'+
-        '<label class="f" style="grid-column:1/-1">Keputusan<select id="d-choice">'+decOpts+'</select></label>'+
-        '<label class="f">Diputuskan oleh<input id="d-by" value="'+esc(dc.by||'')+'" maxlength="24" autocomplete="off"></label>'+
-        '<label class="f">Waktu keputusan<input id="d-at" type="datetime-local" value="'+esc(dc.at||'')+'"></label>'+
-        '<label class="f" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:10px;font-size:.92rem"><input id="d-consent" type="checkbox"'+(dc.consent?' checked':'')+'> Pasien sudah menyetujui keputusan ini</label>'+
-        '<label class="f" style="grid-column:1/-1">Catatan keputusan<textarea id="d-note">'+esc(dc.note||'')+'</textarea></label>'+
+        '<label class="f" style="grid-column:1/-1">Decision<select id="d-choice">'+decOpts+'</select></label>'+
+        '<label class="f">Decided by<input id="d-by" value="'+esc(dc.by||'')+'" maxlength="24" autocomplete="off"></label>'+
+        '<label class="f">Decision time<input id="d-at" type="datetime-local" value="'+esc(dc.at||'')+'"></label>'+
+        '<label class="f" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:10px;font-size:.92rem"><input id="d-consent" type="checkbox"'+(dc.consent?' checked':'')+'> Patient consent recorded for this decision</label>'+
+        '<label class="f" style="grid-column:1/-1">Decision note<textarea id="d-note">'+esc(dc.note||'')+'</textarea></label>'+
       '</div></div></div>'+
 
-    '<div class="card"><div class="row"><button type="button" class="btn" id="print">Cetak ringkasan</button><button type="button" class="btn ghost" id="csv">Ekspor CSV</button><button type="button" class="btn danger" id="delcase" style="margin-left:auto">Hapus kasus</button></div><p class="hint" id="delmsg"></p></div>';
+    '<div class="card"><div class="row"><button type="button" class="btn" id="print">Print summary</button><button type="button" class="btn ghost" id="csv">Export CSV</button><button type="button" class="btn danger" id="delcase" style="margin-left:auto">Delete case</button></div><p class="hint" id="delmsg"></p></div>';
 
     wireEditor(c); showAI(c); buildSheet(c);
   }
 
   function showAI(c){
     var box=$('a-show'), sc=c.ai && c.ai.score!=null && c.ai.score!=='' ? Number(c.ai.score) : null;
-    if(sc==null || isNaN(sc)){ box.innerHTML='<p class="hint">Masukkan skor dari sistem AI untuk foto recovery.</p>'; return; }
+    if(sc==null || isNaN(sc)){ box.innerHTML='<p class="hint">Enter the score from the AI system for the recovery photos.</p>'; return; }
     var n=Math.round(sc), m=''; for(var i=0;i<10;i++) m+='<i'+(i<n?' class="on"':'')+'></i>';
     var thr=S.settings.threshold, sug='';
-    if(thr==null || thr==='' || isNaN(Number(thr))) sug='<div class="sug neutral">Ambang lab belum diatur<small>Atur di Pengaturan lab untuk menampilkan saran.</small></div>';
-    else if(sc<=Number(thr)) sug='<div class="sug">Suggest: thaw one more<small>Skor '+sc+' ≤ ambang '+thr+'. Ini saran pendukung; keputusan oleh dokter bersama pasien.</small></div>';
-    else sug='<div class="sug neutral">Skor di atas ambang ('+thr+')<small>Tidak ada saran tambahan dari ambang lab. Keputusan oleh dokter bersama pasien.</small></div>';
+    if(thr==null || thr==='' || isNaN(Number(thr))) sug='<div class="sug neutral">Lab threshold not set<small>Set it under Lab settings to show a suggestion.</small></div>';
+    else if(sc<=Number(thr)) sug='<div class="sug">Suggest: thaw one more<small>Score '+sc+' ≤ threshold '+thr+'. Decision support only; the decision rests with the physician and patient.</small></div>';
+    else sug='<div class="sug neutral">Score above threshold ('+thr+')<small>No additional suggestion from the lab threshold. The decision rests with the physician and patient.</small></div>';
     box.innerHTML='<div class="score"><b>'+esc(sc)+'</b><span>/ 10</span></div><div class="meter" aria-hidden="true">'+m+'</div>'+sug;
   }
 
@@ -312,18 +312,18 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
     });
     Array.prototype.forEach.call(document.querySelectorAll('[data-del]'), function(b){
       b.addEventListener('click', function(){
-        if(b.getAttribute('data-armed')!=='1'){ b.setAttribute('data-armed','1'); b.textContent='Yakin hapus?'; setTimeout(function(){ if(b.isConnected){ b.removeAttribute('data-armed'); b.textContent='Hapus'; } },3000); return; }
+        if(b.getAttribute('data-armed')!=='1'){ b.setAttribute('data-armed','1'); b.textContent='Confirm delete?'; setTimeout(function(){ if(b.isConnected){ b.removeAttribute('data-armed'); b.textContent='Delete'; } },3000); return; }
         c.stages=c.stages.filter(function(x){return x.id!==b.getAttribute('data-del');}); save(); render();
       });
     });
     $('f-photo').addEventListener('change', function(){
       var f=this.files[0]; if(!f) return;
-      shrink(f, function(url){ S.photo=url; var prev=$('f-prev'); prev.innerHTML='<img class="thumb" src="'+url+'" alt="Pratinjau foto"><button type="button" class="btn ghost sm" id="f-rmphoto">Hapus foto</button>'; $('f-rmphoto').addEventListener('click', rmPhoto); });
+      shrink(f, function(url){ S.photo=url; var prev=$('f-prev'); prev.innerHTML='<img class="thumb" src="'+url+'" alt="Photo preview"><button type="button" class="btn ghost sm" id="f-rmphoto">Remove photo</button>'; $('f-rmphoto').addEventListener('click', rmPhoto); });
     });
     if($('f-rmphoto')) $('f-rmphoto').addEventListener('click', rmPhoto);
     function rmPhoto(){ S.photo=''; $('f-prev').innerHTML=''; }
     $('f-save').addEventListener('click', function(){
-      var dt=$('f-dt').value; if(!dt){ $('f-msg').textContent='Isi waktu tahap.'; return; }
+      var dt=$('f-dt').value; if(!dt){ $('f-msg').textContent='Enter the event time.'; return; }
       var rec={type:$('f-type').value, dt:dt, by:$('f-by').value.trim(), state:$('f-state').value, te:$('f-te').value, exp:$('f-exp').value, note:$('f-note').value.trim(), photo:S.photo};
       if(S.editing){ var s=c.stages.filter(function(x){return x.id===S.editing;})[0]; for(var k in rec) s[k]=rec[k]; }
       else { rec.id=uid(); c.stages.push(rec); }
@@ -333,7 +333,7 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
     $('print').addEventListener('click', function(){ buildSheet(c); window.print(); });
     $('csv').addEventListener('click', function(){ download('asha-embryo-'+safe(c.code)+'.csv', toCSV([c]), 'text/csv'); });
     $('delcase').addEventListener('click', function(){
-      var b=this; if(b.getAttribute('data-armed')!=='1'){ b.setAttribute('data-armed','1'); b.textContent='Klik lagi untuk menghapus'; setTimeout(function(){ if(b.isConnected){ b.removeAttribute('data-armed'); b.textContent='Hapus kasus'; } },3500); return; }
+      var b=this; if(b.getAttribute('data-armed')!=='1'){ b.setAttribute('data-armed','1'); b.textContent='Click again to delete'; setTimeout(function(){ if(b.isConnected){ b.removeAttribute('data-armed'); b.textContent='Delete case'; } },3500); return; }
       S.cases=S.cases.filter(function(x){return x.id!==c.id;}); S.sel=S.cases.length?S.cases[0].id:null; save(); render();
     });
   }
@@ -349,16 +349,16 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
   }
 
   /* ---------- export / print ---------- */
-  function safe(s){ return String(s||'kasus').replace(/[^\w\-]+/g,'_'); }
+  function safe(s){ return String(s||'case').replace(/[^\w\-]+/g,'_'); }
   function csvCell(v){ v=String(v==null?'':v); return /[",\n;]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
   function toCSV(list){
-    var head=['kode_kasus','usia_opu','grade','embrio_beku_tersisa','tahap','waktu','selisih_dari_tahap_sebelumnya','embriolog','kondisi','sel_TE','expanding_rate_persen','catatan','skor_AI','keputusan','diputuskan_oleh','waktu_keputusan','persetujuan_pasien','catatan_keputusan'];
+    var head=['case_code','age_at_opu','grade','frozen_embryos_remaining','event','time','interval_from_previous','embryologist','condition','te_cells','expanding_rate_pct','note','ai_score','decision','decided_by','decision_time','patient_consent','decision_note'];
     var rows=[head];
     list.forEach(function(c){
       var st=sorted(c), dc=c.decision||{}, ai=c.ai||{};
       (st.length?st:[null]).forEach(function(s,i){
         var gap = s && i>0 ? fmtDur(new Date(s.dt)-new Date(st[i-1].dt)) : '';
-        rows.push([c.code,c.age,c.grade,c.remaining, s?typeName(s.type):'', s?s.dt:'', gap, s?s.by:'', s?s.state:'', s?s.te:'', s?s.exp:'', s?s.note:'', ai.score, decName(dc.choice||''), dc.by, dc.at, dc.consent?'ya':'tidak', dc.note]);
+        rows.push([c.code,c.age,c.grade,c.remaining, s?typeName(s.type):'', s?s.dt:'', gap, s?s.by:'', s?s.state:'', s?s.te:'', s?s.exp:'', s?s.note:'', ai.score, decName(dc.choice||''), dc.by, dc.at, dc.consent?'yes':'no', dc.note]);
       });
     });
     return '﻿'+rows.map(function(r){ return r.map(csvCell).join(','); }).join('\r\n');
@@ -372,13 +372,13 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
     var rows=st.map(function(s,i){
       return '<tr><td>'+esc(typeName(s.type))+'</td><td>'+esc(fmtDT(s.dt))+'</td><td>'+(i>0?esc(fmtDur(new Date(s.dt)-new Date(st[i-1].dt))):'')+'</td><td>'+esc(s.by)+'</td><td>'+esc(s.state)+'</td><td>'+esc(s.te)+'</td><td>'+esc(s.exp)+'</td><td>'+esc(s.note)+'</td></tr>';
     }).join('');
-    $('sheet').innerHTML='<h1>Asha IVF · Ringkasan Recovery Embrio</h1>'+
-      '<p>Kode kasus: <b>'+esc(c.code)+'</b> · Usia saat OPU: '+esc(c.age)+' · Grade: '+esc(c.grade)+' · Embrio beku lain tersisa: '+esc(c.remaining)+'</p>'+
-      '<table><thead><tr><th>Tahap</th><th>Waktu</th><th>Selisih</th><th>Embriolog</th><th>Kondisi</th><th>Sel TE</th><th>Expanding %</th><th>Catatan</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-      '<p>Skor AI: <b>'+esc(ai.score==null||ai.score===''?'-':ai.score)+' / 10</b></p>'+
-      '<p>Keputusan: <b>'+esc(decName(dc.choice||'')||'-')+'</b> · Oleh: '+esc(dc.by||'-')+' · Waktu: '+esc(fmtDT(dc.at)||'-')+' · Persetujuan pasien: '+(dc.consent?'ya':'belum dicatat')+'</p>'+
-      (dc.note?'<p>Catatan: '+esc(dc.note)+'</p>':'')+
-      '<div class="sig"><div>Embriolog</div><div>Dokter</div></div>';
+    $('sheet').innerHTML='<h1>Asha IVF · Embryo Recovery Summary</h1>'+
+      '<p>Case code: <b>'+esc(c.code)+'</b> · Age at OPU: '+esc(c.age)+' · Grade: '+esc(c.grade)+' · Other frozen embryos remaining: '+esc(c.remaining)+'</p>'+
+      '<table><thead><tr><th>Event</th><th>Time</th><th>Interval</th><th>Embryologist</th><th>Condition</th><th>TE cells</th><th>Expanding %</th><th>Note</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      '<p>AI score: <b>'+esc(ai.score==null||ai.score===''?'-':ai.score)+' / 10</b></p>'+
+      '<p>Decision: <b>'+esc(decName(dc.choice||'')||'-')+'</b> · By: '+esc(dc.by||'-')+' · Time: '+esc(fmtDT(dc.at)||'-')+' · Patient consent: '+(dc.consent?'yes':'not recorded')+'</p>'+
+      (dc.note?'<p>Note: '+esc(dc.note)+'</p>':'')+
+      '<div class="sig"><div>Embryologist</div><div>Physician</div></div>';
   }
 
   /* ---------- cases ---------- */
@@ -391,7 +391,7 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
 
   $('new').addEventListener('click', newCase);
   $('thr').addEventListener('input', function(){ var v=this.value; S.settings.threshold = v==='' ? null : Number(v); save(); var c=cur(); if(c) showAI(c); });
-  $('exp-all').addEventListener('click', function(){ download('asha-embryo-cadangan.json', JSON.stringify({cases:S.cases, settings:S.settings}), 'application/json'); });
+  $('exp-all').addEventListener('click', function(){ download('asha-embryo-backup.json', JSON.stringify({cases:S.cases, settings:S.settings}), 'application/json'); });
   $('imp').addEventListener('change', function(){
     var f=this.files[0]; if(!f) return; var r=new FileReader();
     r.onload=function(){
@@ -402,7 +402,7 @@ details.set summary{cursor:pointer;font-weight:700;font-size:.9rem}
         if(o.settings && S.settings.threshold==null) S.settings=o.settings;
         if(!S.sel && S.cases.length) S.sel=S.cases[0].id;
         save(); render();
-      }catch(e){ $('saved').textContent='File cadangan tidak valid.'; }
+      }catch(e){ $('saved').textContent='Invalid backup file.'; }
     };
     r.readAsText(f); this.value='';
   });
